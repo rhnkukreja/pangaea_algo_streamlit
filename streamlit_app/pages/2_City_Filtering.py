@@ -68,6 +68,7 @@ ranked_cities, normalized_weights, weight_log = rank_cities(
     st.session_state.surviving_countries,
     city_answers,
 )
+st.session_state.ranked_cities = [r["city"] for r in ranked_cities]
 
 with col_weights:
     st.subheader("City-Level Weights")
@@ -91,26 +92,44 @@ with col_weights:
     with st.expander("📋 Why these weights changed"):
         _, _, weight_log = compute_city_weights(city_answers)
 
+        objective_label = primary_objective.replace("_", " ").title()
+        risk_label = risk_appetite.title()
+        tier_to_source = {
+            "Tier 1": f"Primary Objective = {objective_label}",
+            "Tier 2": f"Risk Appetite = {risk_label}",
+        }
+
         if not weight_log:
             st.caption("No shifts applied — using baseline weights.")
         else:
+            grouped = {}
             for entry in weight_log:
                 tier = entry.get("tier", "")
-                det = entry.get("determinant", "").replace("_", " ").title()
-                raw = entry.get("raw_shift", 0)
-                adj = entry.get("adjusted_shift", 0)
-                before = entry.get("before", 0)
-                after = entry.get("after", 0)
+                src = tier_to_source.get(tier, tier)
+                grouped.setdefault(src, []).append(entry)
 
-                sign = "+" if raw > 0 else ""
-                color = "🟢" if raw > 0 else "🔴"
+            for source_label, entries in grouped.items():
+                st.markdown(f"**{source_label}**")
 
-                st.markdown(
-                    f"{color} **{det}** ({tier}) — "
-                    f"Raw: {sign}{raw} → "
-                    f"Adjusted: {sign}{round(adj, 2)} → "
-                    f"{round(before, 1)}% → **{round(after, 1)}%**"
-                )
+                if not entries:
+                    st.caption("  (No shifts applied)")
+                else:
+                    for entry in entries:
+                        det = entry.get("determinant", "").replace("_", " ").title()
+                        raw = entry.get("raw_shift", 0)
+                        adj = entry.get("adjusted_shift", 0)
+                        before = entry.get("before", 0)
+                        after = entry.get("after", 0)
+                        sign = "+" if raw > 0 else ""
+                        color = "🟢" if raw > 0 else "🔴"
+                        st.caption(
+                            f"  {color} {det}: "
+                            f"raw {sign}{raw} → "
+                            f"adjusted {sign}{round(adj, 2)} → "
+                            f"{round(before, 1)}% → **{round(after, 1)}%**"
+                        )
+
+                st.markdown("---")
 
 with col_results:
     st.subheader("Ranked Cities")

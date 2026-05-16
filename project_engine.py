@@ -118,47 +118,234 @@ PROJECT_BASELINE_WEIGHTS = {
 }
 
 # =========================================================
-# SHIFT FUNCTION
+# TIER 1 SHIFT TABLES
 # =========================================================
 
-def apply_shift(
-    weights,
-    determinant,
-    raw_shift,
-    tier,
-    weight_log,
+PROJECT_TIER1_USAGE_SHIFTS = {
+    "pure_investment": {
+        "expected_rental_yield": +8,
+        "project_exit_liquidity": +7,
+        "delivery_history": -6,
+        "financial_strength": -5,
+        "public_infrastructure_proximity": -4,
+    },
+    "investment_occasional_use": {
+        "expected_rental_yield": +6,
+        "construction_quality": +5,
+        "public_infrastructure_proximity": +4,
+        "project_exit_liquidity": -8,
+        "financial_strength": -4,
+        "delivery_history": -3,
+    },
+    "primary_relocation": {
+        "construction_quality": +8,
+        "public_infrastructure_proximity": +7,
+        "expected_rental_yield": -8,
+        "project_exit_liquidity": -4,
+        "project_completion_rate": -3,
+    },
+}
+
+PROJECT_TIER1_HOLDING_SHIFTS = {
+    "short_term": {
+        "project_completion_rate": +8,
+        "project_exit_liquidity": +7,
+        "expected_rental_yield": -8,
+        "delivery_history": -4,
+        "financial_strength": -3,
+    },
+    "medium_term": {
+        "expected_rental_yield": +6,
+        "project_exit_liquidity": +5,
+        "project_completion_rate": +4,
+        "delivery_history": -7,
+        "financial_strength": -5,
+        "public_infrastructure_proximity": -3,
+    },
+    "long_term": {
+        "expected_rental_yield": +8,
+        "construction_quality": +7,
+        "project_exit_liquidity": -8,
+        "project_completion_rate": -4,
+        "public_infrastructure_proximity": -3,
+    },
+}
+
+PROJECT_TIER1_LIQUIDITY_SHIFTS = {
+    "high_resale": {
+        "project_exit_liquidity": +10,
+        "project_completion_rate": +5,
+        "expected_rental_yield": -8,
+        "financial_strength": -4,
+        "delivery_history": -3,
+    },
+    "long_lockin": {
+        "expected_rental_yield": +8,
+        "financial_strength": +7,
+        "project_exit_liquidity": -10,
+        "project_completion_rate": -5,
+    },
+}
+
+PROJECT_TIER1_RISK_SHIFTS = {
+    "conservative": {
+        "financial_strength": +6,
+        "delivery_history": +5,
+        "project_completion_rate": +2,
+        "litigation_history": +2,
+        "expected_rental_yield": -8,
+        "project_exit_liquidity": -4,
+        "public_infrastructure_proximity": -3,
+    },
+    "opportunistic": {
+        "expected_rental_yield": +8,
+        "project_exit_liquidity": +7,
+        "delivery_history": -8,
+        "financial_strength": -4,
+        "project_completion_rate": -3,
+    },
+}
+
+# =========================================================
+# TIER 2 SHIFT TABLES
+# =========================================================
+
+PROJECT_TIER2_EXPERIENCE_SHIFTS = {
+    "first_time": {
+        "delivery_history": +5,
+        "project_completion_rate": +3,
+        "litigation_history": +2,
+        "expected_rental_yield": -6,
+        "project_exit_liquidity": -4,
+    },
+    "experienced": {
+        "expected_rental_yield": +6,
+        "project_exit_liquidity": +4,
+        "delivery_history": -6,
+        "project_completion_rate": -4,
+    },
+}
+
+PROJECT_TIER2_PRESTIGE_SHIFTS = {
+    "high": {
+        "construction_quality": +7,
+        "delivery_history": +3,
+        "expected_rental_yield": -6,
+        "project_exit_liquidity": -4,
+    },
+    "low": {
+        "expected_rental_yield": +6,
+        "project_exit_liquidity": +4,
+        "delivery_history": -6,
+        "public_infrastructure_proximity": -4,
+    },
+    "medium": {},
+}
+
+PROJECT_TIER2_PROXIMITY_SHIFTS = {
+    "airport_cbd_leisure": {
+        "public_infrastructure_proximity": +7,
+        "project_exit_liquidity": +3,
+        "expected_rental_yield": -6,
+        "delivery_history": -4,
+    },
+    "schools_hospitals": {
+        "public_infrastructure_proximity": +8,
+        "construction_quality": +2,
+        "expected_rental_yield": -6,
+        "project_exit_liquidity": -4,
+    },
+}
+
+PROJECT_TIER2_FAMILY_SHIFTS = {
+    "single_couple": {
+        "project_exit_liquidity": +6,
+        "expected_rental_yield": +4,
+        "delivery_history": -5,
+        "financial_strength": -5,
+    },
+    "family": {
+        "public_infrastructure_proximity": +6,
+        "construction_quality": +4,
+        "project_exit_liquidity": -6,
+        "expected_rental_yield": -4,
+    },
+}
+
+# =========================================================
+# WEIGHT_FLOOR / WEIGHT_CAP
+# =========================================================
+
+WEIGHT_FLOOR = 5.0
+WEIGHT_CAP = 35.0
+
+# =========================================================
+# SHIFT FUNCTION (source-grouped)
+# =========================================================
+
+def apply_shifts_with_sources(
+    baseline_weights,
+    tier1_sources,
+    tier2_sources,
 ):
+    weights = {k: float(v) for k, v in baseline_weights.items()}
+    log = []
 
-    current_weight = weights[determinant]
+    for tier_label, sources in [
+        ("Tier 1", tier1_sources),
+        ("Tier 2", tier2_sources),
+    ]:
+        for source_label, shifts in sources:
+            for det, raw in sorted(
+                shifts.items(), key=lambda x: -x[1]
+            ):
+                if raw <= 0:
+                    continue
+                current = weights.get(det, 0.0)
+                adjusted = raw * (1 - current / 100)
+                new_val = min(
+                    max(current + adjusted, WEIGHT_FLOOR),
+                    WEIGHT_CAP,
+                )
+                log.append({
+                    "source": source_label,
+                    "tier": tier_label,
+                    "determinant": det,
+                    "raw_shift": raw,
+                    "adjusted_shift": round(adjusted, 2),
+                    "before": round(current, 2),
+                    "after": round(new_val, 2),
+                })
+                weights[det] = new_val
 
-    adjusted_shift = raw_shift * (
-        1 - (current_weight / 100)
-    )
+            for det, raw in sorted(
+                shifts.items(), key=lambda x: x[1]
+            ):
+                if raw >= 0:
+                    continue
+                current = weights.get(det, 0.0)
+                adjusted = raw * (1 - current / 100)
+                new_val = min(
+                    max(current + adjusted, WEIGHT_FLOOR),
+                    WEIGHT_CAP,
+                )
+                log.append({
+                    "source": source_label,
+                    "tier": tier_label,
+                    "determinant": det,
+                    "raw_shift": raw,
+                    "adjusted_shift": round(adjusted, 2),
+                    "before": round(current, 2),
+                    "after": round(new_val, 2),
+                })
+                weights[det] = new_val
 
-    new_weight = current_weight + adjusted_shift
-
-    # caps and floor
-    new_weight = max(5, min(35, new_weight))
-
-    weights[determinant] = round(new_weight, 2)
-
-    weight_log.append({
-
-        "tier": tier,
-
-        "determinant": determinant,
-
-        "raw_shift": raw_shift,
-
-        "adjusted_shift": round(
-            adjusted_shift,
-            2,
-        ),
-
-        "before": current_weight,
-
-        "after": round(new_weight, 2),
-    })
+    total = sum(weights.values())
+    normalized = {
+        k: round((v / total) * 100, 2)
+        for k, v in weights.items()
+    }
+    return weights, normalized, log
 
 
 # =========================================================
@@ -167,486 +354,75 @@ def apply_shift(
 
 def compute_project_weights(answers):
 
-    weights = PROJECT_BASELINE_WEIGHTS.copy()
-
-    weight_log = []
-
-    # =====================================================
-    # TIER 1
-    # =====================================================
-
-    # -----------------------------------------------------
-    # Usage Intent
-    # -----------------------------------------------------
-
-    if answers["usage_intent"] == "pure_investment":
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            7,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "delivery_history",
-            -6,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            -5,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "public_infrastructure_proximity",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-    elif answers["usage_intent"] == "investment_occasional_use":
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            6,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "construction_quality",
-            5,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "public_infrastructure_proximity",
-            4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            -8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "delivery_history",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    elif answers["usage_intent"] == "primary_relocation":
-
-        apply_shift(
-            weights,
-            "construction_quality",
-            8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "public_infrastructure_proximity",
-            7,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            -8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    # -----------------------------------------------------
-    # Holding Period
-    # -----------------------------------------------------
-
-    if answers["holding_period"] == "short_term":
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            7,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            -8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "delivery_history",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    elif answers["holding_period"] == "medium_term":
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            6,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            5,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "delivery_history",
-            -7,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            -5,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "public_infrastructure_proximity",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    elif answers["holding_period"] == "long_term":
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "construction_quality",
-            7,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            -8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "public_infrastructure_proximity",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    # -----------------------------------------------------
-    # Liquidity Preference
-    # -----------------------------------------------------
-
-    if answers["liquidity_preference"] == "high_resale":
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            10,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            5,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            -8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "delivery_history",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    elif answers["liquidity_preference"] == "long_lockin":
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            7,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            -10,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            -5,
-            "Tier 1",
-            weight_log,
-        )
-
-    # -----------------------------------------------------
-    # Risk Appetite
-    # -----------------------------------------------------
-
-    if answers["risk_appetite"] == "conservative":
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            6,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "delivery_history",
-            5,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            2,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "litigation_history",
-            2,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            -8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "public_infrastructure_proximity",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    elif answers["risk_appetite"] == "opportunistic":
-
-        apply_shift(
-            weights,
-            "expected_rental_yield",
-            8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_exit_liquidity",
-            7,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "delivery_history",
-            -8,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "financial_strength",
-            -4,
-            "Tier 1",
-            weight_log,
-        )
-
-        apply_shift(
-            weights,
-            "project_completion_rate",
-            -3,
-            "Tier 1",
-            weight_log,
-        )
-
-    # =====================================================
-    # NORMALIZATION
-    # =====================================================
-
-    total = sum(weights.values())
-
-    normalized_weights = {
-
-        k: round((v / total) * 100, 1)
-
-        for k, v in weights.items()
-    }
+    usage = answers.get("usage_intent", "")
+    holding = answers.get("holding_period", "")
+    liquidity = answers.get("liquidity_preference", "")
+    risk = answers.get("risk_appetite", "")
+
+    tier1_sources = []
+
+    if usage in PROJECT_TIER1_USAGE_SHIFTS:
+        tier1_sources.append((
+            f"Usage Intent = {usage.replace('_', ' ').title()}",
+            PROJECT_TIER1_USAGE_SHIFTS[usage],
+        ))
+
+    if holding in PROJECT_TIER1_HOLDING_SHIFTS:
+        tier1_sources.append((
+            f"Holding Period = {holding.replace('_', ' ').title()}",
+            PROJECT_TIER1_HOLDING_SHIFTS[holding],
+        ))
+
+    if liquidity in PROJECT_TIER1_LIQUIDITY_SHIFTS:
+        tier1_sources.append((
+            f"Liquidity Preference = {liquidity.replace('_', ' ').title()}",
+            PROJECT_TIER1_LIQUIDITY_SHIFTS[liquidity],
+        ))
+
+    if risk in PROJECT_TIER1_RISK_SHIFTS:
+        tier1_sources.append((
+            f"Risk Appetite = {risk.title()}",
+            PROJECT_TIER1_RISK_SHIFTS[risk],
+        ))
+
+    experience = answers.get("investor_experience", "")
+    prestige = answers.get("prestige_sensitivity", "medium")
+    proximity = answers.get("proximity_preference", "")
+    family = answers.get("family_composition", "")
+
+    tier2_sources = []
+
+    if experience in PROJECT_TIER2_EXPERIENCE_SHIFTS:
+        tier2_sources.append((
+            f"Investor Experience = {experience.replace('_', ' ').title()}",
+            PROJECT_TIER2_EXPERIENCE_SHIFTS[experience],
+        ))
+
+    if prestige in PROJECT_TIER2_PRESTIGE_SHIFTS:
+        shifts = PROJECT_TIER2_PRESTIGE_SHIFTS[prestige]
+        if shifts:
+            tier2_sources.append((
+                f"Prestige Sensitivity = {prestige.title()}",
+                shifts,
+            ))
+
+    if proximity in PROJECT_TIER2_PROXIMITY_SHIFTS:
+        tier2_sources.append((
+            f"Proximity Preference = {proximity.replace('_', ' ').title()}",
+            PROJECT_TIER2_PROXIMITY_SHIFTS[proximity],
+        ))
+
+    if family in PROJECT_TIER2_FAMILY_SHIFTS:
+        tier2_sources.append((
+            f"Family Composition = {family.replace('_', ' ').title()}",
+            PROJECT_TIER2_FAMILY_SHIFTS[family],
+        ))
+
+    _, normalized_weights, weight_log = apply_shifts_with_sources(
+        PROJECT_BASELINE_WEIGHTS,
+        tier1_sources,
+        tier2_sources,
+    )
 
     return normalized_weights, weight_log
 

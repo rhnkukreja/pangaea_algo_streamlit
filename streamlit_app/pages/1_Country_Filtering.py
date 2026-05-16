@@ -106,6 +106,7 @@ with col_form:
     citizenship_required = st.radio(
         "Q3 — Citizenship Requirement",
         ["yes", "optional", "no"],
+        index=1,
         key="country_citizenship_required",
     )
 

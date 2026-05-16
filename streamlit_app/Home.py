@@ -1,19 +1,14 @@
 import sys
 import os
 
-sys.path.insert(
-    0,
-    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "simple_recommendation_engine")),
-)
-sys.path.insert(
-    0,
-    os.path.abspath(os.path.join(os.path.dirname(__file__), "..")),
-)
+_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
 
 import streamlit as st
 import pandas as pd
 
-from project_engine import rank_projects
+from simple_recommendation_engine.project_engine import rank_projects
 from projects_data import PROJECTS
 from weights_config import PROJECT_BASELINE_WEIGHTS
 

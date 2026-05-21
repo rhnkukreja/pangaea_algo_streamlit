@@ -1,4 +1,4 @@
-import re
+﻿import re
 import sys
 import os
 
@@ -9,16 +9,20 @@ sys.path.insert(
 )
 
 from projects_data import PROJECTS, get_projects_by_cities, list_determinant_keys
+from simple_recommendation_engine.constants import PROJECT_INVERSE_VARS
+from simple_recommendation_engine.normalization import (
+    standardize_determinants,
+    weighted_score,
+)
 from weights_config import (
     PROJECT_BASELINE_WEIGHTS,
     compute_project_weights,
-    winsorize,
     WEIGHT_FLOOR,
     WEIGHT_CAP,
 )
 
 
-# ─── CURRENCY CONVERSION RATES (approximate) ──────────────
+# â”€â”€â”€ CURRENCY CONVERSION RATES (approximate) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 _RATES_TO_USD = {
     "EUR": 1.08,
@@ -28,35 +32,35 @@ _RATES_TO_USD = {
 }
 
 
-# ─── PRICE PARSER ─────────────────────────────────────────
+# â”€â”€â”€ PRICE PARSER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _parse_min_price_usd(price_range: str) -> float | None:
     """
     Extracts the lower-bound price from a price_range string and
     converts to USD.
 
-    Handles € / AED / ฿ / $ prefixes and K / M suffixes.
+    Handles â‚¬ / AED / à¸¿ / $ prefixes and K / M suffixes.
     Returns None if the string cannot be parsed.
 
     Examples:
-      "€450K – €2.5M"       → 486_000
-      "AED 1.57M – ..."     → 423_900
-      "฿6.8M – ฿60M"       →  190_400
-      "$8.5M – $185M"       → 8_500_000
+      "â‚¬450K â€“ â‚¬2.5M"       â†’ 486_000
+      "AED 1.57M â€“ ..."     â†’ 423_900
+      "à¸¿6.8M â€“ à¸¿60M"       â†’  190_400
+      "$8.5M â€“ $185M"       â†’ 8_500_000
     """
     if not price_range:
         return None
 
     # Take only the first token (before the dash separator)
-    first = price_range.split("–")[0].strip()
+    first = re.split(r"[-\u2013\u2014]|â€“", price_range)[0].strip()
 
     # Detect currency
     upper = first.upper()
     if "AED" in upper:
         currency = "AED"
-    elif "€" in first:
+    elif "\u20ac" in first or "\u00e2\u201a\u00ac" in first or "EUR" in upper:
         currency = "EUR"
-    elif "฿" in first:
+    elif "\u0e3f" in first or "\u00e0\u00b8\u00bf" in first or "THB" in upper:
         currency = "THB"
     else:
         currency = "USD"
@@ -83,7 +87,7 @@ def _parse_min_price_usd(price_range: str) -> float | None:
     return amount * _RATES_TO_USD.get(currency, 1.0)
 
 
-# ─── HARD FILTERS ─────────────────────────────────────────
+# â”€â”€â”€ HARD FILTERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def apply_project_hard_filters(
     answers: dict,
@@ -92,7 +96,7 @@ def apply_project_hard_filters(
     """
     Filters PROJECTS to candidates based on five hard rules:
       1. City must be in surviving_cities (from the city engine)
-      2. Budget: min project price <= investor_budget × 1.2 flex
+      2. Budget: min project price <= investor_budget Ã— 1.2 flex
       3. Ready to move: if required, drop Under Construction / Off-Plan
       4. Ownership: if freehold_only, drop leasehold
       5. Property type: if specified (not "any"), must fuzzy-match
@@ -115,7 +119,7 @@ def apply_project_hard_filters(
     for key, project in PROJECTS.items():
         p = {**project, "project_key": key}
 
-        # Filter 1 — city
+        # Filter 1 â€” city
         if project["city"] not in city_set:
             eliminated.append({
                 "project_name": project["project_name"],
@@ -128,7 +132,7 @@ def apply_project_hard_filters(
             })
             continue
 
-        # Filter 2 — budget
+        # Filter 2 â€” budget
         if budget_usd > 0:
             min_price = _parse_min_price_usd(project.get("price_range", ""))
             if min_price is not None and min_price > budget_flex:
@@ -143,7 +147,7 @@ def apply_project_hard_filters(
                 })
                 continue
 
-        # Filter 3 — ready to move
+        # Filter 3 â€” ready to move
         if ready_required:
             stage = project.get("project_stage", "").lower()
             if "under construction" in stage or "off-plan" in stage or "off plan" in stage:
@@ -152,33 +156,40 @@ def apply_project_hard_filters(
                     "country": project["country"],
                     "city": project["city"],
                     "reason": (
-                        "Under construction — investor requires ready to move"
+                        "Under construction â€” investor requires ready to move"
                     ),
                 })
                 continue
 
-        # Filter 4 — ownership
+        # Filter 4 â€” ownership
         if ownership_pref == "freehold_only":
             if project.get("ownership", "").lower() != "freehold":
                 eliminated.append({
                     "project_name": project["project_name"],
                     "country": project["country"],
                     "city": project["city"],
-                    "reason": "Leasehold — investor requires freehold",
+                    "reason": "Leasehold â€” investor requires freehold",
                 })
                 continue
 
-        # Filter 5 — property type (fuzzy match)
+        # Filter 5 â€” property type (fuzzy match)
         if type_pref and type_pref != "any":
             project_type = project.get("project_type", "").lower()
+            searchable_text = " ".join([
+                project_type,
+                project.get("project_name", "").lower(),
+                project.get("highlight", "").lower(),
+                project.get("description", "").lower(),
+                " ".join(project.get("tags", [])).lower(),
+            ])
             pref_lower = type_pref.lower()
 
             matched = (
-                pref_lower in project_type
+                pref_lower in searchable_text
                 or (pref_lower == "apartment" and "residential" in project_type)
-                or (pref_lower == "villa" and "villa" in project_type)
-                or (pref_lower == "resort" and "resort" in project_type)
-                or (pref_lower == "branded" and "branded" in project_type)
+                or (pref_lower == "villa" and "villa" in searchable_text)
+                or (pref_lower == "branded" and "branded" in searchable_text)
+                or (pref_lower == "managed" and ("managed" in searchable_text or "management" in searchable_text))
             )
             if not matched:
                 eliminated.append({
@@ -197,7 +208,20 @@ def apply_project_hard_filters(
     return surviving, eliminated
 
 
-# ─── SCORING ──────────────────────────────────────────────
+# â”€â”€â”€ SCORING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+def _project_scoring_values(scores: dict) -> dict:
+    """
+    Return determinant values in raw scoring orientation.
+
+    Existing data stores litigation_history as a clean-record score. The
+    cascading model treats litigation as inverse risk, so this converts the
+    stored clean score to a risk value before inverse normalization.
+    """
+    oriented = dict(scores)
+    if "litigation_history" in oriented:
+        oriented["litigation_history"] = 10 - float(oriented["litigation_history"])
+    return oriented
 
 def score_project(
     project: dict,
@@ -205,41 +229,47 @@ def score_project(
     all_surviving: list,
 ) -> tuple:
     """
-    Scores one project against normalized_weights.
+    Score one project using z-score normalization and final weighted scoring.
 
-    All 8 determinant scores are on a 0-10 scale (higher = better).
-    litigation_history is already inverted at data-entry time
-    (8 = clean record, 2 = many disputes), so no inversion needed here.
-
-    Applies 95th-percentile Winsorization across surviving projects
-    before computing each contribution.
+    The project dataset stores litigation_history as a cleanliness score
+    (higher = cleaner). To keep the requested inverse-variable logic explicit
+    without rewriting project data, the scoring input converts it back to a
+    raw litigation-risk value before applying inverse standardization.
 
     Returns: (total_score: float, breakdown: dict)
     """
-    det_scores = project.get("determinant_scores", {})
+    det_scores = _project_scoring_values(project.get("determinant_scores", {}))
+    peer_scores = [
+        _project_scoring_values(p.get("determinant_scores", {}))
+        for p in all_surviving
+    ]
+    standardized = standardize_determinants(
+        det_scores,
+        peer_scores,
+        normalized_weights.keys(),
+        inverse_vars=PROJECT_INVERSE_VARS,
+    )
+    total, contribution_breakdown = weighted_score(
+        standardized,
+        normalized_weights,
+    )
+
     breakdown = {}
-    total = 0.0
 
     for det, weight_pct in normalized_weights.items():
-        all_vals = [
-            p.get("determinant_scores", {}).get(det, 0)
-            for p in all_surviving
-        ]
-        raw_score = det_scores.get(det, 0)
-        winsorized = winsorize(raw_score, all_vals, percentile=95)
-        contribution = (winsorized / 10) * weight_pct
+        raw_score = project.get("determinant_scores", {}).get(det, 0)
         breakdown[det] = {
             "raw": raw_score,
-            "winsorized": round(winsorized, 2),
+            "winsorized": round(standardized.get(det, 50), 2),
+            "standardized": round(standardized.get(det, 50), 2),
             "weight_pct": round(weight_pct, 2),
-            "contribution": round(contribution, 2),
+            "contribution": contribution_breakdown.get(det, 0),
         }
-        total += contribution
 
-    return round(total, 2), breakdown
+    return total, breakdown
 
 
-# ─── RANKING PIPELINE ─────────────────────────────────────
+# â”€â”€â”€ RANKING PIPELINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def rank_projects(
     answers: dict,
@@ -259,10 +289,10 @@ def rank_projects(
         answers, surviving_cities
     )
 
-    if not surviving:
-        return [], eliminated, PROJECT_BASELINE_WEIGHTS.copy(), []
-
     _, normalized_weights, weight_log = compute_project_weights(answers)
+
+    if not surviving:
+        return [], eliminated, normalized_weights, weight_log
 
     ranked = []
     for project in surviving:

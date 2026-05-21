@@ -1,4 +1,10 @@
-from weights_config import compute_country_weights, winsorize
+from simple_recommendation_engine.constants import COUNTRY_INVERSE_VARS
+from simple_recommendation_engine.hard_constraints import apply_country_constraints
+from simple_recommendation_engine.normalization import (
+    standardize_determinants,
+    weighted_score,
+)
+from weights_config import compute_country_weights
 
 COUNTRIES = {
     "Greece": {
@@ -101,74 +107,26 @@ COUNTRIES = {
 
 
 def apply_country_hard_filters(answers):
-    """Apply Q2 (visa), Q3 (citizenship), Q4 (budget), Q6 (ownership type) as hard filters."""
-    surviving = []
-    eliminated = []
-
-    for name, data in COUNTRIES.items():
-        if answers.get("citizenship_required") == "yes" and not data["citizenship_available"]:
-            eliminated.append({
-                "country": name,
-                "reason": "Does not offer Citizenship by Investment",
-            })
-            continue
-
-        if answers.get("visa_required") == "mandatory" and not data["golden_visa_available"]:
-            eliminated.append({
-                "country": name,
-                "reason": "Does not offer Golden Visa program",
-            })
-            continue
-
-        ownership_pref = answers.get("ownership_structure", "any")
-        freehold_allowed = data.get("foreign_freehold_allowed", True)
-        if ownership_pref == "freehold_only" and not freehold_allowed:
-            eliminated.append({
-                "country": name,
-                "reason": (
-                    f"Investor requires freehold ownership; {name} does not permit "
-                    f"foreign freehold (foreign_freehold_allowed: False) — "
-                    f"only leasehold structures available to foreign buyers"
-                ),
-            })
-            continue
-
-        budget = answers.get("budget_usd", 0)
-        if budget < data["min_program_investment_usd"]:
-            eliminated.append({
-                "country": name,
-                "reason": f"Budget ${budget:,} below minimum ${data['min_program_investment_usd']:,}",
-            })
-            continue
-
-        surviving.append(name)
-
-    return surviving, eliminated
+    """Apply country hard constraints before determinant scoring."""
+    return apply_country_constraints(COUNTRIES, answers)
 
 
 def score_country(country_name, normalized_weights, all_countries_data):
     """
-    Scores a country using winsorized determinant values.
-    all_countries_data: iterable of country names for surviving countries —
-    used to compute Winsorization bounds.
+    Score a country using z-score normalization and weighted scoring.
+
+    Inverse determinants are oriented before z-scoring, then z values are
+    winsorized to -2..+2 and converted using 50 + (z x 25).
     """
     data = COUNTRIES[country_name]
-    breakdown = {}
-    total = 0.0
-
-    for det, weight_pct in normalized_weights.items():
-        all_vals = [
-            COUNTRIES[c]["scores"].get(det, 0)
-            for c in all_countries_data
-        ]
-        raw_score = data["scores"].get(det, 0)
-        winsorized_score = winsorize(raw_score, all_vals)
-
-        contribution = (winsorized_score / 10) * weight_pct
-        breakdown[det] = round(contribution, 2)
-        total += contribution
-
-    return round(total, 2), breakdown
+    peer_scores = [COUNTRIES[c]["scores"] for c in all_countries_data]
+    standardized = standardize_determinants(
+        data["scores"],
+        peer_scores,
+        normalized_weights.keys(),
+        inverse_vars=COUNTRY_INVERSE_VARS,
+    )
+    return weighted_score(standardized, normalized_weights)
 
 
 def rank_countries(answers):

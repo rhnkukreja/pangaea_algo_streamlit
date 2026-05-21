@@ -1,4 +1,9 @@
-from weights_config import compute_city_weights, winsorize
+from simple_recommendation_engine.constants import CITY_INVERSE_VARS
+from simple_recommendation_engine.normalization import (
+    standardize_determinants,
+    weighted_score,
+)
+from weights_config import compute_city_weights
 
 CITIES = {
     "Athens": {
@@ -325,23 +330,16 @@ CITIES = {
 
 
 def score_city(city_name, normalized_weights, candidate_cities):
+    """Score a city with z-score normalization and inverse supply handling."""
     data = CITIES[city_name]
-    breakdown = {}
-    total = 0.0
-
-    for det, weight_pct in normalized_weights.items():
-        all_vals = [
-            CITIES[c]["scores"].get(det, 0)
-            for c in candidate_cities
-        ]
-        raw_score = data["scores"].get(det, 0)
-        winsorized_score = winsorize(raw_score, all_vals)
-
-        contribution = (winsorized_score / 10) * weight_pct
-        breakdown[det] = round(contribution, 2)
-        total += contribution
-
-    return round(total, 2), breakdown
+    peer_scores = [CITIES[c]["scores"] for c in candidate_cities]
+    standardized = standardize_determinants(
+        data["scores"],
+        peer_scores,
+        normalized_weights.keys(),
+        inverse_vars=CITY_INVERSE_VARS,
+    )
+    return weighted_score(standardized, normalized_weights)
 
 
 def rank_cities(surviving_countries, answers):

@@ -38,7 +38,7 @@ with tab1:
 ### How it works
 
 **Page 1 — Country Filtering**
-Answer 6 questions about budget, visa, citizenship, risk, and geography.
+Answer the country hard-constraint and scoring questions.
 Watch determinant weights shift and countries get ranked live.
 
 **Page 2 — City Filtering**
@@ -122,7 +122,7 @@ with tab2:
 
         property_type_filter = st.selectbox(
             "Property Type",
-            ["any", "Apartment", "Villa", "Resort", "Branded"],
+            ["any", "Apartment", "Villa", "Branded", "Managed"],
             key="proj_type",
         )
 

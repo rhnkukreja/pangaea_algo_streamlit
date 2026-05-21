@@ -100,7 +100,7 @@ with col_form:
 
     property_type_filter = st.selectbox(
         "Property Type",
-        ["any", "Apartment", "Villa", "Resort", "Branded", "Mixed-use"],
+        ["any", "Apartment", "Villa", "Branded", "Managed"],
     )
 
     st.markdown("---")

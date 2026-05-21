@@ -20,6 +20,7 @@ if "surviving_countries" not in st.session_state:
 PERSONAS = {
     "Capital Appreciation": {
         "primary_objective": "capital_appreciation",
+        "dtaa_required": True,
         "visa_required": "optional",
         "citizenship_required": "no",
         "budget_usd": 1000000,
@@ -29,6 +30,7 @@ PERSONAS = {
 
     "Yield / Cash Flow": {
         "primary_objective": "yield_cash_flow",
+        "dtaa_required": True,
         "visa_required": "optional",
         "citizenship_required": "no",
         "budget_usd": 600000,
@@ -38,6 +40,7 @@ PERSONAS = {
 
     "Capital Preservation": {
         "primary_objective": "capital_preservation",
+        "dtaa_required": True,
         "visa_required": "optional",
         "citizenship_required": "no",
         "budget_usd": 1500000,
@@ -47,6 +50,7 @@ PERSONAS = {
 
     "Investment Diversification": {
         "primary_objective": "investment_diversification",
+        "dtaa_required": True,
         "visa_required": "optional",
         "citizenship_required": "no",
         "budget_usd": 1200000,
@@ -56,6 +60,7 @@ PERSONAS = {
 
     "Residency / Citizenship": {
         "primary_objective": "residency_citizenship",
+        "dtaa_required": True,
         "visa_required": "mandatory",
         "citizenship_required": "yes",
         "budget_usd": 1500000,
@@ -76,6 +81,7 @@ preset = st.selectbox("Load a persona preset", options=list(PERSONAS.keys()), in
 if PERSONAS[preset] and st.button("Apply preset"):
     p = PERSONAS[preset]
     st.session_state["country_primary_objective"] = p["primary_objective"]
+    st.session_state["country_dtaa_required"] = p["dtaa_required"]
     st.session_state["country_visa_required"] = p["visa_required"]
     st.session_state["country_citizenship_required"] = p["citizenship_required"]
     budget = p["budget_usd"]
@@ -110,21 +116,28 @@ with col_form:
         key="country_citizenship_required",
     )
 
+    dtaa_required = st.radio(
+        "Q4 - Require DTAA with India?",
+        [True, False],
+        format_func=lambda x: "Yes" if x else "No",
+        key="country_dtaa_required",
+    )
+
     budget_usd = st.select_slider(
-        "Q4 — Budget (USD)",
+        "Q5 - Budget (USD)",
         options=BUDGET_OPTIONS,
         format_func=lambda x: f"${x:,}",
         key="country_budget_usd",
     )
 
     risk_appetite = st.radio(
-        "Q5 — Risk Appetite",
+        "Q6 - Risk Appetite",
         ["conservative", "moderate", "opportunistic"],
         key="country_risk_appetite",
     )
 
     ownership_structure = st.radio(
-        "Q6 — Ownership Type",
+        "Q7 - Ownership Type",
         ["any", "freehold_only"],
         format_func=lambda x: {
             "any": "Any (freehold or leasehold)",
@@ -135,6 +148,7 @@ with col_form:
 
 answers = {
     "primary_objective": primary_objective,
+    "dtaa_required": dtaa_required,
     "visa_required": visa_required,
     "citizenship_required": citizenship_required,
     "budget_usd": budget_usd,

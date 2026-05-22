@@ -339,7 +339,8 @@ def score_city(city_name, normalized_weights, candidate_cities):
         normalized_weights.keys(),
         inverse_vars=CITY_INVERSE_VARS,
     )
-    return weighted_score(standardized, normalized_weights)
+    score, breakdown = weighted_score(standardized, normalized_weights)
+    return score, breakdown, standardized
 
 
 def rank_cities(surviving_countries, answers):
@@ -356,7 +357,7 @@ def rank_cities(surviving_countries, answers):
 
     ranked = []
     for city in candidate_cities:
-        score, breakdown = score_city(
+        score, breakdown, standardized = score_city(
             city, normalized_weights, candidate_cities
         )
         ranked.append({
@@ -364,6 +365,7 @@ def rank_cities(surviving_countries, answers):
             "country": CITIES[city]["country"],
             "score": score,
             "breakdown": breakdown,
+            "standardized_scores": standardized,
         })
 
     ranked.sort(key=lambda x: x["score"], reverse=True)

@@ -266,12 +266,17 @@ with tab2:
                         adj = entry["adjusted_shift"]
                         before = entry["before"]
                         after = entry["after"]
+                        final = entry.get(
+                            "final_weight",
+                            proj_weights.get(entry["determinant"], 0),
+                        )
                         sign = "+" if raw > 0 else ""
                         color = "🟢" if raw > 0 else "🔴"
                         st.caption(
                             f"  {color} {det}: raw {sign}{raw} → "
                             f"adjusted {sign}{round(adj, 2)} → "
-                            f"{round(before, 1)}% → **{round(after, 1)}%**"
+                            f"{round(before, 1)}% → {round(after, 1)}% raw → "
+                            f"**{final}% final**"
                         )
                     st.markdown("---")
 
@@ -324,8 +329,7 @@ with tab2:
                             st.caption(
                                 f"**{det.replace('_', ' ').title()}**: "
                                 f"{info['contribution']} pts  "
-                                f"(raw {info['raw']}/10 → "
-                                f"winsorized {info['winsorized']} × "
+                                f"(standardized {info['standardized']} × "
                                 f"{info['weight_pct']}% weight)"
                             )
 
@@ -344,11 +348,16 @@ with tab2:
                                     raw = entry["raw_shift"]
                                     sign = "+" if raw > 0 else ""
                                     color = "🟢" if raw > 0 else "🔴"
+                                    final = entry.get(
+                                        "final_weight",
+                                        proj_weights.get(entry["determinant"], 0),
+                                    )
                                     st.caption(
                                         f"  {color} {det}: "
                                         f"raw {sign}{raw} → "
                                         f"{round(entry['before'], 1)}% → "
-                                        f"**{round(entry['after'], 1)}%**"
+                                        f"{round(entry['after'], 1)}% raw → "
+                                        f"**{final}% final**"
                                     )
                                 st.markdown("---")
 

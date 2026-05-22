@@ -5,7 +5,12 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Mapping
 
-from simple_recommendation_engine.constants import WEIGHT_CAP, WEIGHT_FLOOR
+from simple_recommendation_engine.constants import (
+    TIER_1_MAX,
+    TIER_2_MAX,
+    WEIGHT_CAP,
+    WEIGHT_FLOOR,
+)
 
 
 OBJECTIVE_ALIASES = {
@@ -102,6 +107,7 @@ def apply_shifts_with_sources(
     Apply dynamic determinant shifts with diminishing returns.
 
     Adjusted Shift = Raw Shift x (1 - Current Weight / 100)
+    Tier 1 sources use max impact 25; Tier 2 sources use max impact 15.
     Buckets are clamped to the 5-35 range before final normalization.
     """
     weights = {key: float(value) for key, value in baseline_weights.items()}
@@ -136,10 +142,12 @@ def apply_shifts_with_sources(
         adjusted_shift = raw_shift * (1 - current / 100)
         shifted = current + adjusted_shift
         new_weight = min(max(shifted, WEIGHT_FLOOR), WEIGHT_CAP)
+        max_impact = TIER_1_MAX if tier_label == "Tier 1" else TIER_2_MAX
 
         log.append({
             "tier": tier_label,
             "source": source_label,
+            "max_impact": max_impact,
             "determinant": determinant,
             "raw_shift": raw_shift,
             "adjusted_shift": round(adjusted_shift, 3),
@@ -149,6 +157,9 @@ def apply_shifts_with_sources(
         weights[determinant] = new_weight
 
     normalized = _normalize_with_bounds(weights)
+    for entry in log:
+        determinant = entry["determinant"]
+        entry["final_weight"] = normalized.get(determinant, 0)
     return weights, normalized, log
 
 

@@ -251,13 +251,18 @@ with col_weights:
                     adj = entry["adjusted_shift"]
                     before = entry["before"]
                     after = entry["after"]
+                    final = entry.get(
+                        "final_weight",
+                        normalized_weights.get(entry["determinant"], 0),
+                    )
                     sign = "+" if raw > 0 else ""
                     color = "🟢" if raw > 0 else "🔴"
                     st.caption(
                         f"  {color} {det}: "
                         f"raw {sign}{raw} → "
                         f"adjusted {sign}{round(adj, 2)} → "
-                        f"{round(before, 1)}% → **{round(after, 1)}%**"
+                        f"{round(before, 1)}% → {round(after, 1)}% raw → "
+                        f"**{final}% final**"
                     )
                 st.markdown("---")
 
@@ -313,7 +318,7 @@ with col_results:
                     st.caption(
                         f"**{det.replace('_', ' ').title()}**: "
                         f"{info['contribution']} pts "
-                        f"(raw {info['raw']}/10 × "
+                        f"(standardized {info['standardized']} × "
                         f"{info['weight_pct']}% weight)"
                     )
 

@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 import pandas as pd
 from country_engine import rank_countries, COUNTRIES
-from weights_config import COUNTRY_BASELINE_WEIGHTS, compute_country_weights
+from weights_config import COUNTRY_BASELINE_WEIGHTS
 
 st.set_page_config(page_title="Country Filtering", layout="wide")
 
@@ -181,8 +181,6 @@ with col_weights:
     st.dataframe(df, hide_index=True, use_container_width=True)
 
     with st.expander("📋 Why these weights changed"):
-        _, _, weight_log = compute_country_weights(answers)
-
         objective_label = (
             primary_objective.replace("_", " ").title()
         )
@@ -213,13 +211,18 @@ with col_weights:
                         adj = entry.get("adjusted_shift", 0)
                         before = entry.get("before", 0)
                         after = entry.get("after", 0)
+                        final = entry.get(
+                            "final_weight",
+                            normalized_weights.get(entry.get("determinant", ""), 0),
+                        )
                         sign = "+" if raw > 0 else ""
                         color = "🟢" if raw > 0 else "🔴"
                         st.caption(
                             f"  {color} {det}: "
                             f"raw {sign}{raw} → "
                             f"adjusted {sign}{round(adj, 2)} → "
-                            f"{round(before, 1)}% → **{round(after, 1)}%**"
+                            f"{round(before, 1)}% → {round(after, 1)}% raw → "
+                            f"**{final}% final**"
                         )
 
                 st.markdown("---")
@@ -263,6 +266,7 @@ with col_results:
                 for determinant, contribution in item["breakdown"].items():
                     weight = normalized_weights[determinant]
                     raw_score = country_data["scores"][determinant]
+                    standardized = item["standardized_scores"][determinant]
                     raw_key, unit = raw_lookup.get(determinant, (None, ""))
                     raw_str = (
                         f" — raw: {raw_data.get(raw_key)} ({unit})"
@@ -271,7 +275,7 @@ with col_results:
                     )
                     st.caption(
                         f"**{determinant.replace('_', ' ').title()}**: {contribution} pts"
-                        f"  ({raw_score}/10 × {weight}%){raw_str}"
+                        f"  (standardized {round(standardized, 2)} × {weight}%){raw_str}"
                     )
                 tax = raw_data.get("tax_summary")
                 if tax:

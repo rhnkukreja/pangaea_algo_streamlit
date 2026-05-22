@@ -134,7 +134,8 @@ def score_country(country_name, normalized_weights, all_countries_data):
         normalized_weights.keys(),
         inverse_vars=COUNTRY_INVERSE_VARS,
     )
-    return weighted_score(standardized, normalized_weights)
+    score, breakdown = weighted_score(standardized, normalized_weights)
+    return score, breakdown, standardized
 
 
 def rank_countries(answers):
@@ -150,10 +151,15 @@ def rank_countries(answers):
 
     ranked = []
     for country in surviving:
-        score, breakdown = score_country(
+        score, breakdown, standardized = score_country(
             country, normalized_weights, surviving
         )
-        ranked.append({"country": country, "score": score, "breakdown": breakdown})
+        ranked.append({
+            "country": country,
+            "score": score,
+            "breakdown": breakdown,
+            "standardized_scores": standardized,
+        })
 
     ranked.sort(key=lambda x: x["score"], reverse=True)
     return ranked, eliminated, normalized_weights, weight_log

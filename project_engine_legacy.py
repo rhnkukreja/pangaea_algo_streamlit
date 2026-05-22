@@ -3,6 +3,12 @@
 # Cascading Archetype Model
 # =========================================================
 
+from simple_recommendation_engine.constants import PROJECT_INVERSE_VARS
+from simple_recommendation_engine.normalization import (
+    standardize_determinants,
+    weighted_score,
+)
+
 PROJECTS = {
 
     "Palm Residences": {
@@ -123,86 +129,86 @@ PROJECT_BASELINE_WEIGHTS = {
 
 PROJECT_TIER1_USAGE_SHIFTS = {
     "pure_investment": {
-        "expected_rental_yield": +8,
-        "project_exit_liquidity": +7,
-        "delivery_history": -6,
-        "financial_strength": -5,
-        "public_infrastructure_proximity": -4,
+        "expected_rental_yield": +13,
+        "project_exit_liquidity": +12,
+        "delivery_history": -10,
+        "financial_strength": -8,
+        "public_infrastructure_proximity": -7,
     },
     "investment_occasional_use": {
-        "expected_rental_yield": +6,
-        "construction_quality": +5,
-        "public_infrastructure_proximity": +4,
-        "project_exit_liquidity": -8,
-        "financial_strength": -4,
-        "delivery_history": -3,
-    },
-    "primary_relocation": {
+        "expected_rental_yield": +10,
         "construction_quality": +8,
         "public_infrastructure_proximity": +7,
-        "expected_rental_yield": -8,
-        "project_exit_liquidity": -4,
-        "project_completion_rate": -3,
+        "project_exit_liquidity": -13,
+        "financial_strength": -7,
+        "delivery_history": -5,
+    },
+    "primary_relocation": {
+        "construction_quality": +13,
+        "public_infrastructure_proximity": +12,
+        "expected_rental_yield": -13,
+        "project_exit_liquidity": -7,
+        "project_completion_rate": -5,
     },
 }
 
 PROJECT_TIER1_HOLDING_SHIFTS = {
     "short_term": {
-        "project_completion_rate": +8,
-        "project_exit_liquidity": +7,
-        "expected_rental_yield": -8,
-        "delivery_history": -4,
-        "financial_strength": -3,
-    },
-    "medium_term": {
-        "expected_rental_yield": +6,
-        "project_exit_liquidity": +5,
-        "project_completion_rate": +4,
+        "project_completion_rate": +13,
+        "project_exit_liquidity": +12,
+        "expected_rental_yield": -13,
         "delivery_history": -7,
         "financial_strength": -5,
-        "public_infrastructure_proximity": -3,
+    },
+    "medium_term": {
+        "expected_rental_yield": +10,
+        "project_exit_liquidity": +8,
+        "project_completion_rate": +7,
+        "delivery_history": -12,
+        "financial_strength": -8,
+        "public_infrastructure_proximity": -5,
     },
     "long_term": {
-        "expected_rental_yield": +8,
-        "construction_quality": +7,
-        "project_exit_liquidity": -8,
-        "project_completion_rate": -4,
-        "public_infrastructure_proximity": -3,
+        "expected_rental_yield": +13,
+        "construction_quality": +12,
+        "project_exit_liquidity": -13,
+        "project_completion_rate": -7,
+        "public_infrastructure_proximity": -5,
     },
 }
 
 PROJECT_TIER1_LIQUIDITY_SHIFTS = {
     "high_resale": {
-        "project_exit_liquidity": +10,
-        "project_completion_rate": +5,
-        "expected_rental_yield": -8,
-        "financial_strength": -4,
-        "delivery_history": -3,
+        "project_exit_liquidity": +17,
+        "project_completion_rate": +8,
+        "expected_rental_yield": -13,
+        "financial_strength": -7,
+        "delivery_history": -5,
     },
     "long_lockin": {
-        "expected_rental_yield": +8,
-        "financial_strength": +7,
-        "project_exit_liquidity": -10,
-        "project_completion_rate": -5,
+        "expected_rental_yield": +13,
+        "financial_strength": +12,
+        "project_exit_liquidity": -17,
+        "project_completion_rate": -8,
     },
 }
 
 PROJECT_TIER1_RISK_SHIFTS = {
     "conservative": {
-        "financial_strength": +6,
-        "delivery_history": +5,
-        "project_completion_rate": +2,
-        "litigation_history": +2,
-        "expected_rental_yield": -8,
-        "project_exit_liquidity": -4,
-        "public_infrastructure_proximity": -3,
+        "financial_strength": +10,
+        "delivery_history": +8,
+        "project_completion_rate": +4,
+        "litigation_history": +3,
+        "expected_rental_yield": -13,
+        "project_exit_liquidity": -7,
+        "public_infrastructure_proximity": -5,
     },
     "opportunistic": {
-        "expected_rental_yield": +8,
-        "project_exit_liquidity": +7,
-        "delivery_history": -8,
-        "financial_strength": -4,
-        "project_completion_rate": -3,
+        "expected_rental_yield": +13,
+        "project_exit_liquidity": +12,
+        "delivery_history": -13,
+        "financial_strength": -7,
+        "project_completion_rate": -5,
     },
 }
 
@@ -212,63 +218,63 @@ PROJECT_TIER1_RISK_SHIFTS = {
 
 PROJECT_TIER2_EXPERIENCE_SHIFTS = {
     "first_time": {
-        "delivery_history": +5,
-        "project_completion_rate": +3,
+        "delivery_history": +8,
+        "project_completion_rate": +5,
         "litigation_history": +2,
-        "expected_rental_yield": -6,
-        "project_exit_liquidity": -4,
+        "expected_rental_yield": -9,
+        "project_exit_liquidity": -6,
     },
     "experienced": {
-        "expected_rental_yield": +6,
-        "project_exit_liquidity": +4,
-        "delivery_history": -6,
-        "project_completion_rate": -4,
+        "expected_rental_yield": +9,
+        "project_exit_liquidity": +6,
+        "delivery_history": -9,
+        "project_completion_rate": -6,
     },
 }
 
 PROJECT_TIER2_PRESTIGE_SHIFTS = {
     "high": {
-        "construction_quality": +7,
-        "delivery_history": +3,
-        "expected_rental_yield": -6,
-        "project_exit_liquidity": -4,
+        "construction_quality": +11,
+        "delivery_history": +4,
+        "expected_rental_yield": -9,
+        "project_exit_liquidity": -6,
     },
     "low": {
-        "expected_rental_yield": +6,
-        "project_exit_liquidity": +4,
-        "delivery_history": -6,
-        "public_infrastructure_proximity": -4,
+        "expected_rental_yield": +9,
+        "project_exit_liquidity": +6,
+        "delivery_history": -9,
+        "public_infrastructure_proximity": -6,
     },
     "medium": {},
 }
 
 PROJECT_TIER2_PROXIMITY_SHIFTS = {
     "airport_cbd_leisure": {
-        "public_infrastructure_proximity": +7,
-        "project_exit_liquidity": +3,
-        "expected_rental_yield": -6,
-        "delivery_history": -4,
+        "public_infrastructure_proximity": +11,
+        "project_exit_liquidity": +4,
+        "expected_rental_yield": -9,
+        "delivery_history": -6,
     },
     "schools_hospitals": {
-        "public_infrastructure_proximity": +8,
-        "construction_quality": +2,
-        "expected_rental_yield": -6,
-        "project_exit_liquidity": -4,
+        "public_infrastructure_proximity": +12,
+        "construction_quality": +3,
+        "expected_rental_yield": -9,
+        "project_exit_liquidity": -6,
     },
 }
 
 PROJECT_TIER2_FAMILY_SHIFTS = {
     "single_couple": {
-        "project_exit_liquidity": +6,
-        "expected_rental_yield": +4,
-        "delivery_history": -5,
-        "financial_strength": -5,
+        "project_exit_liquidity": +9,
+        "expected_rental_yield": +6,
+        "delivery_history": -8,
+        "financial_strength": -7,
     },
     "family": {
-        "public_infrastructure_proximity": +6,
-        "construction_quality": +4,
-        "project_exit_liquidity": -6,
-        "expected_rental_yield": -4,
+        "public_infrastructure_proximity": +9,
+        "construction_quality": +6,
+        "project_exit_liquidity": -9,
+        "expected_rental_yield": -6,
     },
 }
 
@@ -278,6 +284,8 @@ PROJECT_TIER2_FAMILY_SHIFTS = {
 
 WEIGHT_FLOOR = 5.0
 WEIGHT_CAP = 35.0
+TIER_1_MAX = 25
+TIER_2_MAX = 15
 
 # =========================================================
 # SHIFT FUNCTION (source-grouped)
@@ -301,6 +309,7 @@ def apply_shifts_with_sources(
             ):
                 if raw <= 0:
                     continue
+                max_impact = TIER_1_MAX if tier_label == "Tier 1" else TIER_2_MAX
                 current = weights.get(det, 0.0)
                 adjusted = raw * (1 - current / 100)
                 new_val = min(
@@ -310,6 +319,7 @@ def apply_shifts_with_sources(
                 log.append({
                     "source": source_label,
                     "tier": tier_label,
+                    "max_impact": max_impact,
                     "determinant": det,
                     "raw_shift": raw,
                     "adjusted_shift": round(adjusted, 2),
@@ -323,6 +333,7 @@ def apply_shifts_with_sources(
             ):
                 if raw >= 0:
                     continue
+                max_impact = TIER_1_MAX if tier_label == "Tier 1" else TIER_2_MAX
                 current = weights.get(det, 0.0)
                 adjusted = raw * (1 - current / 100)
                 new_val = min(
@@ -332,6 +343,7 @@ def apply_shifts_with_sources(
                 log.append({
                     "source": source_label,
                     "tier": tier_label,
+                    "max_impact": max_impact,
                     "determinant": det,
                     "raw_shift": raw,
                     "adjusted_shift": round(adjusted, 2),
@@ -345,6 +357,8 @@ def apply_shifts_with_sources(
         k: round((v / total) * 100, 2)
         for k, v in weights.items()
     }
+    for entry in log:
+        entry["final_weight"] = normalized.get(entry["determinant"], 0)
     return weights, normalized, log
 
 
@@ -431,6 +445,13 @@ def compute_project_weights(answers):
 # PROJECT RANKING ENGINE
 # =========================================================
 
+def _project_scoring_values(scores):
+    oriented = dict(scores)
+    if "litigation_history" in oriented:
+        oriented["litigation_history"] = 10 - float(oriented["litigation_history"])
+    return oriented
+
+
 def rank_projects(
     surviving_countries,
     answers,
@@ -443,6 +464,8 @@ def rank_projects(
     ranked = []
 
     eliminated = []
+
+    surviving = []
 
     # =====================================================
     # HARD FILTERS
@@ -521,28 +544,26 @@ def rank_projects(
 
             continue
 
-        # =================================================
-        # SCORING
-        # =================================================
+        surviving.append((project_name, project_data))
 
-        total_score = 0
+    peer_scores = [
+        _project_scoring_values(project_data["scores"])
+        for _, project_data in surviving
+    ]
 
-        breakdown = {}
+    for project_name, project_data in surviving:
 
-        for determinant, weight in normalized_weights.items():
-
-            raw_score = (
-                project_data["scores"][determinant]
-            )
-
-            contribution = round(
-                raw_score * (weight / 10),
-                2,
-            )
-
-            breakdown[determinant] = contribution
-
-            total_score += contribution
+        scoring_values = _project_scoring_values(project_data["scores"])
+        standardized = standardize_determinants(
+            scoring_values,
+            peer_scores,
+            normalized_weights.keys(),
+            inverse_vars=PROJECT_INVERSE_VARS,
+        )
+        total_score, breakdown = weighted_score(
+            standardized,
+            normalized_weights,
+        )
 
         ranked.append({
 

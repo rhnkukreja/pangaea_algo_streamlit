@@ -45,14 +45,14 @@ PROJECT_TIER1_USAGE_SHIFTS = {
 }
 
 PROJECT_TIER1_HOLDING_SHIFTS = {
-    "short": {
+    "short_term": {
         "project_completion_rate": 13,
         "project_exit_liquidity": 12,
         "expected_rental_yield": -13,
         "delivery_history": -7,
         "financial_strength": -5,
     },
-    "medium": {
+    "medium_term": {
         "expected_rental_yield": 10,
         "project_exit_liquidity": 8,
         "project_completion_rate": 7,
@@ -60,7 +60,7 @@ PROJECT_TIER1_HOLDING_SHIFTS = {
         "financial_strength": -8,
         "public_infrastructure_proximity": -5,
     },
-    "long": {
+    "long_term": {
         "expected_rental_yield": 13,
         "construction_quality": 12,
         "project_exit_liquidity": -13,
@@ -77,7 +77,7 @@ PROJECT_TIER1_LIQUIDITY_SHIFTS = {
         "financial_strength": -7,
         "delivery_history": -5,
     },
-    "long_lock_in": {
+    "long_lockin": {
         "expected_rental_yield": 13,
         "financial_strength": 12,
         "project_exit_liquidity": -17,

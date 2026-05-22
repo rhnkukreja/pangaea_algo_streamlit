@@ -10,320 +10,320 @@ CITIES = {
         "country": "Greece",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 4.5,
-            "employment_growth": 4.67,
-            "price_appreciation_5y": 7.86,
-            "liquidity_indicator": 4,
-            "tourism_strength": 6,
-            "rental_demand_index": 8,
+            "net_migration_rate": 0.62,        # (-0.10+0.5)/6.5*10
+            "employment_growth": 4.63,          # (2.80-0.9)/4.1*10
+            "price_appreciation_5y": 6.18,      # (61-14)/76*10
+            "liquidity_indicator": 1.76,         # (8+4.2)/69.2*10
+            "tourism_strength": 6.64,            # 16.80/25.3*10
+            "rental_demand_index": 10.0,         # (93.70-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 7,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 2.92,
+            "infrastructure_pipeline": 9.60,    # direct
+            "supply_pipeline": 8.90,             # inverted 3.32%: raw=1.10→10-1.10
+            "quality_of_life_index": 3.91,       # (129.20-93.93)/90.17*10
         },
     },
     "Piraeus": {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 3.5,
-            "employment_growth": 4.17,
-            "price_appreciation_5y": 7.86,
-            "liquidity_indicator": 4,
-            "tourism_strength": 6,
-            "rental_demand_index": 8,
+            "net_migration_rate": 0.0,           # (-0.50+0.5)/6.5*10
+            "employment_growth": 3.41,           # (2.30-0.9)/4.1*10
+            "price_appreciation_5y": 5.0,        # (52-14)/76*10
+            "liquidity_indicator": 1.33,          # (5+4.2)/69.2*10
+            "tourism_strength": 10.0,             # 25.30/25.3*10
+            "rental_demand_index": 8.19,          # (86.70-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 7,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 2.92,
+            "infrastructure_pipeline": 6.0,      # direct
+            "supply_pipeline": 7.08,              # inverted 6.31%: raw=2.92→10-2.92
+            "quality_of_life_index": 3.91,        # (129.20-93.93)/90.17*10
         },
     },
     "Crete": {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.0,
-            "employment_growth": 3.67,
-            "price_appreciation_5y": 6.86,
-            "liquidity_indicator": 2,
-            "tourism_strength": 8,
-            "rental_demand_index": 8,
+            "net_migration_rate": 1.23,           # (0.30+0.5)/6.5*10
+            "employment_growth": 3.41,            # (2.30-0.9)/4.1*10
+            "price_appreciation_5y": 4.87,        # (51-14)/76*10
+            "liquidity_indicator": 1.47,           # (6+4.2)/69.2*10
+            "tourism_strength": 2.21,              # 5.60/25.3*10
+            "rental_demand_index": 6.80,           # (81.30-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 6,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 2.92,
+            "infrastructure_pipeline": 10.0,      # direct
+            "supply_pipeline": 9.54,               # inverted 2.26%: raw=0.46→10-0.46
+            "quality_of_life_index": 3.91,         # (129.20-93.93)/90.17*10
         },
     },
     "Mykonos": {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 3.0,
-            "employment_growth": 5.0,
-            "price_appreciation_5y": 8.57,
-            "liquidity_indicator": 4,
-            "tourism_strength": 10,
-            "rental_demand_index": 10,
+            "net_migration_rate": 3.08,            # (1.50+0.5)/6.5*10
+            "employment_growth": 7.56,             # (4.00-0.9)/4.1*10
+            "price_appreciation_5y": 7.37,         # (70-14)/76*10
+            "liquidity_indicator": 1.76,            # (8+4.2)/69.2*10
+            "tourism_strength": 6.80,               # 17.20/25.3*10
+            "rental_demand_index": 4.83,            # (73.70-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 3,
-            "supply_pipeline": 2,
-            "quality_of_life_index": 2.92,
+            "infrastructure_pipeline": 6.60,       # direct
+            "supply_pipeline": 7.62,                # inverted 5.42%: raw=2.38→10-2.38
+            "quality_of_life_index": 3.91,          # (129.20-93.93)/90.17*10
         },
     },
     "Thessaloniki": {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 1.25,
-            "employment_growth": 3.0,
-            "price_appreciation_5y": 7.14,
-            "liquidity_indicator": 4,
-            "tourism_strength": 6,
-            "rental_demand_index": 6,
+            "net_migration_rate": 1.38,             # (0.40+0.5)/6.5*10
+            "employment_growth": 2.68,              # (2.00-0.9)/4.1*10
+            "price_appreciation_5y": 9.47,          # (86-14)/76*10
+            "liquidity_indicator": 2.05,             # (10+4.2)/69.2*10
+            "tourism_strength": 3.48,                # 8.80/25.3*10
+            "rental_demand_index": 7.75,             # (85.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 8,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 3.22,
+            "infrastructure_pipeline": 10.0,        # direct
+            "supply_pipeline": 8.50,                 # inverted 3.98%: raw=1.50→10-1.50
+            "quality_of_life_index": 4.29,           # (132.60-93.93)/90.17*10
         },
     },
     "Lisbon": {
         "country": "Portugal",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 3.25,
-            "employment_growth": 5.83,
-            "price_appreciation_5y": 6.43,
-            "liquidity_indicator": 6,
-            "tourism_strength": 8,
-            "rental_demand_index": 8,
+            "net_migration_rate": 1.49,              # (0.47+0.5)/6.5*10
+            "employment_growth": 3.90,               # (2.50-0.9)/4.1*10
+            "price_appreciation_5y": 6.71,           # (65-14)/76*10
+            "liquidity_indicator": 0.46,              # (-1.00+4.2)/69.2*10
+            "tourism_strength": 2.33,                 # 5.90/25.3*10
+            "rental_demand_index": 7.75,              # (85.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 8,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 5.36,
+            "infrastructure_pipeline": 10.0,         # direct
+            "supply_pipeline": 9.70,                  # inverted 2.00%: raw=0.30→10-0.30
+            "quality_of_life_index": 6.99,            # (157.00-93.93)/90.17*10
         },
     },
     "Cascais": {
         "country": "Portugal",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 4.0,
-            "employment_growth": 6.33,
-            "price_appreciation_5y": 7.14,
-            "liquidity_indicator": 8,
-            "tourism_strength": 8,
-            "rental_demand_index": 10,
+            "net_migration_rate": 2.46,               # (1.10+0.5)/6.5*10
+            "employment_growth": 3.41,                # (2.30-0.9)/4.1*10
+            "price_appreciation_5y": 5.39,            # (55-14)/76*10
+            "liquidity_indicator": 0.39,               # (-1.50+4.2)/69.2*10
+            "tourism_strength": 2.37,                  # 6.00/25.3*10
+            "rental_demand_index": 5.17,               # (75.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 7,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 5.36,
+            "infrastructure_pipeline": 4.0,           # direct
+            "supply_pipeline": 10.0,                   # inverted 1.50%: raw=0→10-0
+            "quality_of_life_index": 7.66,             # (163.00-93.93)/90.17*10
         },
     },
     "Algarve": {
         "country": "Portugal",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 4.5,
-            "employment_growth": 5.33,
-            "price_appreciation_5y": 7.86,
-            "liquidity_indicator": 8,
-            "tourism_strength": 10,
-            "rental_demand_index": 10,
+            "net_migration_rate": 2.77,                # (1.30+0.5)/6.5*10
+            "employment_growth": 4.63,                 # (2.80-0.9)/4.1*10
+            "price_appreciation_5y": 7.37,             # (70-14)/76*10
+            "liquidity_indicator": 0.68,                # (0.50+4.2)/69.2*10
+            "tourism_strength": 0.24,                   # 0.60/25.3*10
+            "rental_demand_index": 3.36,                # (68.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 7,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 5.36,
+            "infrastructure_pipeline": 7.0,            # direct
+            "supply_pipeline": 9.09,                    # inverted 3.00%: raw=0.91→10-0.91
+            "quality_of_life_index": 8.10,              # (167.00-93.93)/90.17*10
         },
     },
     "Braga": {
         "country": "Portugal",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 2.75,
-            "employment_growth": 5.0,
-            "price_appreciation_5y": 5.71,
-            "liquidity_indicator": 6,
-            "tourism_strength": 6,
-            "rental_demand_index": 8,
+            "net_migration_rate": 3.26,                 # (1.62+0.5)/6.5*10
+            "employment_growth": 3.90,                  # (2.50-0.9)/4.1*10
+            "price_appreciation_5y": 6.32,              # (62-14)/76*10
+            "liquidity_indicator": 0.97,                 # (2.50+4.2)/69.2*10
+            "tourism_strength": 3.28,                    # 8.30/25.3*10
+            "rental_demand_index": 3.88,                 # (70.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 6,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 5.36,
+            "infrastructure_pipeline": 6.0,             # direct
+            "supply_pipeline": 6.97,                     # inverted 6.50%: raw=3.03→10-3.03
+            "quality_of_life_index": 9.99,               # (184.00-93.93)/90.17*10
         },
     },
     "Porto": {
         "country": "Portugal",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.25,
-            "employment_growth": 4.33,
-            "price_appreciation_5y": 6.0,
-            "liquidity_indicator": 6,
-            "tourism_strength": 8,
-            "rental_demand_index": 6,
+            "net_migration_rate": 1.35,                  # (0.38+0.5)/6.5*10
+            "employment_growth": 3.17,                   # (2.20-0.9)/4.1*10
+            "price_appreciation_5y": 6.32,               # (62-14)/76*10
+            "liquidity_indicator": 0.82,                  # (1.50+4.2)/69.2*10
+            "tourism_strength": 3.28,                     # 8.30/25.3*10
+            "rental_demand_index": 5.94,                  # (78.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 8,
-            "supply_pipeline": 4,
-            "quality_of_life_index": 7.72,
+            "infrastructure_pipeline": 10.0,             # direct
+            "supply_pipeline": 9.39,                      # inverted 2.50%: raw=0.61→10-0.61
+            "quality_of_life_index": 9.21,                # (177.00-93.93)/90.17*10
         },
     },
     "Phuket": {
         "country": "Thailand",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 3.5,
-            "employment_growth": 6.67,
-            "price_appreciation_5y": 4.29,
-            "liquidity_indicator": 8,
-            "tourism_strength": 10,
-            "rental_demand_index": 0,
+            "net_migration_rate": 2.80,                   # (1.32+0.5)/6.5*10
+            "employment_growth": 4.63,                    # (2.80-0.9)/4.1*10
+            "price_appreciation_5y": 3.68,                # (42-14)/76*10
+            "liquidity_indicator": 1.11,                   # (3.50+4.2)/69.2*10
+            "tourism_strength": 7.27,                      # 18.40/25.3*10
+            "rental_demand_index": 6.98,                   # (82.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 7,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 0.68,
+            "infrastructure_pipeline": 9.20,              # direct
+            "supply_pipeline": 6.06,                       # inverted 8.00%: raw=3.94→10-3.94
+            "quality_of_life_index": 1.48,                 # regional avg 107.23
         },
     },
     "Bangkok": {
         "country": "Thailand",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 1.0,
-            "employment_growth": 3.33,
-            "price_appreciation_5y": 3.57,
-            "liquidity_indicator": 4,
-            "tourism_strength": 6,
-            "rental_demand_index": 0,
+            "net_migration_rate": 2.98,                    # (1.44+0.5)/6.5*10
+            "employment_growth": 1.71,                     # (1.60-0.9)/4.1*10
+            "price_appreciation_5y": 0.53,                 # (18-14)/76*10
+            "liquidity_indicator": 0.0,                     # (-4.20+4.2)/69.2*10
+            "tourism_strength": 4.98,                       # 12.60/25.3*10
+            "rental_demand_index": 4.91,                    # (74.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 9,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 0.68,
+            "infrastructure_pipeline": 10.0,               # direct
+            "supply_pipeline": 0.0,                         # inverted 18.00%: raw=10.0→10-10
+            "quality_of_life_index": 0.0,                   # (93.93-93.93)/90.17*10
         },
     },
     "Pattaya": {
         "country": "Thailand",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.75,
-            "employment_growth": 5.83,
-            "price_appreciation_5y": 4.0,
-            "liquidity_indicator": 8,
-            "tourism_strength": 10,
-            "rental_demand_index": 0,
+            "net_migration_rate": 2.46,                     # (1.10+0.5)/6.5*10
+            "employment_growth": 2.93,                      # (2.10-0.9)/4.1*10
+            "price_appreciation_5y": 1.05,                  # (22-14)/76*10
+            "liquidity_indicator": 0.20,                     # (-2.80+4.2)/69.2*10
+            "tourism_strength": 5.61,                        # 14.20/25.3*10
+            "rental_demand_index": 4.13,                     # (71.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 8,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 0.68,
+            "infrastructure_pipeline": 6.40,                # direct
+            "supply_pipeline": 1.82,                         # inverted 15.00%: raw=8.18→10-8.18
+            "quality_of_life_index": 0.40,                   # (97.50-93.93)/90.17*10
         },
     },
     "Chiang Mai": {
         "country": "Thailand",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 1.75,
-            "employment_growth": 4.17,
-            "price_appreciation_5y": 3.14,
-            "liquidity_indicator": 6,
-            "tourism_strength": 8,
-            "rental_demand_index": 0,
+            "net_migration_rate": 2.72,                      # (1.27+0.5)/6.5*10
+            "employment_growth": 0.73,                       # (1.20-0.9)/4.1*10
+            "price_appreciation_5y": 0.0,                    # (14-14)/76*10
+            "liquidity_indicator": 0.16,                      # (-3.10+4.2)/69.2*10
+            "tourism_strength": 4.27,                         # 10.80/25.3*10
+            "rental_demand_index": 3.36,                      # (68.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 6,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 0.68,
+            "infrastructure_pipeline": 7.20,                 # direct
+            "supply_pipeline": 6.67,                          # inverted 7.00%: raw=3.33→10-3.33
+            "quality_of_life_index": 3.45,                    # (125.00-93.93)/90.17*10
         },
     },
     "Hua Hin": {
         "country": "Thailand",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.25,
-            "employment_growth": 4.67,
-            "price_appreciation_5y": 3.71,
-            "liquidity_indicator": 6,
-            "tourism_strength": 8,
-            "rental_demand_index": 0,
+            "net_migration_rate": 1.85,                       # (0.70+0.5)/6.5*10
+            "employment_growth": 0.0,                         # (0.90-0.9)/4.1*10
+            "price_appreciation_5y": 0.66,                    # (19-14)/76*10
+            "liquidity_indicator": 0.87,                       # (1.80+4.2)/69.2*10
+            "tourism_strength": 3.36,                          # 8.50/25.3*10
+            "rental_demand_index": 2.07,                       # (63.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 6,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 0.68,
+            "infrastructure_pipeline": 4.80,                  # direct
+            "supply_pipeline": 7.88,                           # inverted 5.00%: raw=2.12→10-2.12
+            "quality_of_life_index": 2.06,                     # (112.50-93.93)/90.17*10
         },
     },
     "Dubai": {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 9.0,
-            "employment_growth": 9.17,
-            "price_appreciation_5y": 10.0,
-            "liquidity_indicator": 10,
-            "tourism_strength": 8,
-            "rental_demand_index": 10,
+            "net_migration_rate": 7.54,                        # (4.40+0.5)/6.5*10
+            "employment_growth": 7.56,                         # (4.00-0.9)/4.1*10
+            "price_appreciation_5y": 8.68,                     # (80-14)/76*10
+            "liquidity_indicator": 4.36,                        # (26+4.2)/69.2*10
+            "tourism_strength": 4.35,                           # 11.00/25.3*10
+            "rental_demand_index": 5.94,                        # (78.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 10,
-            "supply_pipeline": 8,
-            "quality_of_life_index": 7.55,
+            "infrastructure_pipeline": 10.0,                   # direct
+            "supply_pipeline": 2.73,                            # inverted 13.50%: raw=7.27→10-7.27
+            "quality_of_life_index": 10.0,                      # (184.10-93.93)/90.17*10
         },
     },
     "Abu Dhabi": {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 6.0,
-            "employment_growth": 7.0,
-            "price_appreciation_5y": 5.0,
-            "liquidity_indicator": 6,
-            "tourism_strength": 6,
-            "rental_demand_index": 8,
+            "net_migration_rate": 6.46,                         # (3.70+0.5)/6.5*10
+            "employment_growth": 8.78,                          # (4.50-0.9)/4.1*10
+            "price_appreciation_5y": 6.45,                      # (63-14)/76*10
+            "liquidity_indicator": 6.10,                         # (38+4.2)/69.2*10
+            "tourism_strength": 5.14,                            # 13.00/25.3*10
+            "rental_demand_index": 4.39,                         # (72.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 9,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 7.55,
+            "infrastructure_pipeline": 9.0,                     # direct
+            "supply_pipeline": 5.45,                             # inverted 9.00%: raw=4.55→10-4.55
+            "quality_of_life_index": 8.50,                       # (170.60-93.93)/90.17*10
         },
     },
     "Sharjah": {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 5.0,
-            "employment_growth": 6.33,
-            "price_appreciation_5y": 4.29,
-            "liquidity_indicator": 6,
-            "tourism_strength": 4,
-            "rental_demand_index": 6,
+            "net_migration_rate": 4.31,                          # (2.30+0.5)/6.5*10
+            "employment_growth": 3.90,                           # (2.50-0.9)/4.1*10
+            "price_appreciation_5y": 2.43,                       # (32.5-14)/76*10
+            "liquidity_indicator": 6.10,                          # (38+4.2)/69.2*10
+            "tourism_strength": 4.35,                             # 11.00/25.3*10
+            "rental_demand_index": 2.58,                          # (65.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 7,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 7.55,
+            "infrastructure_pipeline": 7.0,                      # direct
+            "supply_pipeline": 6.67,                              # inverted 7.00%: raw=3.33→10-3.33
+            "quality_of_life_index": 4.89,                        # (138.00-93.93)/90.17*10
         },
     },
     "Ras Al Khaimah": {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 5.5,
-            "employment_growth": 6.67,
-            "price_appreciation_5y": 5.43,
-            "liquidity_indicator": 6,
-            "tourism_strength": 6,
-            "rental_demand_index": 8,
+            "net_migration_rate": 10.0,                           # (6.00+0.5)/6.5*10 = 10.0 (max)
+            "employment_growth": 10.0,                            # (5.00-0.9)/4.1*10 = 10.0 (max)
+            "price_appreciation_5y": 10.0,                        # (90-14)/76*10 = 10.0 (max)
+            "liquidity_indicator": 10.0,                           # (65+4.2)/69.2*10 = 10.0 (max)
+            "tourism_strength": 2.77,                              # 7.00/25.3*10
+            "rental_demand_index": 3.88,                           # (70.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 7,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 7.55,
+            "infrastructure_pipeline": 9.0,                       # direct
+            "supply_pipeline": 0.30,                               # inverted 17.50%: raw=9.70→10-9.70
+            "quality_of_life_index": 7.80,                         # regional avg 164.23
         },
     },
     "Ajman": {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 4.5,
-            "employment_growth": 5.83,
-            "price_appreciation_5y": 4.0,
-            "liquidity_indicator": 6,
-            "tourism_strength": 4,
-            "rental_demand_index": 6,
+            "net_migration_rate": 6.15,                            # (3.50+0.5)/6.5*10
+            "employment_growth": 3.90,                             # (2.50-0.9)/4.1*10
+            "price_appreciation_5y": 1.78,                         # (27.5-14)/76*10
+            "liquidity_indicator": 4.65,                            # (28+4.2)/69.2*10
+            "tourism_strength": 0.0,                                # no data → 0
+            "rental_demand_index": 0.0,                             # (55.00-55)/38.7*10
             "rental_yield": 0,
-            "infrastructure_pipeline": 6,
-            "supply_pipeline": 6,
-            "quality_of_life_index": 7.55,
+            "infrastructure_pipeline": 5.0,                        # direct
+            "supply_pipeline": 7.27,                                # inverted 6.00%: raw=2.73→10-2.73
+            "quality_of_life_index": 7.80,                          # regional avg 164.23
         },
     },
 }

@@ -15,18 +15,20 @@ COUNTRIES = {
         "foreign_freehold_allowed": True,
         "min_program_investment_usd": 250000,
         "scores": {
-            "political_stability_index": 5.68,
-            "corruption_perception_index": 5.0,
-            "currency_volatility": 5.2,
-            "interest_rate_direction": 6.88,
-            "foreign_buyer_market_share": 4.25,
+            "political_stability_index": 5.20,   # trend=0.10-0.11=-0.01 → adj=0.10 → (0.10+2.5)/5*10
+            "corruption_perception_index": 5.0,   # 50/10
+            "currency_volatility": 5.55,          # (15-6.67)/15*10
+            "interest_rate_direction": 5.0,       # (2-0.00)/4*10
+            "foreign_buyer_market_share": 2.30,   # 17.0/74*10
             "property_taxation_for_foreigners": 4.0,
         },
         "raw_values": {
-            "political_stability_index_raw": 0.34,
+            "political_stability_index_raw": 0.10,
+            "political_stability_2022": 0.24,
+            "political_stability_2021": 0.11,
             "corruption_perception_index_raw": 50,
-            "currency_volatility_pct": 7.2,
-            "interest_rate_direction_pp": -0.75,
+            "currency_volatility_pct": 6.67,
+            "interest_rate_direction_pp": 0.00,
             "foreign_buyer_market_share_pct": 17.0,
             "tax_summary": "ENFIA 0.1-1.2%, rental tax 15-45%, transaction 3%, exit 15%",
         },
@@ -39,19 +41,21 @@ COUNTRIES = {
         "foreign_freehold_allowed": True,
         "min_program_investment_usd": 250000,
         "scores": {
-            "political_stability_index": 6.22,
-            "corruption_perception_index": 5.6,
-            "currency_volatility": 5.2,
-            "interest_rate_direction": 6.88,
-            "foreign_buyer_market_share": 5.0,
+            "political_stability_index": 5.80,   # trend=0.50-0.80=-0.30 → adj=0.40 → (0.40+2.5)/5*10
+            "corruption_perception_index": 5.6,   # 56/10
+            "currency_volatility": 5.55,          # (15-6.67)/15*10
+            "interest_rate_direction": 5.0,       # (2-0.00)/4*10
+            "foreign_buyer_market_share": 3.73,   # 27.6/74*10
             "property_taxation_for_foreigners": 5.0,
         },
         "raw_values": {
-            "political_stability_index_raw": 0.61,
+            "political_stability_index_raw": 0.50,
+            "political_stability_2022": 0.71,
+            "political_stability_2021": 0.80,
             "corruption_perception_index_raw": 56,
-            "currency_volatility_pct": 7.2,
-            "interest_rate_direction_pp": -0.75,
-            "foreign_buyer_market_share_pct": 20.0,
+            "currency_volatility_pct": 6.67,
+            "interest_rate_direction_pp": 0.00,
+            "foreign_buyer_market_share_pct": 27.6,
             "tax_summary": "Holding 0.3-0.8%, rental tax 28%, transaction 6-7.5%, exit 28%",
         },
     },
@@ -63,19 +67,21 @@ COUNTRIES = {
         "foreign_freehold_allowed": False,
         "min_program_investment_usd": 100000,
         "scores": {
-            "political_stability_index": 4.64,
-            "corruption_perception_index": 3.3,
-            "currency_volatility": 3.47,
-            "interest_rate_direction": 6.25,
-            "foreign_buyer_market_share": 2.25,
+            "political_stability_index": 3.40,   # trend=-0.70-(-0.39)=-0.31 → adj=-0.80 → (-0.80+2.5)/5*10
+            "corruption_perception_index": 3.3,   # 33/10
+            "currency_volatility": 4.60,          # (15-8.10)/15*10
+            "interest_rate_direction": 6.88,      # (2-(-0.75))/4*10
+            "foreign_buyer_market_share": 1.28,   # 9.5/74*10
             "property_taxation_for_foreigners": 6.0,
         },
         "raw_values": {
-            "political_stability_index_raw": -0.18,
+            "political_stability_index_raw": -0.70,
+            "political_stability_2022": -0.28,
+            "political_stability_2021": -0.39,
             "corruption_perception_index_raw": 33,
-            "currency_volatility_pct": 9.8,
-            "interest_rate_direction_pp": -0.5,
-            "foreign_buyer_market_share_pct": 9.0,
+            "currency_volatility_pct": 8.10,
+            "interest_rate_direction_pp": -0.75,
+            "foreign_buyer_market_share_pct": 9.5,
             "tax_summary": "Holding 0.02-0.3%, rental up to 35%, transaction 2-6%",
         },
     },
@@ -87,19 +93,21 @@ COUNTRIES = {
         "foreign_freehold_allowed": True,
         "min_program_investment_usd": 545000,
         "scores": {
-            "political_stability_index": 6.36,
-            "corruption_perception_index": 6.9,
-            "currency_volatility": 9.8,
-            "interest_rate_direction": 5.0,
-            "foreign_buyer_market_share": 10.0,
+            "political_stability_index": 6.80,   # trend=0.80-0.60=+0.20 → adj=0.90 → (0.90+2.5)/5*10
+            "corruption_perception_index": 6.9,   # 69/10
+            "currency_volatility": 10.0,          # (15-0.00)/15*10
+            "interest_rate_direction": 6.88,      # (2-(-0.75))/4*10
+            "foreign_buyer_market_share": 10.0,   # 74.0/74*10
             "property_taxation_for_foreigners": 10.0,
         },
         "raw_values": {
-            "political_stability_index_raw": 0.68,
+            "political_stability_index_raw": 0.80,
+            "political_stability_2022": 0.74,
+            "political_stability_2021": 0.60,
             "corruption_perception_index_raw": 69,
-            "currency_volatility_pct": 0.3,
-            "interest_rate_direction_pp": 0.0,
-            "foreign_buyer_market_share_pct": 40.0,
+            "currency_volatility_pct": 0.00,
+            "interest_rate_direction_pp": -0.75,
+            "foreign_buyer_market_share_pct": 74.0,
             "tax_summary": "0% holding, 0% rental, 4% transfer fee, 0% exit",
         },
     },

@@ -2,6 +2,8 @@
 
 WEIGHT_FLOOR = 5.0
 WEIGHT_CAP = 35.0
+TIER_1_MAX = 25
+TIER_2_MAX = 15
 
 COUNTRY_INVERSE_VARS = {
     "currency_volatility",
@@ -35,20 +37,19 @@ COUNTRY_TIER1_SHIFTS = {
         "political_stability_index": -17,
         "foreign_buyer_market_share": -8,
     },
-    "capital_preservation": [
-        ("political_stability_index", 9),
-        ("currency_volatility", 8),
-        ("foreign_buyer_market_share", 8),
-        ("interest_rate_direction", -17),
-        ("foreign_buyer_market_share", -8),
-    ],
-    "investment_diversification": [
-        ("political_stability_index", 9),
-        ("currency_volatility", 8),
-        ("foreign_buyer_market_share", 8),
-        ("interest_rate_direction", -17),
-        ("foreign_buyer_market_share", -8),
-    ],
+    "capital_preservation": {
+        "political_stability_index": 13,
+        "currency_volatility": 12,
+        "foreign_buyer_market_share": -17,
+        "interest_rate_direction": -8,
+    },
+    "investment_diversification": {
+        "political_stability_index": 9,
+        "currency_volatility": 8,
+        "foreign_buyer_market_share": 8,
+        "interest_rate_direction": -17,
+        "corruption_perception_index": -8,
+    },
     "residency_citizenship": {
         "political_stability_index": 17,
         "corruption_perception_index": 8,

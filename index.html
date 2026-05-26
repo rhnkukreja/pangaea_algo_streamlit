@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oscar — Property Onboarding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f9fafb; color: #111827; min-height: 100vh; }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 56px;
+      background: #32373F; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 24px; z-index: 100;
+    }
+    .navbar-brand { display: flex; align-items: center; gap: 10px; }
+    .navbar-logo {
+      width: 32px; height: 32px; background: rgba(255,255,255,0.15);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-weight: 700; font-size: 14px; color: white;
+    }
+    .navbar-name { font-size: 14px; font-weight: 600; color: white; letter-spacing: 0.02em; }
+    .navbar-title { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    /* LAYOUT */
+    .layout { display: flex; margin-top: 56px; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px; flex-shrink: 0; position: fixed; top: 56px; left: 0; bottom: 0;
+      background: white; border-right: 1px solid #e5e7eb; overflow-y: auto; padding: 24px 16px;
+    }
+    .sidebar-label {
+      font-size: 11px; font-weight: 600; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;
+    }
+    .sidebar-steps { list-style: none; }
+    .sidebar-step { display: flex; gap: 12px; }
+    .sidebar-step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .step-circle {
+      width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 600; border: 2px solid #d1d5db;
+      color: #9ca3af; background: white; flex-shrink: 0; transition: all 0.2s;
+    }
+    .sidebar-step.completed .step-circle { background: #22c55e; border-color: #22c55e; color: white; }
+    .sidebar-step.active .step-circle { background: #32373F; border-color: #32373F; color: white; }
+    .step-line { width: 2px; flex: 1; min-height: 14px; background: #e5e7eb; margin: 3px 0; transition: background 0.2s; }
+    .sidebar-step.completed .step-line { background: #22c55e; }
+    .step-text { padding: 2px 0 18px; }
+    .step-name { font-size: 13px; font-weight: 500; color: #6b7280; line-height: 1.3; transition: color 0.2s; }
+    .sidebar-step.active .step-name { color: #111827; font-weight: 600; }
+    .sidebar-step.completed .step-name { color: #16a34a; }
+    .step-desc { font-size: 11px; color: #9ca3af; margin-top: 2px; line-height: 1.4; }
+    .sidebar-step.active .step-desc { color: #6b7280; }
+
+    /* MAIN */
+    .main-content { margin-left: 260px; flex: 1; padding: 32px 32px 80px; max-width: calc(100% - 260px); }
+    .page-title { font-size: 22px; font-weight: 700; color: #32373F; }
+    .page-subtitle { font-size: 13px; color: #6b7280; margin-top: 4px; margin-bottom: 24px; }
+
+    /* CARDS */
+    .section-card {
+      background: white; border-radius: 12px; border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 24px; margin-bottom: 20px;
+    }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+    .card-title { font-size: 18px; font-weight: 700; color: #32373F; line-height: 1.2; }
+    .card-subtitle { font-size: 13px; color: #6b7280; margin-top: 4px; }
+    .card-badge { font-size: 12px; font-weight: 500; color: #16a34a; flex-shrink: 0; margin-left: 12px; margin-top: 4px; }
+
+    /* FORM */
+    .field-label { display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 6px; }
+    .field-group { margin-bottom: 20px; }
+    select.form-select, input.form-input {
+      width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 9px 12px;
+      font-size: 13px; font-family: inherit; color: #111827; background: white; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s; appearance: none; -webkit-appearance: none;
+    }
+    select.form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px;
+    }
+    select.form-select:focus, input.form-input:focus {
+      border-color: #32373F; box-shadow: 0 0 0 3px rgba(50,55,63,0.1);
+    }
+
+    /* TOGGLE GRID */
+    .toggle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: white;
+    }
+    .toggle-label { font-size: 13px; font-weight: 500; color: #374151; }
+    .toggle {
+      width: 44px; height: 24px; border-radius: 12px; background: #d1d5db;
+      position: relative; cursor: pointer; border: none; flex-shrink: 0;
+      transition: background 0.2s; outline: none;
+    }
+    .toggle.on { background: #22c55e; }
+    .toggle-knob {
+      width: 20px; height: 20px; border-radius: 50%; background: white;
+      position: absolute; top: 2px; left: 2px; transition: transform 0.2s;
+      pointer-events: none; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle.on .toggle-knob { transform: translateX(20px); }
+
+    /* NAME TAGS */
+    .name-tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; min-height: 10px; }
+    .name-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 6px;
+      padding: 3px 8px; font-size: 13px; color: #374151;
+    }
+    .name-tag-x {
+      background: none; border: none; cursor: pointer; color: #9ca3af;
+      font-size: 15px; line-height: 1; padding: 0 1px; font-family: inherit;
+    }
+    .name-tag-x:hover { color: #374151; }
+
+    /* TABLE */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table th {
+      text-align: left; padding: 8px 12px 8px 0; font-size: 12px; font-weight: 600;
+      color: #6b7280; border-bottom: 1px solid #e5e7eb; background: #f9fafb;
+    }
+    .data-table th:first-child { padding-left: 8px; border-radius: 6px 0 0 0; }
+    .data-table td { padding: 8px 12px 8px 0; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+    .data-table td:first-child { padding-left: 8px; }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .cell-input {
+      width: 100%; border: 1px solid transparent; border-radius: 6px;
+      padding: 5px 8px; font-size: 13px; font-family: inherit;
+      background: transparent; color: #111827; outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .cell-input:hover { border-color: #d1d5db; background: #f9fafb; }
+    .cell-input:focus { border-color: #32373F; background: white; }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px; border-radius: 8px;
+      font-size: 13px; font-weight: 500; padding: 8px 16px; cursor: pointer;
+      border: none; font-family: inherit; transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-dark { background: #32373F; color: white; }
+    .btn-green { background: #16a34a; color: white; }
+    .btn-outline { background: white; color: #374151; border: 1px solid #d1d5db; }
+    .btn-sm { font-size: 12px; padding: 6px 14px; }
+    .btn-text { background: none; border: none; color: #9ca3af; font-size: 12px; cursor: pointer; font-family: inherit; }
+    .btn-text:hover { color: #374151; }
+
+    /* PROPOSAL */
+    .proposal-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 16px; }
+    .proposal-card { border: 1.5px dashed #d1d5db; border-radius: 10px; padding: 16px; text-align: center; }
+    .proposal-card-title { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 4px; }
+    .proposal-card-sub { font-size: 11px; color: #9ca3af; margin-bottom: 12px; }
+    .upload-badge {
+      display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500;
+      color: #16a34a; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 20px; padding: 3px 10px;
+    }
+
+    /* PROPOSAL FORMAT */
+    .format-options { display: flex; gap: 10px; flex-wrap: wrap; }
+    .format-opt {
+      display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+      border: 1.5px solid #e5e7eb; border-radius: 8px; cursor: pointer;
+      font-size: 13px; color: #374151; transition: border-color 0.15s; user-select: none;
+    }
+    .format-opt input[type=radio] { display: none; }
+    .format-opt.sel { border-color: #32373F; background: #f8f9fa; }
+    .format-dot {
+      width: 16px; height: 16px; border-radius: 50%; border: 2px solid #d1d5db;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative;
+    }
+    .format-opt.sel .format-dot { border-color: #32373F; }
+    .format-opt.sel .format-dot::after {
+      content: ''; width: 8px; height: 8px; border-radius: 50%; background: #32373F;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    }
+
+    /* CUSTOM PROPOSAL */
+    .custom-box { border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
+    .custom-box-title { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 4px; }
+    .custom-box-sub { font-size: 11px; color: #9ca3af; margin-bottom: 12px; }
+
+    /* ROOM PILLS */
+    .pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .room-pill {
+      display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 20px;
+      border: 1.5px solid #d1d5db; font-size: 13px; color: #374151;
+      cursor: pointer; user-select: none; transition: all 0.15s;
+    }
+    .room-pill.sel { background: #32373F; border-color: #32373F; color: white; }
+    .room-pill:hover:not(.sel) { border-color: #9ca3af; background: #f9fafb; }
+
+    /* UPLOAD BOX */
+    .upload-box {
+      border: 1.5px dashed #d1d5db; border-radius: 10px; padding: 24px; text-align: center;
+    }
+    .upload-box-title { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 4px; }
+    .upload-box-sub { font-size: 11px; color: #9ca3af; margin-bottom: 12px; }
+
+    /* TWO COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+
+    /* APPROVAL */
+    .approval-issue {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;
+      font-size: 13px; color: #dc2626; margin-bottom: 8px;
+    }
+
+    /* SECTION FOOTER */
+    .section-footer {
+      margin-top: 20px; padding-top: 16px; border-top: 1px solid #f3f4f6;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* FAB */
+    .fab {
+      position: fixed; right: 20px; bottom: 20px;
+      width: 44px; height: 44px; border-radius: 50%; background: #32373F; color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; cursor: pointer; border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 200; font-family: inherit;
+      transition: transform 0.15s;
+    }
+    .fab:hover { transform: scale(1.08); }
+
+    /* TOUR OVERLAY */
+    #tour-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9999; pointer-events: auto;
+    }
+    #tour-overlay.active { display: block; }
+
+    .tour-hl {
+      position: relative !important;
+      z-index: 10000 !important;
+      box-shadow: 0 0 0 4px #fff, 0 0 0 9999px rgba(0,0,0,0.55) !important;
+      border-radius: 8px !important;
+    }
+
+    #tour-tip {
+      display: none; position: fixed; z-index: 10001; width: 380px;
+      background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 24px; pointer-events: auto;
+    }
+    #tour-tip.show { display: block; }
+    .tip-progress { font-size: 12px; color: #9ca3af; margin-bottom: 12px; line-height: 1.5; }
+    .tip-title { font-size: 18px; font-weight: 700; color: #32373F; margin-bottom: 8px; }
+    .tip-desc { font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 0; }
+    .tip-edge {
+      display: none; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px;
+      padding: 12px; font-size: 13px; color: #92400e; margin-top: 12px;
+    }
+    .tip-edge.show { display: block; }
+    .tip-actions { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+    .tip-prev {
+      padding: 8px 16px; border: 1.5px solid #d1d5db; border-radius: 8px;
+      background: white; font-size: 13px; color: #374151; cursor: pointer; font-family: inherit;
+    }
+    .tip-prev:disabled { opacity: 0.4; cursor: not-allowed; }
+    .tip-skip {
+      flex: 1; text-align: center; font-size: 12px; color: #9ca3af; cursor: pointer;
+      background: none; border: none; text-decoration: underline; font-family: inherit;
+    }
+    .tip-next {
+      padding: 8px 20px; background: #32373F; color: white; border: none;
+      border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
+    }
+    .tip-next:hover { background: #1f2227; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; max-width: 100%; padding: 20px 16px 80px; }
+      .toggle-grid { grid-template-columns: 1fr; }
+      .proposal-grid { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-logo">O</div>
+      <span class="navbar-name">OSCAR BY HIGHGATE</span>
+    </div>
+    <span class="navbar-title">Property Onboarding</span>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-label">Progress</div>
+      <ul class="sidebar-steps" id="sidebar-steps"></ul>
+    </aside>
+
+    <main class="main-content">
+      <h1 class="page-title">Property Onboarding</h1>
+      <p class="page-subtitle">Configure your property for Oscar — 8 sections to complete</p>
+
+      <!-- SECTION 1 -->
+      <section class="section-card" id="page-section-1">
+        <div class="card-header">
+          <div>
+            <div class="card-title">1. Select Property</div>
+            <div class="card-subtitle">Property ID, integrations, and contact setup</div>
+          </div>
+        </div>
+
+        <div class="field-group" data-tour="select-property-dropdown">
+          <label class="field-label">Property</label>
+          <select class="form-select" id="property-select">
+            <option value="" disabled>Search by name or Highgate ID...</option>
+            <option value="78617">AC Hotel by Marriott Honolulu — 78617</option>
+            <option value="108212">AC Hotel San Juan Condado — 108212</option>
+            <option value="58097" selected>Ace Hotel New York — 58097</option>
+            <option value="16894">Alohilani Resort — 16894</option>
+            <option value="8254">Blue Flamingo Resort — 8254</option>
+            <option value="5328">Brown Palace Hotel and Spa — 5328</option>
+            <option value="4367">Courtyard by Marriott Boston-Cambridge — 4367</option>
+          </select>
+        </div>
+
+        <div class="toggle-grid">
+          <div data-tour="flag-meeting-space" class="toggle-row">
+            <span class="toggle-label">Has meeting space</span>
+            <button type="button" class="toggle on" data-toggle aria-pressed="true">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+          <div data-tour="flag-atmos" class="toggle-row">
+            <span class="toggle-label">Atmos integration</span>
+            <button type="button" class="toggle" data-toggle aria-pressed="false">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+          <div data-tour="flag-delphi" class="toggle-row">
+            <span class="toggle-label">Delphi / NIHRM</span>
+            <button type="button" class="toggle on" data-toggle aria-pressed="true">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+          <div data-tour="flag-no-variations" class="toggle-row">
+            <span class="toggle-label">No other names</span>
+            <button type="button" class="toggle" data-toggle aria-pressed="false">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="field-group" data-tour="name-variations-input">
+          <label class="field-label">Other names or variations</label>
+          <div class="name-tags-wrap" id="name-tags">
+            <span class="name-tag" data-tag="MRTS">MRTS <button type="button" class="name-tag-x" aria-label="Remove MRTS">×</button></span>
+            <span class="name-tag" data-tag="Margaritaville">Margaritaville <button type="button" class="name-tag-x" aria-label="Remove Margaritaville">×</button></span>
+          </div>
+          <input type="text" id="name-input" class="form-input" placeholder="Add a variation and press Enter" />
+        </div>
+
+        <div class="field-group" data-tour="property-timezone">
+          <label class="field-label">Property timezone</label>
+          <select class="form-select">
+            <option value="">Select timezone...</option>
+            <option value="America/New_York" selected>Eastern Time (US)</option>
+            <option value="America/Chicago">Central Time (US)</option>
+            <option value="America/Denver">Mountain Time (US)</option>
+            <option value="America/Los_Angeles">Pacific Time (US)</option>
+            <option value="Pacific/Honolulu">Hawaii-Aleutian Time</option>
+          </select>
+        </div>
+
+        <div class="field-group" data-tour="lead-catcher-email">
+          <label class="field-label">Lead catcher email</label>
+          <input type="email" class="form-input" value="sales@acehotelnyc.com" placeholder="sales@propertyname.com" />
+        </div>
+
+        <div class="section-footer">
+          <button class="btn btn-outline btn-sm">Report an issue</button>
+          <button class="btn btn-dark">Save Section</button>
+        </div>
+      </section>
+
+      <!-- SECTION 2 -->
+      <section class="section-card" id="page-section-2">
+        <div class="card-header">
+          <div>
+            <div class="card-title">2. Salesperson Information</div>
+            <div class="card-subtitle">Sales staff who handle and respond to RFPs</div>
+          </div>
+          <button type="button" data-tour="add-salesperson-button" class="btn btn-green" style="margin-top:2px;">+ Add Salesperson</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-tour="salesperson-name">Name</th>
+                <th data-tour="salesperson-email">Email</th>
+                <th data-tour="salesperson-title">Title</th>
+                <th>Phone</th>
+                <th data-tour="salesperson-director" style="text-align:center;">Director</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input class="cell-input" type="text" value="Jane Martinez" /></td>
+                <td><input class="cell-input" type="email" value="jane.martinez@highgate.com" /></td>
+                <td><input class="cell-input" type="text" value="Director of Group Sales" /></td>
+                <td><input class="cell-input" type="tel" value="(212) 555-0142" /></td>
+                <td style="text-align:center;"><input type="checkbox" checked /></td>
+                <td><button class="btn-text">Remove</button></td>
+              </tr>
+              <tr>
+                <td><input class="cell-input" type="text" value="Robert Chen" /></td>
+                <td><input class="cell-input" type="email" value="robert.chen@highgate.com" /></td>
+                <td><input class="cell-input" type="text" value="Group Sales Manager" /></td>
+                <td><input class="cell-input" type="tel" value="(212) 555-0198" /></td>
+                <td style="text-align:center;"><input type="checkbox" /></td>
+                <td><button class="btn-text">Remove</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section-footer">
+          <button class="btn btn-outline btn-sm">Report an issue</button>
+          <button class="btn btn-dark">Save Section</button>
+        </div>
+      </section>
+
+      <!-- SECTION 3 -->
+      <section class="section-card" id="page-section-3">
+        <div class="card-header">
+          <div>
+            <div class="card-title">3. DORM Information</div>
+            <div class="card-subtitle">Revenue manager responsible for rate entry</div>
+          </div>
+          <button type="button" data-tour="add-dorm-button" class="btn btn-green" style="margin-top:2px;">+ Add DORM</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-tour="dorm-name">Name</th>
+              <th data-tour="dorm-email">Email</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="cell-input" type="text" value="Sarah Williams" /></td>
+              <td><input class="cell-input" type="email" value="sarah.williams@highgate.com" /></td>
+              <td><button class="btn-text">Remove</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section-footer">
+          <button class="btn btn-outline btn-sm">Report an issue</button>
+          <button class="btn btn-dark">Save Section</button>
+        </div>
+      </section>
+
+      <!-- SECTION 4 -->
+      <section class="section-card" id="page-section-4">
+        <div class="card-header">
+          <div>
+            <div class="card-title">4. Proposal Types</div>
+            <div class="card-subtitle">How proposals are built and delivered to clients</div>
+          </div>
+        </div>
+
+        <div class="field-group" data-tour="proposal-format">
+          <label class="field-label">How clients receive proposals</label>
+          <div class="format-options" id="format-opts">
+            <label class="format-opt sel">
+              <input type="radio" name="pf" value="embedded" checked />
+              <span class="format-dot"></span>Embedded in email
+            </label>
+            <label class="format-opt">
+              <input type="radio" name="pf" value="word" />
+              <span class="format-dot"></span>Word attachment (.docx)
+            </label>
+            <label class="format-opt">
+              <input type="radio" name="pf" value="pptx" />
+              <span class="format-dot"></span>PowerPoint (.pptx)
+            </label>
+          </div>
+        </div>
+
+        <div class="proposal-grid">
+          <div data-tour="proposal-meeting-space" class="proposal-card">
+            <div class="proposal-card-title">Meeting Space</div>
+            <div class="proposal-card-sub">Event / conference only</div>
+            <button class="btn btn-dark btn-sm">Upload File</button>
+          </div>
+          <div data-tour="proposal-room-rate" class="proposal-card" style="border-color:#bbf7d0;border-style:solid;">
+            <div class="proposal-card-title">Room Rate</div>
+            <div class="proposal-card-sub">Guest rooms only</div>
+            <span class="upload-badge">✓ Uploaded</span>
+          </div>
+          <div data-tour="proposal-room-and-meeting" class="proposal-card">
+            <div class="proposal-card-title">Room and Meeting</div>
+            <div class="proposal-card-sub">Combined request</div>
+            <button class="btn btn-dark btn-sm">Upload File</button>
+          </div>
+        </div>
+
+        <div data-tour="proposal-custom" class="custom-box">
+          <div class="custom-box-title">Custom proposal types</div>
+          <div class="custom-box-sub">Add types beyond the three standard templates</div>
+          <button class="btn btn-green btn-sm">+ Add custom type</button>
+        </div>
+
+        <div class="section-footer">
+          <button class="btn btn-outline btn-sm">Report an issue</button>
+          <button class="btn btn-dark">Save Section</button>
+        </div>
+      </section>
+
+      <!-- SECTION 5 -->
+      <section class="section-card" id="page-section-5">
+        <div class="card-header">
+          <div>
+            <div class="card-title">5. Room Categories</div>
+            <div class="card-subtitle">Available room category types your property offers</div>
+          </div>
+        </div>
+        <div data-tour="room-categories" class="pill-group" id="room-categories">
+          <span class="room-pill sel">King</span>
+          <span class="room-pill sel">Double</span>
+          <span class="room-pill sel">Queen</span>
+          <span class="room-pill">Suite</span>
+          <span class="room-pill">Studio</span>
+          <span class="room-pill">Accessible King</span>
+          <span class="room-pill">Accessible Double</span>
+          <span class="room-pill">Junior Suite</span>
+        </div>
+        <div class="section-footer">
+          <button class="btn btn-outline btn-sm">Report an issue</button>
+          <button class="btn btn-dark">Save Section</button>
+        </div>
+      </section>
+
+      <!-- SECTION 6 -->
+      <section class="section-card" id="page-section-6">
+        <div class="card-header">
+          <div>
+            <div class="card-title">6. Map Delphi Room Types</div>
+            <div class="card-subtitle">Match your Delphi room types to standard categories</div>
+          </div>
+        </div>
+        <div data-tour="room-type-mapping-table" style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Delphi Room Type</th>
+                <th>Abbreviation</th>
+                <th>Inventory</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>King Deluxe</td>
+                <td style="color:#9ca3af;">KDLX</td>
+                <td style="color:#9ca3af;">48</td>
+                <td>
+                  <select class="form-select" style="width:auto;min-width:120px;padding:5px 32px 5px 10px;font-size:12px;">
+                    <option selected>King</option><option>Double</option><option>Queen</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Double Standard</td>
+                <td style="color:#9ca3af;">DSTD</td>
+                <td style="color:#9ca3af;">32</td>
+                <td>
+                  <select class="form-select" style="width:auto;min-width:120px;padding:5px 32px 5px 10px;font-size:12px;">
+                    <option>King</option><option selected>Double</option><option>Queen</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Queen View</td>
+                <td style="color:#9ca3af;">QVW</td>
+                <td style="color:#9ca3af;">24</td>
+                <td>
+                  <select class="form-select" style="width:auto;min-width:120px;padding:5px 32px 5px 10px;font-size:12px;">
+                    <option>King</option><option>Double</option><option selected>Queen</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section-footer">
+          <button class="btn btn-outline btn-sm">Report an issue</button>
+          <button class="btn btn-dark">Save Section</button>
+        </div>
+      </section>
+
+      <!-- SECTION 7 -->
+      <section class="section-card" id="page-section-7">
+        <div class="card-header">
+          <div>
+            <div class="card-title">7. Meeting Space Grid</div>
+            <div class="card-subtitle">Event space capacity and competitive benchmarking</div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div data-tour="meeting-space-grid-upload" class="upload-box">
+            <div class="upload-box-title">Meeting Space Grid</div>
+            <div class="upload-box-sub">PDF or Excel — capacities &amp; layouts</div>
+            <button class="btn btn-dark btn-sm">Upload File</button>
+          </div>
+          <div data-tour="str-type">
+            <label class="field-label">STR Type</label>
+            <select class="form-select">
+              <option value="">Select...</option>
+              <option value="monthly">Monthly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+        <div class="section-footer">
+          <button class="btn btn-outline btn-sm">Report an issue</button>
+          <button class="btn btn-dark">Save Section</button>
+        </div>
+      </section>
+
+      <!-- SECTION 8 -->
+      <section class="section-card" id="page-section-8" style="border-color:#fca5a5;">
+        <div class="card-header">
+          <div>
+            <div class="card-title">8. Approval Status</div>
+            <div class="card-subtitle">Final review before going live on Oscar</div>
+          </div>
+        </div>
+        <div data-tour="approval-status">
+          <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">The following items must be completed before you can submit for approval:</p>
+          <div class="approval-issue"><span style="font-size:14px;flex-shrink:0;">✗</span> Meeting Space proposal template not uploaded</div>
+          <div class="approval-issue"><span style="font-size:14px;flex-shrink:0;">✗</span> Room and Meeting proposal template not uploaded</div>
+          <div class="approval-issue"><span style="font-size:14px;flex-shrink:0;">✗</span> STR Type not selected</div>
+          <button class="btn btn-dark" style="margin-top:16px;opacity:0.45;cursor:not-allowed;" disabled>Submit for Approval</button>
+        </div>
+      </section>
+
+      <p style="text-align:center;font-size:11px;color:#d1d5db;padding-bottom:16px;">Oscar Property Onboarding — demo</p>
+    </main>
+  </div>
+
+  <button type="button" class="fab" id="tour-btn" title="Restart tour">?</button>
+
+  <div id="tour-overlay"></div>
+
+  <div id="tour-tip">
+    <div class="tip-progress" id="tip-progress"></div>
+    <div class="tip-title" id="tip-title"></div>
+    <div class="tip-desc" id="tip-desc"></div>
+    <div class="tip-edge" id="tip-edge"></div>
+    <div class="tip-actions">
+      <button type="button" class="tip-prev" id="tip-prev">Prev</button>
+      <button type="button" class="tip-skip" id="tip-skip">Skip tour</button>
+      <button type="button" class="tip-next" id="tip-next">Next</button>
+    </div>
+  </div>
+
+<script>
+const STORAGE_KEY = 'oscar_tour_completed';
+
+const SECTIONS = [
+  { num:1, name:'Select Property',        desc:'Property ID, integrations, and contact setup' },
+  { num:2, name:'Salesperson Information',desc:'Sales staff who handle and respond to RFPs' },
+  { num:3, name:'DORM Information',       desc:'Revenue manager responsible for rate entry' },
+  { num:4, name:'Proposal Types',         desc:'Templates and delivery format' },
+  { num:5, name:'Room Categories',        desc:'Available room category types' },
+  { num:6, name:'Map Delphi Room Types',  desc:'Link Delphi types to categories' },
+  { num:7, name:'Meeting Space Grid',     desc:'Event space capacity and layouts' },
+  { num:8, name:'Approval',              desc:'Submit for administrator review' }
+];
+
+const TOUR_SECTIONS = [
+  { num:1, name:'Select Property',         ids:['select-property-dropdown','flag-meeting-space','flag-atmos','flag-delphi','flag-no-variations','name-variations-input','property-timezone','lead-catcher-email'] },
+  { num:2, name:'Salesperson Information', ids:['add-salesperson-button','salesperson-name','salesperson-email','salesperson-title','salesperson-director'] },
+  { num:3, name:'DORM Information',        ids:['add-dorm-button','dorm-name','dorm-email'] },
+  { num:4, name:'Proposal Types',          ids:['proposal-format','proposal-meeting-space','proposal-room-rate','proposal-room-and-meeting','proposal-custom'] },
+  { num:5, name:'Room Categories',         ids:['room-categories'] },
+  { num:6, name:'Map Delphi Room Types',   ids:['room-type-mapping-table'] },
+  { num:7, name:'Meeting Space Grid',      ids:['meeting-space-grid-upload','str-type'] },
+  { num:8, name:'Approval',               ids:['approval-status'] }
+];
+
+const CONTENT = {
+  'select-property-dropdown': {
+    title: 'Select your property',
+    desc: 'Search for your property by name or Highgate ID. This is the property you are configuring on Oscar. Everything you set up here — salesperson details, room types, proposal templates — will be linked to this specific property.',
+    edge: null
+  },
+  'flag-meeting-space': {
+    title: 'Has meeting space',
+    desc: 'Turn this ON if your property has conference rooms, ballrooms, or any event space available for group bookings. If ON, you will need to upload a Meeting Space Grid in Step 7.',
+    edge: 'If your property is rooms-only with no event facilities, leave this OFF. You will not need to complete the Meeting Space Grid step.'
+  },
+  'flag-atmos': {
+    title: 'Atmos integration',
+    desc: 'Atmos is a revenue management system that automatically pulls room rates into Oscar. If ON, Oscar extracts rates from Atmos in 1–2 minutes with no manual input. If OFF, your DORM will receive a rate tracker by email and must fill in rates manually for every single inquiry.',
+    edge: 'Not sure if your property is on Atmos? Ask your Director of Revenue Management before proceeding. Getting this wrong means every inquiry will require manual rate entry.'
+  },
+  'flag-delphi': {
+    title: 'Delphi / NIHRM',
+    desc: 'Delphi is the hotel sales CRM where Oscar creates booking records automatically. Turn this ON if your property uses Delphi (called NIHRM for full-service properties). Once the salesperson fills in the classification fields on a proposal, Oscar will create the full booking in Delphi without any manual steps.',
+    edge: 'If your property uses a different booking system, leave this OFF and contact your Oscar administrator.'
+  },
+  'flag-no-variations': {
+    title: 'No other names toggle',
+    desc: 'Turn this ON only if your property is always referred to by its exact registered name in client emails — no abbreviations, no short forms. Oscar uses these names to match incoming RFQ emails to the correct property.',
+    edge: 'When in doubt, leave this OFF and add name variations below. A missing variation means Oscar may fail to recognise an incoming inquiry.'
+  },
+  'name-variations-input': {
+    title: 'Other names or variations',
+    desc: 'Add every name, abbreviation, or short form a client might use when emailing an RFQ. Oscar matches these against incoming emails to identify which property the inquiry belongs to.',
+    edge: 'Example: if your property is Margaritaville Resort Times Square, add both MRTS and Margaritaville as separate variations. Missing even one commonly-used name will cause Oscar to miss that inquiry.'
+  },
+  'property-timezone': {
+    title: 'Property timezone',
+    desc: 'Select the timezone where your property is physically located. Oscar uses this to correctly timestamp all inquiries, proposals, and booking records. For US properties this is typically Eastern, Central, Mountain, or Pacific time.',
+    edge: null
+  },
+  'lead-catcher-email': {
+    title: 'Lead catcher email',
+    desc: 'This is the email address that receives client RFQs before they are forwarded to Oscar. For most properties this is a shared sales inbox. Oscar uses this address to match incoming inquiries to the correct property.',
+    edge: 'If your property has only one salesperson, this can be their direct email. If multiple salespeople handle inquiries, use a shared inbox so no inquiry is missed.'
+  },
+  'add-salesperson-button': {
+    title: 'Add a salesperson',
+    desc: 'Click here to add each salesperson at this property who will use Oscar. Every salesperson who forwards RFQs to salesautomation@highgate.com must be listed here. Oscar will not process inquiries from email addresses that are not registered.',
+    edge: null
+  },
+  'salesperson-name': {
+    title: 'Salesperson name',
+    desc: 'Select the salesperson\'s full name from the dropdown. This pulls from existing Highgate user records. The name appears on all proposals sent to clients.',
+    edge: 'If the person is not listed in the dropdown, contact your Oscar administrator to have them added to the system before proceeding.'
+  },
+  'salesperson-email': {
+    title: 'Salesperson email',
+    desc: 'This must be the exact email address the salesperson uses to forward RFQs to salesautomation@highgate.com. Oscar matches this address to identify who is handling the inquiry and which property it belongs to.',
+    edge: 'If the email here does not exactly match the address they forward from, Oscar will not recognise the inquiry. Even a small difference will cause a mismatch.'
+  },
+  'salesperson-title': {
+    title: 'Job title',
+    desc: 'Enter the salesperson\'s job title exactly as it should appear on proposals sent to clients. This is client-facing — make sure it matches how they sign off on emails.',
+    edge: null
+  },
+  'salesperson-director': {
+    title: 'Director checkbox',
+    desc: 'Check this box if this person is the Director of Sales for this property. The director receives escalation notifications and is the primary contact for Oscar configuration issues. Only one person should be marked as director per property.',
+    edge: 'If this salesperson also handles inquiries for another Highgate property, flag this to your Oscar administrator. Oscar needs additional routing configuration to avoid sending inquiries to the wrong property.'
+  },
+  'add-dorm-button': {
+    title: 'Add your DORM',
+    desc: 'Click here to add your Director of Revenue Management. The DORM receives a rate tracker email from Oscar whenever a new inquiry comes in and Atmos is not enabled. They fill in the rates and reply — Oscar then builds the proposal automatically.',
+    edge: null
+  },
+  'dorm-name': {
+    title: 'DORM name',
+    desc: 'Select the DORM\'s full name from the dropdown. This is the person responsible for providing room rates for this property. They must have a Highgate email address to receive Oscar\'s rate tracker emails.',
+    edge: 'If the DORM is not in the dropdown, contact your Oscar administrator. Without a DORM assigned, Oscar cannot process inquiries when Atmos is off.'
+  },
+  'dorm-email': {
+    title: 'DORM email',
+    desc: 'This must be the DORM\'s exact Highgate email address. Oscar sends the rate tracker to this address for every inquiry that requires manual pricing. The DORM replies with rates and Oscar parses the response automatically.',
+    edge: 'The DORM email must be a @highgate.com address. External email addresses will not work with Oscar\'s rate tracker flow.'
+  },
+  'proposal-format': {
+    title: 'How clients receive proposals',
+    desc: 'Choose how Oscar delivers proposals to clients. Embedded in email means the proposal content is written directly into the email body. Word attachment sends a .docx file. PowerPoint sends a .pptx file.',
+    edge: 'Most Highgate properties use Embedded in email. Check with your sales director if unsure — changing this later requires re-uploading all proposal templates.'
+  },
+  'proposal-meeting-space': {
+    title: 'Meeting Space proposal',
+    desc: 'Upload your property\'s proposal template for requests that are exclusively for event or meeting facilities with no overnight guest rooms. Download the sample first, then upload your property\'s version with the same placeholders.',
+    edge: 'Required before submission. If your property has no meeting space, turn off \'Has meeting space\' in Step 1 and this upload will not be required.'
+  },
+  'proposal-room-rate': {
+    title: 'Room Rate proposal',
+    desc: 'Upload your template for requests that are only for overnight guest rooms. No event space involved. This should be your most frequently used template and is required before submission.',
+    edge: 'Even if a client mentions an external event venue in their RFQ, if they are not requesting on-site meeting space from your property, use this template.'
+  },
+  'proposal-room-and-meeting': {
+    title: 'Room and Meeting proposal',
+    desc: 'Upload your template for combined requests that explicitly ask for both overnight guest rooms AND on-site meeting or event space at your property. Required before submission.',
+    edge: null
+  },
+  'proposal-custom': {
+    title: 'Custom proposal types',
+    desc: 'If your property has proposal types beyond the three standard ones, add them here. Each custom type needs its own template upload and a unique type key that Oscar uses to match the right template to the right inquiry.',
+    edge: null
+  },
+  'room-categories': {
+    title: 'Select room categories',
+    desc: 'Select every standardised room category that your property actually offers. Only the categories you select here will appear as options when mapping your Delphi room types in the next step. Oscar uses these categories to group room types in proposals.',
+    edge: 'Do not select categories for room types your property does not have. Selecting extras creates unnecessary mappings in the next step and can confuse proposal output.'
+  },
+  'room-type-mapping-table': {
+    title: 'Map your Delphi room types',
+    desc: 'For each Delphi room type shown in this table, select the closest standardised category from the dropdown. Oscar uses this mapping to group rooms correctly when building rate tables in proposals. Abbreviation and inventory come from Salesforce and cannot be edited here.',
+    edge: 'If a Delphi room type does not fit any category you selected in the previous step, go back and add the missing category first. Do not force a wrong mapping.'
+  },
+  'meeting-space-grid-upload': {
+    title: 'Meeting Space Grid',
+    desc: 'Upload your property\'s meeting space grid document that lists all your event and meeting rooms with their capacities, layouts, and dimensions. Oscar uses this to populate the meeting space section of proposals automatically.',
+    edge: 'Only required if \'Has meeting space\' is ON. If your property is rooms-only, skip this step.'
+  },
+  'str-type': {
+    title: 'STR Type',
+    desc: 'Select how your competitive set reports — Monthly or Weekly. Oscar uses this to pull the correct STR data for your property\'s rate comparisons. If you are unsure, ask your Director of Revenue Management.',
+    edge: null
+  },
+  'approval-status': {
+    title: 'Submit for approval',
+    desc: 'Once all required sections are complete, submit your property configuration here for review by your Oscar administrator. You will receive a confirmation once the property is approved and live on Oscar. Any missing items are listed in red below.',
+    edge: 'All three proposal templates must be uploaded, all room types must be mapped to a category, and an STR Type must be selected before you can submit.'
+  }
+};
+
+// Build flat steps array
+const STEPS = [];
+TOUR_SECTIONS.forEach(sec => {
+  sec.ids.forEach((id, i) => {
+    const c = CONTENT[id];
+    STEPS.push({
+      id, secNum: sec.num, secName: sec.name,
+      fNum: i + 1, fTotal: sec.ids.length,
+      title: c.title, desc: c.desc, edge: c.edge
+    });
+  });
+});
+
+// Build section end indices for progress tracking
+const SEC_END = {};
+TOUR_SECTIONS.forEach(sec => {
+  const last = STEPS.reduce((idx, s, i) => s.secNum === sec.num ? i : idx, -1);
+  SEC_END[sec.num] = last;
+});
+
+let cur = 0, active = false, prevHL = null, overflowFixed = [];
+
+// DOM refs
+const overlay  = document.getElementById('tour-overlay');
+const tip      = document.getElementById('tour-tip');
+const tipProg  = document.getElementById('tip-progress');
+const tipTitle = document.getElementById('tip-title');
+const tipDesc  = document.getElementById('tip-desc');
+const tipEdge  = document.getElementById('tip-edge');
+const btnPrev  = document.getElementById('tip-prev');
+const btnSkip  = document.getElementById('tip-skip');
+const btnNext  = document.getElementById('tip-next');
+
+// --- Sidebar ---
+function buildSidebar() {
+  const ul = document.getElementById('sidebar-steps');
+  ul.innerHTML = '';
+  SECTIONS.forEach((sec, i) => {
+    const li = document.createElement('li');
+    li.className = 'sidebar-step';
+    li.dataset.sec = sec.num;
+    li.innerHTML =
+      '<div class="sidebar-step-left">' +
+        '<div class="step-circle" data-circ>' + sec.num + '</div>' +
+        (i < SECTIONS.length - 1 ? '<div class="step-line" data-line></div>' : '') +
+      '</div>' +
+      '<div class="step-text">' +
+        '<div class="step-name">' + sec.name + '</div>' +
+        '<div class="step-desc">' + sec.desc + '</div>' +
+      '</div>';
+    ul.appendChild(li);
+  });
+}
+
+function updateSidebar() {
+  const activeSec = active ? STEPS[cur].secNum : 0;
+  document.querySelectorAll('.sidebar-step').forEach(el => {
+    const n = +el.dataset.sec;
+    const circ = el.querySelector('[data-circ]');
+    el.classList.remove('active', 'completed');
+    const done = active && SEC_END[n] !== undefined && cur > SEC_END[n];
+    if (done) {
+      el.classList.add('completed');
+      circ.textContent = '✓';
+    } else if (active && n === activeSec) {
+      el.classList.add('active');
+      circ.textContent = n;
+    } else {
+      circ.textContent = n;
+    }
+  });
+}
+
+// --- Spotlight ---
+function clearHL() {
+  if (prevHL) { prevHL.classList.remove('tour-hl'); prevHL = null; }
+  overflowFixed.forEach(([el, prop, val]) => { el.style[prop] = val; });
+  overflowFixed = [];
+}
+
+function applyHL(el) {
+  clearHL();
+  if (!el) return;
+  // Fix overflow on ancestors so box-shadow isn't clipped
+  let node = el.parentElement;
+  while (node && node !== document.body) {
+    const cs = window.getComputedStyle(node);
+    ['overflow','overflowX','overflowY'].forEach(prop => {
+      const v = cs[prop];
+      if (v && v !== 'visible') {
+        overflowFixed.push([node, prop, node.style[prop] || '']);
+        node.style[prop] = 'visible';
+      }
+    });
+    node = node.parentElement;
+  }
+  el.classList.add('tour-hl');
+  prevHL = el;
+}
+
+// --- Positioning ---
+function posNear(el) {
+  const r = el.getBoundingClientRect();
+  const tw = 380, th = tip.offsetHeight || 300, m = 16;
+  let top, left;
+  if (r.bottom + m + th < window.innerHeight) {
+    top = r.bottom + m; left = r.left;
+  } else if (r.top - m - th > 0) {
+    top = r.top - m - th; left = r.left;
+  } else if (r.right + m + tw < window.innerWidth) {
+    top = Math.max(m, r.top); left = r.right + m;
+  } else {
+    top = Math.max(m, r.top); left = r.left - m - tw;
+  }
+  if (left + tw > window.innerWidth - m) left = window.innerWidth - tw - m;
+  if (left < m) left = m;
+  if (top + th > window.innerHeight - m) top = window.innerHeight - th - m;
+  if (top < m) top = m;
+  tip.style.left = left + 'px';
+  tip.style.top  = top  + 'px';
+}
+
+// --- Show step ---
+function showStep() {
+  const s = STEPS[cur];
+  const el = document.querySelector('[data-tour="' + s.id + '"]');
+
+  tipProg.textContent = 'Section ' + s.secNum + ' of 8 — ' + s.secName + ' · Field ' + s.fNum + ' of ' + s.fTotal;
+  tipTitle.textContent = s.title;
+  tipDesc.textContent  = s.desc;
+
+  if (s.edge) { tipEdge.textContent = s.edge; tipEdge.classList.add('show'); }
+  else { tipEdge.classList.remove('show'); }
+
+  btnPrev.disabled = cur === 0;
+  btnNext.textContent = cur === STEPS.length - 1 ? 'Finish' : 'Next';
+
+  updateSidebar();
+
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    applyHL(el);
+    tip.classList.add('show');
+    // Reposition after scroll settles
+    setTimeout(() => { if (active && prevHL) posNear(prevHL); }, 380);
+    posNear(el);
+  } else {
+    clearHL();
+    tip.classList.add('show');
+    tip.style.left = (window.innerWidth / 2 - 190) + 'px';
+    tip.style.top  = (window.innerHeight / 2 - 150) + 'px';
+  }
+}
+
+// --- Tour control ---
+function startTour(from) {
+  cur = from || 0;
+  active = true;
+  overlay.classList.add('active');
+  showStep();
+  window.addEventListener('resize', onResize);
+  window.addEventListener('scroll', onScroll, true);
+}
+
+function endTour(complete) {
+  active = false;
+  clearHL();
+  overlay.classList.remove('active');
+  tip.classList.remove('show');
+  window.removeEventListener('resize', onResize);
+  window.removeEventListener('scroll', onScroll, true);
+  if (complete) localStorage.setItem(STORAGE_KEY, '1');
+  updateSidebar();
+}
+
+function onResize() {
+  if (!active || !prevHL) return;
+  posNear(prevHL);
+}
+
+function onScroll() {
+  if (!active || !prevHL) return;
+  posNear(prevHL);
+}
+
+btnPrev.addEventListener('click', () => { if (cur > 0) { cur--; showStep(); } });
+btnNext.addEventListener('click', () => {
+  if (cur >= STEPS.length - 1) { endTour(true); return; }
+  cur++; showStep();
+});
+btnSkip.addEventListener('click', () => endTour(false));
+
+document.addEventListener('keydown', e => {
+  if (!active) return;
+  if (e.key === 'Escape') endTour(false);
+  if (e.key === 'ArrowRight' && cur < STEPS.length - 1) { cur++; showStep(); }
+  if (e.key === 'ArrowLeft'  && cur > 0)                { cur--; showStep(); }
+});
+
+document.getElementById('tour-btn').addEventListener('click', () => {
+  localStorage.removeItem(STORAGE_KEY);
+  startTour(0);
+});
+
+// --- Interactive controls ---
+document.querySelectorAll('[data-toggle]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    btn.classList.toggle('on');
+    btn.setAttribute('aria-pressed', btn.classList.contains('on'));
+  });
+});
+
+const nameTags = document.getElementById('name-tags');
+const nameInput = document.getElementById('name-input');
+
+function addTag(text) {
+  if (!text || nameTags.querySelector('[data-tag="' + text + '"]')) return;
+  const s = document.createElement('span');
+  s.className = 'name-tag'; s.dataset.tag = text;
+  s.innerHTML = text + ' <button type="button" class="name-tag-x" aria-label="Remove ' + text + '">×</button>';
+  nameTags.appendChild(s);
+}
+
+nameInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); const v = nameInput.value.trim(); if (v) { addTag(v); nameInput.value = ''; } }
+});
+nameTags.addEventListener('click', e => {
+  const b = e.target.closest('.name-tag-x'); if (b) b.closest('.name-tag').remove();
+});
+
+document.getElementById('room-categories').addEventListener('click', e => {
+  const p = e.target.closest('.room-pill'); if (p) p.classList.toggle('sel');
+});
+
+document.getElementById('format-opts').addEventListener('change', () => {
+  document.querySelectorAll('.format-opt').forEach(o => {
+    o.classList.toggle('sel', o.querySelector('input').checked);
+  });
+});
+
+// --- Init ---
+buildSidebar();
+updateSidebar();
+
+if (!localStorage.getItem(STORAGE_KEY)) {
+  window.addEventListener('load', () => setTimeout(() => startTour(0), 600));
+}
+</script>
+</body>
+</html>

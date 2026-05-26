@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 import pandas as pd
 from city_engine import rank_cities, CITIES
 from weights_config import CITY_BASELINE_WEIGHTS
+from streamlit_ui_helpers import group_weight_log, weight_log_fields
 
 st.set_page_config(page_title="City Filtering", layout="wide")
 
@@ -100,38 +101,22 @@ with col_weights:
         if not weight_log:
             st.caption("No shifts applied — using baseline weights.")
         else:
-            grouped = {}
-            for entry in weight_log:
-                tier = entry.get("tier", "")
-                src = tier_to_source.get(tier, tier)
-                grouped.setdefault(src, []).append(entry)
-
-            for source_label, entries in grouped.items():
+            for source_label, entries in group_weight_log(weight_log).items():
                 st.markdown(f"**{source_label}**")
-
-                if not entries:
-                    st.caption("  (No shifts applied)")
-                else:
-                    for entry in entries:
-                        det = entry.get("determinant", "").replace("_", " ").title()
-                        raw = entry.get("raw_shift", 0)
-                        adj = entry.get("adjusted_shift", 0)
-                        before = entry.get("before", 0)
-                        after = entry.get("after", 0)
-                        final = entry.get(
-                            "final_weight",
-                            normalized_weights.get(entry.get("determinant", ""), 0),
-                        )
-                        sign = "+" if raw > 0 else ""
-                        color = "🟢" if raw > 0 else "🔴"
-                        st.caption(
-                            f"  {color} {det}: "
-                            f"raw {sign}{raw} → "
-                            f"adjusted {sign}{round(adj, 2)} → "
-                            f"{round(before, 1)}% → {round(after, 1)}% raw → "
-                            f"**{final}% final**"
-                        )
-
+                for entry in entries:
+                    f = weight_log_fields(entry)
+                    det = f["determinant"].replace("_", " ").title()
+                    raw = f["raw"]
+                    adj = f["adjusted"]
+                    sign = "+" if raw > 0 else ""
+                    color = "🟢" if raw > 0 else "🔴"
+                    st.caption(
+                        f"  {color} {det}: "
+                        f"raw {sign}{raw} → "
+                        f"adjusted {sign}{round(adj, 2)} → "
+                        f"{round(f['before'], 1)}% → {round(f['after'], 1)}% post-shift → "
+                        f"**{round(f['final'], 1)}% final**"
+                    )
                 st.markdown("---")
 
 with col_results:

@@ -12,6 +12,11 @@ import pandas as pd
 from simple_recommendation_engine.project_engine import rank_projects
 from projects_data import PROJECTS
 from weights_config import PROJECT_BASELINE_WEIGHTS
+from streamlit_ui_helpers import (
+    engine_score_from_breakdown,
+    group_weight_log,
+    weight_log_fields,
+)
 
 st.set_page_config(
     page_title="Project Engine Mapping",
@@ -205,6 +210,7 @@ project_answers = {
     eliminated_projects,
     normalized_weights,
     weight_log,
+    speculation_tag,
 ) = rank_projects(project_answers, surviving_cities)
 
 # =========================================================
@@ -238,31 +244,21 @@ with col_weights:
         if not weight_log:
             st.caption("No shifts applied — using baseline weights.")
         else:
-            grouped = {}
-            for entry in weight_log:
-                src = entry.get("source", entry.get("tier", ""))
-                grouped.setdefault(src, []).append(entry)
-
-            for source_label, entries in grouped.items():
+            for source_label, entries in group_weight_log(weight_log).items():
                 st.markdown(f"**{source_label}**")
                 for entry in entries:
-                    det = entry["determinant"].replace("_", " ").title()
-                    raw = entry["raw_shift"]
-                    adj = entry["adjusted_shift"]
-                    before = entry["before"]
-                    after = entry["after"]
-                    final = entry.get(
-                        "final_weight",
-                        normalized_weights.get(entry["determinant"], 0),
-                    )
+                    f = weight_log_fields(entry)
+                    det = f["determinant"].replace("_", " ").title()
+                    raw = f["raw"]
+                    adj = f["adjusted"]
                     sign = "+" if raw > 0 else ""
                     color = "🟢" if raw > 0 else "🔴"
                     st.caption(
                         f"  {color} {det}: "
                         f"raw {sign}{raw} → "
                         f"adjusted {sign}{round(adj, 2)} → "
-                        f"{round(before, 1)}% → {round(after, 1)}% raw → "
-                        f"**{final}% final**"
+                        f"{round(f['before'], 1)}% → {round(f['after'], 1)}% post-shift → "
+                        f"**{round(f['final'], 1)}% final**"
                     )
                 st.markdown("---")
 
@@ -315,11 +311,13 @@ with col_results:
 
             with st.expander("Score breakdown"):
                 for det, info in item["score_breakdown"].items():
+                    eng = engine_score_from_breakdown(info)
                     st.caption(
                         f"**{det.replace('_', ' ').title()}**: "
                         f"{info['contribution']} pts "
-                        f"(standardized {info['standardized']} × "
-                        f"{info['weight_pct']}% weight)"
+                        f"(engine score {eng} × "
+                        f"{info['weight_pct']}% weight; "
+                        f"bucket raw {info.get('bucket_score', '—')})"
                     )
 
     if eliminated_projects:

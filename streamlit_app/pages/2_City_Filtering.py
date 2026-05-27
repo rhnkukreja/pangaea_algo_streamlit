@@ -1,13 +1,29 @@
 import streamlit as st
 import sys
 import os
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
 import pandas as pd
 from city_engine import rank_cities, CITIES
 from weights_config import CITY_BASELINE_WEIGHTS
 from streamlit_ui_helpers import group_weight_log, weight_log_fields
+
+# ── Display name mapping: engine key → Excel / client-facing label ────────────
+CITY_DISPLAY_NAMES = {
+    "net_migration_rate":      "Population Growth Rate",
+    "liquidity_indicator":     "Transaction Volume Growth",
+    "supply_pipeline":         "Supply Pipeline (5Y)",
+    "employment_growth":       "Employment Growth Rate",
+    "price_appreciation_5y":   "Price Appreciation (5Y)",
+    "tourism_strength":        "Tourism Strength",
+    "rental_demand_index":     "Rental Demand Index",
+    "infrastructure_pipeline": "Macro Infrastructure Pipeline",
+    "quality_of_life_index":   "Quality of Life Index",
+}
+
+def display_name(key: str) -> str:
+    """Return the client-facing display name for a determinant key."""
+    return CITY_DISPLAY_NAMES.get(key, key.replace("_", " ").title())
+
 
 st.set_page_config(page_title="City Filtering", layout="wide")
 
@@ -25,7 +41,6 @@ col_form, col_weights, col_results = st.columns([1, 1, 1.2])
 with col_form:
     st.subheader("Investor Profile")
     st.caption("City scoring is driven by two signals only.")
-
     primary_objective = st.selectbox(
         "Q1 — Primary Investment Objective",
         options=[
@@ -44,14 +59,12 @@ with col_form:
         }[x],
         key="city_primary_objective",
     )
-
     risk_appetite = st.radio(
         "Q2 — Risk Appetite",
         options=["conservative", "moderate", "opportunistic"],
         format_func=lambda x: x.title(),
         key="city_risk_appetite",
     )
-
     st.markdown("---")
     st.caption(
         "ℹ️ Family composition, proximity preferences, prestige "
@@ -74,30 +87,23 @@ st.session_state.ranked_cities = [r["city"] for r in ranked_cities]
 with col_weights:
     st.subheader("City-Level Weights")
     st.caption("How lifestyle answers reshape city scoring")
-
     rows = []
     for determinant, baseline in CITY_BASELINE_WEIGHTS.items():
         final = normalized_weights.get(determinant, 0)
         delta = round(final - baseline, 1)
         delta_str = f"+{delta}" if delta > 0 else str(delta)
         rows.append({
-            "Determinant": determinant.replace("_", " ").title(),
-            "Baseline": f"{baseline}%",
-            "Final": f"{final}%",
-            "Δ": delta_str,
+            "Determinant": display_name(determinant),
+            "Baseline":    f"{baseline}%",
+            "Final":       f"{final}%",
+            "Δ":           delta_str,
         })
-
     df = pd.DataFrame(rows)
     st.dataframe(df, hide_index=True, use_container_width=True)
 
     with st.expander("📋 Why these weights changed"):
         objective_label = primary_objective.replace("_", " ").title()
         risk_label = risk_appetite.title()
-        tier_to_source = {
-            "Tier 1": f"Primary Objective = {objective_label}",
-            "Tier 2": f"Risk Appetite = {risk_label}",
-        }
-
         if not weight_log:
             st.caption("No shifts applied — using baseline weights.")
         else:
@@ -105,7 +111,7 @@ with col_weights:
                 st.markdown(f"**{source_label}**")
                 for entry in entries:
                     f = weight_log_fields(entry)
-                    det = f["determinant"].replace("_", " ").title()
+                    det = display_name(f["determinant"])
                     raw = f["raw"]
                     adj = f["adjusted"]
                     sign = "+" if raw > 0 else ""
@@ -122,9 +128,9 @@ with col_weights:
 with col_results:
     st.subheader("Ranked Cities")
     st.caption(
-        f"{len(ranked_cities)} cities within {len(st.session_state.surviving_countries)} surviving countries"
+        f"{len(ranked_cities)} cities within "
+        f"{len(st.session_state.surviving_countries)} surviving countries"
     )
-
     for idx, item in enumerate(ranked_cities[:8], 1):
         with st.container(border=True):
             top = st.columns([1, 4, 2])
@@ -145,14 +151,13 @@ with col_results:
                     f"<h3 style='color:{color};text-align:right;margin:0'>{score}</h3>",
                     unsafe_allow_html=True,
                 )
-
             with st.expander("Score breakdown"):
                 for determinant, contribution in item["breakdown"].items():
-                    weight = normalized_weights[determinant]
-                    raw_score = CITIES[item["city"]]["scores"][determinant]
+                    weight       = normalized_weights[determinant]
+                    raw_score    = CITIES[item["city"]]["scores"][determinant]
                     standardized = item["standardized_scores"][determinant]
                     st.caption(
-                        f"**{determinant.replace('_', ' ').title()}**: {contribution} pts"
+                        f"**{display_name(determinant)}**: {contribution} pts"
                         f"  (standardized {round(standardized, 2)} × {weight}% weight)"
                     )
 

@@ -12,7 +12,10 @@ COUNTRY_INVERSE_VARS = {
     "corruption_perception_index",
 }
 
-CITY_INVERSE_VARS = {"supply_pipeline"}
+CITY_INVERSE_VARS = {
+    "supply_pipeline",
+    "vacancy_rate",
+}
 
 COUNTRY_BASELINE_WEIGHTS = {
     "political_stability_index": 25,
@@ -74,15 +77,16 @@ COUNTRY_TIER2_SHIFTS = {
 }
 
 CITY_BASELINE_WEIGHTS = {
-    "employment_growth": 15,
-    "price_appreciation_5y": 15,
-    "net_migration_rate": 14,
-    "rental_demand_index": 14,
-    "infrastructure_pipeline": 12,
-    "liquidity_indicator": 10,
-    "quality_of_life_index": 10,
-    "tourism_strength": 5,
-    "supply_pipeline": 5,
+    "employment_growth":      12,
+    "net_migration_rate":     12,
+    "price_appreciation_5y":  12,
+    "rental_demand_index":    12,
+    "infrastructure_pipeline": 10,
+    "liquidity_indicator":    10,
+    "quality_of_life_index":  10,
+    "tourism_strength":        8,
+    "supply_pipeline":         7,
+    "vacancy_rate":            7,
 }
 
 CITY_TIER1_SHIFTS = {

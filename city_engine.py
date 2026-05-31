@@ -1,9 +1,5 @@
 # Data: V2 dataset (updated)
-from simple_recommendation_engine.constants import CITY_INVERSE_VARS
-from simple_recommendation_engine.normalization import (
-    standardize_determinants,
-    weighted_score,
-)
+from simple_recommendation_engine.normalization import weighted_score
 from weights_config import compute_city_weights
 
 CITIES = {
@@ -11,16 +7,16 @@ CITIES = {
         "country": "Greece",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 0.62,        # (-0.10+0.5)/6.5*10
-            "employment_growth": 4.63,          # (2.80-0.9)/4.1*10
-            "price_appreciation_5y": 6.18,      # (61-14)/76*10
+            "net_migration_rate": 23.10,        # V2 z-score engine score (raw: 23.10%)
+            "employment_growth": 52.10,          # V2 z-score engine score (raw: 52.10%)
+            "price_appreciation_5y": 59.82,      # V2 z-score engine score (raw: 59.82%)
             "liquidity_indicator": 1.76,         # (8+4.2)/69.2*10
-            "tourism_strength": 6.64,            # 16.80/25.3*10
-            "rental_demand_index": 10.0,         # (93.70-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 9.60,    # direct
-            "supply_pipeline": 8.90,             # inverted 3.32%: raw=1.10→10-1.10
-            "quality_of_life_index": 3.91,       # (129.20-93.93)/90.17*10
+            "tourism_strength": 77.94,            # V2 z-score engine score (raw: 77.94%)
+            "rental_demand_index": 100.00,         # V2 z-score engine score (raw index: 100.00)
+            "infrastructure_pipeline": 72.64,    # V2 z-score engine score (raw: 72.64)
+            "supply_pipeline": 69.35,             # V2 z-score engine score (raw: 69.35%) — inverse var
+            "vacancy_rate": 36.44,               # V2 z-score engine score (raw: 29.00%) — inverse var
+            "quality_of_life_index": 40.39,       # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
             "population_growth_rate": -0.001,
@@ -39,16 +35,16 @@ CITIES = {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 0.0,           # (-0.50+0.5)/6.5*10
-            "employment_growth": 3.41,           # (2.30-0.9)/4.1*10
-            "price_appreciation_5y": 5.0,        # (52-14)/76*10
+            "net_migration_rate": 16.80,           # V2 z-score engine score (raw: 16.80%)
+            "employment_growth": 39.73,           # V2 z-score engine score (raw: 39.73%)
+            "price_appreciation_5y": 49.90,        # V2 z-score engine score (raw: 49.90%)
             "liquidity_indicator": 1.33,          # (5+4.2)/69.2*10
-            "tourism_strength": 10.0,             # 25.30/25.3*10
-            "rental_demand_index": 8.19,          # (86.70-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 6.0,      # direct
-            "supply_pipeline": 7.08,              # inverted 6.31%: raw=2.92→10-2.92
-            "quality_of_life_index": 3.91,        # (129.20-93.93)/90.17*10
+            "tourism_strength": 100.00,             # V2 z-score engine score (raw: 100.00%)
+            "rental_demand_index": 88.09,          # V2 z-score engine score (raw index: 88.09)
+            "infrastructure_pipeline": 27.61,      # V2 z-score engine score (raw: 27.61)
+            "supply_pipeline": 54.20,              # V2 z-score engine score (raw: 54.20%) — inverse var
+            "vacancy_rate": 12.47,               # V2 z-score engine score (raw: 40.00%) — inverse var
+            "quality_of_life_index": 40.39,        # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
             "population_growth_rate": -0.005,
@@ -67,16 +63,16 @@ CITIES = {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 1.23,           # (0.30+0.5)/6.5*10
-            "employment_growth": 3.41,            # (2.30-0.9)/4.1*10
-            "price_appreciation_5y": 4.87,        # (51-14)/76*10
+            "net_migration_rate": 29.40,           # V2 z-score engine score (raw: 29.40%)
+            "employment_growth": 39.73,            # V2 z-score engine score (raw: 39.73%)
+            "price_appreciation_5y": 48.78,        # V2 z-score engine score (raw: 48.78%)
             "liquidity_indicator": 1.47,           # (6+4.2)/69.2*10
-            "tourism_strength": 2.21,              # 5.60/25.3*10
-            "rental_demand_index": 6.80,           # (81.30-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 10.0,      # direct
-            "supply_pipeline": 9.54,               # inverted 2.26%: raw=0.46→10-0.46
-            "quality_of_life_index": 3.91,         # (129.20-93.93)/90.17*10
+            "tourism_strength": 30.43,              # V2 z-score engine score (raw: 30.43%)
+            "rental_demand_index": 73.43,           # V2 z-score engine score (raw index: 73.43)
+            "infrastructure_pipeline": 77.64,      # V2 z-score engine score (raw: 77.64)
+            "supply_pipeline": 74.72,               # V2 z-score engine score (raw: 74.72%) — inverse var
+            "vacancy_rate": 58.22,               # V2 z-score engine score (raw: 19.00%) — inverse var
+            "quality_of_life_index": 40.39,         # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
             "population_growth_rate": 0.003,
@@ -95,16 +91,16 @@ CITIES = {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 3.08,            # (1.50+0.5)/6.5*10
-            "employment_growth": 7.56,             # (4.00-0.9)/4.1*10
-            "price_appreciation_5y": 7.37,         # (70-14)/76*10
+            "net_migration_rate": 48.28,            # V2 z-score engine score (raw: 48.28%)
+            "employment_growth": 81.80,             # V2 z-score engine score (raw: 81.80%)
+            "price_appreciation_5y": 69.73,         # V2 z-score engine score (raw: 69.73%)
             "liquidity_indicator": 1.76,            # (8+4.2)/69.2*10
-            "tourism_strength": 6.80,               # 17.20/25.3*10
-            "rental_demand_index": 4.83,            # (73.70-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 6.60,       # direct
-            "supply_pipeline": 7.62,                # inverted 5.42%: raw=2.38→10-2.38
-            "quality_of_life_index": 3.91,          # (129.20-93.93)/90.17*10
+            "tourism_strength": 79.62,               # V2 z-score engine score (raw: 79.62%)
+            "rental_demand_index": 52.79,            # V2 z-score engine score (raw index: 52.79)
+            "infrastructure_pipeline": 35.11,       # V2 z-score engine score (raw: 35.11)
+            "supply_pipeline": 58.71,                # V2 z-score engine score (raw: 58.71%) — inverse var
+            "vacancy_rate": 77.83,               # V2 z-score engine score (raw: 10.00%) — inverse var
+            "quality_of_life_index": 40.39,          # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
             "population_growth_rate": 0.015,
@@ -123,16 +119,16 @@ CITIES = {
         "country": "Greece",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 1.38,             # (0.40+0.5)/6.5*10
-            "employment_growth": 2.68,              # (2.00-0.9)/4.1*10
-            "price_appreciation_5y": 9.47,          # (86-14)/76*10
+            "net_migration_rate": 30.98,             # V2 z-score engine score (raw: 30.98%)
+            "employment_growth": 32.31,              # V2 z-score engine score (raw: 32.31%)
+            "price_appreciation_5y": 87.39,          # V2 z-score engine score (raw: 87.39%)
             "liquidity_indicator": 2.05,             # (10+4.2)/69.2*10
-            "tourism_strength": 3.48,                # 8.80/25.3*10
-            "rental_demand_index": 7.75,             # (85.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 10.0,        # direct
-            "supply_pipeline": 8.50,                 # inverted 3.98%: raw=1.50→10-1.50
-            "quality_of_life_index": 4.29,           # (132.60-93.93)/90.17*10
+            "tourism_strength": 44.00,                # V2 z-score engine score (raw: 44.00%)
+            "rental_demand_index": 83.47,             # V2 z-score engine score (raw index: 83.47)
+            "infrastructure_pipeline": 77.64,        # V2 z-score engine score (raw: 77.64)
+            "supply_pipeline": 66.01,                 # V2 z-score engine score (raw: 66.01%) — inverse var
+            "vacancy_rate": 8.11,                # V2 z-score engine score (raw: 42.00%) — inverse var
+            "quality_of_life_index": 43.45,           # V2 z-score engine score (raw index: 132.60)
         },
         "raw_values": {
             "population_growth_rate": 0.004,
@@ -151,16 +147,16 @@ CITIES = {
         "country": "Portugal",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 1.49,              # (0.47+0.5)/6.5*10
-            "employment_growth": 3.90,               # (2.50-0.9)/4.1*10
-            "price_appreciation_5y": 6.71,           # (65-14)/76*10
+            "net_migration_rate": 32.08,              # V2 z-score engine score (raw: 32.08%)
+            "employment_growth": 44.68,               # V2 z-score engine score (raw: 44.68%)
+            "price_appreciation_5y": 64.23,           # V2 z-score engine score (raw: 64.23%)
             "liquidity_indicator": 0.46,              # (-1.00+4.2)/69.2*10
-            "tourism_strength": 2.33,                 # 5.90/25.3*10
-            "rental_demand_index": 7.75,              # (85.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 10.0,         # direct
-            "supply_pipeline": 9.70,                  # inverted 2.00%: raw=0.30→10-0.30
-            "quality_of_life_index": 6.99,            # (157.00-93.93)/90.17*10
+            "tourism_strength": 31.71,                 # V2 z-score engine score (raw: 31.71%)
+            "rental_demand_index": 83.47,              # V2 z-score engine score (raw index: 83.47)
+            "infrastructure_pipeline": 77.64,         # V2 z-score engine score (raw: 77.64)
+            "supply_pipeline": 76.04,                  # V2 z-score engine score (raw: 76.04%) — inverse var
+            "vacancy_rate": 51.69,               # V2 z-score engine score (raw: 22.00%) — inverse var
+            "quality_of_life_index": 65.41,            # V2 z-score engine score (raw index: 157.00)
         },
         "raw_values": {
             "population_growth_rate": 0.0047,
@@ -179,16 +175,16 @@ CITIES = {
         "country": "Portugal",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.46,               # (1.10+0.5)/6.5*10
-            "employment_growth": 3.41,                # (2.30-0.9)/4.1*10
-            "price_appreciation_5y": 5.39,            # (55-14)/76*10
+            "net_migration_rate": 41.98,               # V2 z-score engine score (raw: 41.98%)
+            "employment_growth": 39.73,                # V2 z-score engine score (raw: 39.73%)
+            "price_appreciation_5y": 53.20,            # V2 z-score engine score (raw: 53.20%)
             "liquidity_indicator": 0.39,               # (-1.50+4.2)/69.2*10
-            "tourism_strength": 2.37,                  # 6.00/25.3*10
-            "rental_demand_index": 5.17,               # (75.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 4.0,           # direct
-            "supply_pipeline": 10.0,                   # inverted 1.50%: raw=0→10-0
-            "quality_of_life_index": 7.66,             # (163.00-93.93)/90.17*10
+            "tourism_strength": 32.13,                  # V2 z-score engine score (raw: 32.13%)
+            "rental_demand_index": 56.32,               # V2 z-score engine score (raw index: 56.32)
+            "infrastructure_pipeline": 2.61,           # V2 z-score engine score (raw: 2.61)
+            "supply_pipeline": 78.57,                   # V2 z-score engine score (raw: 78.57%) — inverse var
+            "vacancy_rate": 19.01,               # V2 z-score engine score (raw: 37.00%) — inverse var
+            "quality_of_life_index": 70.82,             # V2 z-score engine score (raw index: 163.00)
         },
         "raw_values": {
             "population_growth_rate": 0.011,
@@ -207,16 +203,16 @@ CITIES = {
         "country": "Portugal",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.77,                # (1.30+0.5)/6.5*10
-            "employment_growth": 4.63,                 # (2.80-0.9)/4.1*10
-            "price_appreciation_5y": 7.37,             # (70-14)/76*10
+            "net_migration_rate": 45.13,                # V2 z-score engine score (raw: 45.13%)
+            "employment_growth": 52.10,                 # V2 z-score engine score (raw: 52.10%)
+            "price_appreciation_5y": 69.73,             # V2 z-score engine score (raw: 69.73%)
             "liquidity_indicator": 0.68,                # (0.50+4.2)/69.2*10
-            "tourism_strength": 0.24,                   # 0.60/25.3*10
-            "rental_demand_index": 3.36,                # (68.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 7.0,            # direct
-            "supply_pipeline": 9.09,                    # inverted 3.00%: raw=0.91→10-0.91
-            "quality_of_life_index": 8.10,              # (167.00-93.93)/90.17*10
+            "tourism_strength": 9.23,                   # V2 z-score engine score (raw: 9.23%)
+            "rental_demand_index": 37.32,                # V2 z-score engine score (raw index: 37.32)
+            "infrastructure_pipeline": 40.11,            # V2 z-score engine score (raw: 40.11)
+            "supply_pipeline": 70.97,                    # V2 z-score engine score (raw: 70.97%) — inverse var
+            "vacancy_rate": 0.00,                # V2 z-score engine score (raw: 48.00%) — inverse var
+            "quality_of_life_index": 74.41,              # V2 z-score engine score (raw index: 167.00)
         },
         "raw_values": {
             "population_growth_rate": 0.013,
@@ -235,16 +231,16 @@ CITIES = {
         "country": "Portugal",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 3.26,                 # (1.62+0.5)/6.5*10
-            "employment_growth": 3.90,                  # (2.50-0.9)/4.1*10
-            "price_appreciation_5y": 6.32,              # (62-14)/76*10
+            "net_migration_rate": 50.16,                 # V2 z-score engine score (raw: 50.16%)
+            "employment_growth": 44.68,                  # V2 z-score engine score (raw: 44.68%)
+            "price_appreciation_5y": 60.92,              # V2 z-score engine score (raw: 60.92%)
             "liquidity_indicator": 0.97,                 # (2.50+4.2)/69.2*10
-            "tourism_strength": 3.28,                    # 8.30/25.3*10
-            "rental_demand_index": 3.88,                 # (70.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 6.0,             # direct
-            "supply_pipeline": 6.97,                     # inverted 6.50%: raw=3.03→10-3.03
-            "quality_of_life_index": 9.99,               # (184.00-93.93)/90.17*10
+            "tourism_strength": 41.88,                    # V2 z-score engine score (raw: 41.88%)
+            "rental_demand_index": 42.76,                 # V2 z-score engine score (raw index: 42.76)
+            "infrastructure_pipeline": 27.61,             # V2 z-score engine score (raw: 27.61)
+            "supply_pipeline": 53.24,                     # V2 z-score engine score (raw: 53.24%) — inverse var
+            "vacancy_rate": 60.40,               # V2 z-score engine score (raw: 18.00%) — inverse var
+            "quality_of_life_index": 89.70,               # V2 z-score engine score (raw index: 184.00)
         },
         "raw_values": {
             "population_growth_rate": 0.0162,
@@ -263,16 +259,16 @@ CITIES = {
         "country": "Portugal",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 1.35,                  # (0.38+0.5)/6.5*10
-            "employment_growth": 3.17,                   # (2.20-0.9)/4.1*10
-            "price_appreciation_5y": 6.32,               # (62-14)/76*10
+            "net_migration_rate": 30.66,                  # V2 z-score engine score (raw: 30.66%)
+            "employment_growth": 37.26,                   # V2 z-score engine score (raw: 37.26%)
+            "price_appreciation_5y": 60.92,               # V2 z-score engine score (raw: 60.92%)
             "liquidity_indicator": 0.82,                  # (1.50+4.2)/69.2*10
-            "tourism_strength": 3.28,                     # 8.30/25.3*10
-            "rental_demand_index": 5.94,                  # (78.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 10.0,             # direct
-            "supply_pipeline": 9.39,                      # inverted 2.50%: raw=0.61→10-0.61
-            "quality_of_life_index": 9.21,                # (177.00-93.93)/90.17*10
+            "tourism_strength": 41.88,                     # V2 z-score engine score (raw: 41.88%)
+            "rental_demand_index": 64.47,                  # V2 z-score engine score (raw index: 64.47)
+            "infrastructure_pipeline": 77.64,             # V2 z-score engine score (raw: 77.64)
+            "supply_pipeline": 73.51,                      # V2 z-score engine score (raw: 73.51%) — inverse var
+            "vacancy_rate": 56.05,               # V2 z-score engine score (raw: 20.00%) — inverse var
+            "quality_of_life_index": 83.40,                # V2 z-score engine score (raw index: 177.00)
         },
         "raw_values": {
             "population_growth_rate": 0.0038,
@@ -291,16 +287,16 @@ CITIES = {
         "country": "Thailand",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.80,                   # (1.32+0.5)/6.5*10
-            "employment_growth": 4.63,                    # (2.80-0.9)/4.1*10
-            "price_appreciation_5y": 3.68,                # (42-14)/76*10
+            "net_migration_rate": 45.44,                   # V2 z-score engine score (raw: 45.44%)
+            "employment_growth": 52.10,                    # V2 z-score engine score (raw: 52.10%)
+            "price_appreciation_5y": 38.86,                # V2 z-score engine score (raw: 38.86%)
             "liquidity_indicator": 1.11,                   # (3.50+4.2)/69.2*10
-            "tourism_strength": 7.27,                      # 18.40/25.3*10
-            "rental_demand_index": 6.98,                   # (82.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 9.20,              # direct
-            "supply_pipeline": 6.06,                       # inverted 8.00%: raw=3.94→10-3.94
-            "quality_of_life_index": 1.48,                 # regional avg 107.23 (N/A in dataset)
+            "tourism_strength": 84.71,                      # V2 z-score engine score (raw: 84.71%)
+            "rental_demand_index": 75.33,                   # V2 z-score engine score (raw index: 75.33)
+            "infrastructure_pipeline": 67.64,              # V2 z-score engine score (raw: 67.64)
+            "supply_pipeline": 45.64,                       # V2 z-score engine score (raw: 45.64%) — inverse var
+            "vacancy_rate": 51.69,               # V2 z-score engine score (raw: 22.00%) — inverse var
+            "quality_of_life_index": 20.62,                 # V2 z-score engine score (raw index: 107.23) (proxy)
         },
         "raw_values": {
             "population_growth_rate": 0.0132,
@@ -319,16 +315,16 @@ CITIES = {
         "country": "Thailand",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 2.98,                    # (1.44+0.5)/6.5*10
-            "employment_growth": 1.71,                     # (1.60-0.9)/4.1*10
-            "price_appreciation_5y": 0.53,                 # (18-14)/76*10
+            "net_migration_rate": 47.33,                    # V2 z-score engine score (raw: 47.33%)
+            "employment_growth": 22.41,                     # V2 z-score engine score (raw: 22.41%)
+            "price_appreciation_5y": 12.40,                 # V2 z-score engine score (raw: 12.40%)
             "liquidity_indicator": 0.0,                     # (-4.20+4.2)/69.2*10
-            "tourism_strength": 4.98,                       # 12.60/25.3*10
-            "rental_demand_index": 4.91,                    # (74.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 10.0,               # direct
-            "supply_pipeline": 0.0,                         # inverted 18.00%: raw=10.0→10-10
-            "quality_of_life_index": 0.0,                   # (93.93-93.93)/90.17*10
+            "tourism_strength": 60.11,                       # V2 z-score engine score (raw: 60.11%)
+            "rental_demand_index": 53.61,                    # V2 z-score engine score (raw index: 53.61)
+            "infrastructure_pipeline": 77.64,               # V2 z-score engine score (raw: 77.64)
+            "supply_pipeline": 0.00,                         # V2 z-score engine score (raw: 0.00%) — inverse var (winsorized)
+            "vacancy_rate": 73.48,               # V2 z-score engine score (raw: 12.00%) — inverse var
+            "quality_of_life_index": 8.64,                   # V2 z-score engine score (raw index: 93.93)
         },
         "raw_values": {
             "population_growth_rate": 0.0144,
@@ -347,16 +343,16 @@ CITIES = {
         "country": "Thailand",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 2.46,                     # (1.10+0.5)/6.5*10
-            "employment_growth": 2.93,                      # (2.10-0.9)/4.1*10
-            "price_appreciation_5y": 1.05,                  # (22-14)/76*10
+            "net_migration_rate": 41.98,                     # V2 z-score engine score (raw: 41.98%)
+            "employment_growth": 34.78,                      # V2 z-score engine score (raw: 34.78%)
+            "price_appreciation_5y": 16.81,                  # V2 z-score engine score (raw: 16.81%)
             "liquidity_indicator": 0.20,                     # (-2.80+4.2)/69.2*10
-            "tourism_strength": 5.61,                        # 14.20/25.3*10
-            "rental_demand_index": 4.13,                     # (71.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 6.40,                # direct
-            "supply_pipeline": 1.82,                         # inverted 15.00%: raw=8.18→10-8.18
-            "quality_of_life_index": 0.40,                   # (97.50-93.93)/90.17*10
+            "tourism_strength": 66.89,                        # V2 z-score engine score (raw: 66.89%)
+            "rental_demand_index": 45.47,                     # V2 z-score engine score (raw index: 45.47)
+            "infrastructure_pipeline": 32.61,                # V2 z-score engine score (raw: 32.61)
+            "supply_pipeline": 10.17,                         # V2 z-score engine score (raw: 10.17%) — inverse var
+            "vacancy_rate": 38.62,               # V2 z-score engine score (raw: 28.00%) — inverse var
+            "quality_of_life_index": 11.87,                   # V2 z-score engine score (raw index: 97.50)
         },
         "raw_values": {
             "population_growth_rate": 0.011,
@@ -375,16 +371,16 @@ CITIES = {
         "country": "Thailand",
         "coastal": False,
         "scores": {
-            "net_migration_rate": 2.72,                      # (1.27+0.5)/6.5*10
-            "employment_growth": 0.73,                       # (1.20-0.9)/4.1*10
-            "price_appreciation_5y": 0.0,                    # (14-14)/76*10
+            "net_migration_rate": 44.66,                      # V2 z-score engine score (raw: 44.66%)
+            "employment_growth": 12.53,                       # V2 z-score engine score (raw: 12.53%)
+            "price_appreciation_5y": 7.98,                    # V2 z-score engine score (raw: 7.98%)
             "liquidity_indicator": 0.16,                      # (-3.10+4.2)/69.2*10
-            "tourism_strength": 4.27,                         # 10.80/25.3*10
-            "rental_demand_index": 3.36,                      # (68.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 7.20,                 # direct
-            "supply_pipeline": 6.67,                          # inverted 7.00%: raw=3.33→10-3.33
-            "quality_of_life_index": 3.45,                    # (125.00-93.93)/90.17*10
+            "tourism_strength": 52.48,                         # V2 z-score engine score (raw: 52.48%)
+            "rental_demand_index": 37.32,                      # V2 z-score engine score (raw index: 37.32)
+            "infrastructure_pipeline": 42.61,                 # V2 z-score engine score (raw: 42.61)
+            "supply_pipeline": 50.71,                          # V2 z-score engine score (raw: 50.71%) — inverse var
+            "vacancy_rate": 66.94,               # V2 z-score engine score (raw: 15.00%) — inverse var
+            "quality_of_life_index": 36.61,                    # V2 z-score engine score (raw index: 125.00)
         },
         "raw_values": {
             "population_growth_rate": 0.0127,
@@ -403,16 +399,16 @@ CITIES = {
         "country": "Thailand",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 1.85,                       # (0.70+0.5)/6.5*10
-            "employment_growth": 0.0,                         # (0.90-0.9)/4.1*10
-            "price_appreciation_5y": 0.66,                    # (19-14)/76*10
+            "net_migration_rate": 35.69,                       # V2 z-score engine score (raw: 35.69%)
+            "employment_growth": 5.10,                         # V2 z-score engine score (raw: 5.10%)
+            "price_appreciation_5y": 13.50,                    # V2 z-score engine score (raw: 13.50%)
             "liquidity_indicator": 0.87,                       # (1.80+4.2)/69.2*10
-            "tourism_strength": 3.36,                          # 8.50/25.3*10
-            "rental_demand_index": 2.07,                       # (63.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 4.80,                  # direct
-            "supply_pipeline": 7.88,                           # inverted 5.00%: raw=2.12→10-2.12
-            "quality_of_life_index": 2.06,                     # (112.50-93.93)/90.17*10
+            "tourism_strength": 42.73,                          # V2 z-score engine score (raw: 42.73%)
+            "rental_demand_index": 23.76,                       # V2 z-score engine score (raw index: 23.76)
+            "infrastructure_pipeline": 12.61,                  # V2 z-score engine score (raw: 12.61)
+            "supply_pipeline": 60.84,                           # V2 z-score engine score (raw: 60.84%) — inverse var
+            "vacancy_rate": 34.26,               # V2 z-score engine score (raw: 30.00%) — inverse var
+            "quality_of_life_index": 25.36,                     # V2 z-score engine score (raw index: 112.50)
         },
         "raw_values": {
             "population_growth_rate": 0.007,
@@ -431,16 +427,16 @@ CITIES = {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 7.54,                        # (4.40+0.5)/6.5*10
-            "employment_growth": 7.56,                         # (4.00-0.9)/4.1*10
-            "price_appreciation_5y": 8.68,                     # (80-14)/76*10
+            "net_migration_rate": 93.88,                        # V2 z-score engine score (raw: 93.88%)
+            "employment_growth": 81.80,                         # V2 z-score engine score (raw: 81.80%)
+            "price_appreciation_5y": 80.76,                     # V2 z-score engine score (raw: 80.76%)
             "liquidity_indicator": 4.36,                        # (26+4.2)/69.2*10
-            "tourism_strength": 4.35,                           # 11.00/25.3*10
-            "rental_demand_index": 5.94,                        # (78.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 10.0,                   # direct
-            "supply_pipeline": 2.73,                            # inverted 13.50%: raw=7.27→10-7.27
-            "quality_of_life_index": 10.0,                      # (184.10-93.93)/90.17*10
+            "tourism_strength": 53.33,                           # V2 z-score engine score (raw: 53.33%)
+            "rental_demand_index": 64.47,                        # V2 z-score engine score (raw index: 64.47)
+            "infrastructure_pipeline": 77.64,                   # V2 z-score engine score (raw: 77.64)
+            "supply_pipeline": 17.77,                            # V2 z-score engine score (raw: 17.77%) — inverse var
+            "vacancy_rate": 80.01,               # V2 z-score engine score (raw: 9.00%) — inverse var
+            "quality_of_life_index": 89.79,                      # V2 z-score engine score (raw index: 184.10)
         },
         "raw_values": {
             "population_growth_rate": 0.044,
@@ -459,16 +455,16 @@ CITIES = {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 6.46,                         # (3.70+0.5)/6.5*10
-            "employment_growth": 8.78,                          # (4.50-0.9)/4.1*10
-            "price_appreciation_5y": 6.45,                      # (63-14)/76*10
+            "net_migration_rate": 82.88,                         # V2 z-score engine score (raw: 82.88%)
+            "employment_growth": 94.17,                          # V2 z-score engine score (raw: 94.17%)
+            "price_appreciation_5y": 62.02,                      # V2 z-score engine score (raw: 62.02%)
             "liquidity_indicator": 6.10,                         # (38+4.2)/69.2*10
-            "tourism_strength": 5.14,                            # 13.00/25.3*10
-            "rental_demand_index": 4.39,                         # (72.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 9.0,                     # direct
-            "supply_pipeline": 5.45,                             # inverted 9.00%: raw=4.55→10-4.55
-            "quality_of_life_index": 8.50,                       # (170.60-93.93)/90.17*10
+            "tourism_strength": 61.81,                            # V2 z-score engine score (raw: 61.81%)
+            "rental_demand_index": 48.18,                         # V2 z-score engine score (raw index: 48.18)
+            "infrastructure_pipeline": 65.14,                     # V2 z-score engine score (raw: 65.14)
+            "supply_pipeline": 40.57,                             # V2 z-score engine score (raw: 40.57%) — inverse var
+            "vacancy_rate": 84.37,               # V2 z-score engine score (raw: 7.00%) — inverse var
+            "quality_of_life_index": 77.66,                       # V2 z-score engine score (raw index: 170.60)
         },
         "raw_values": {
             "population_growth_rate": 0.037,
@@ -487,16 +483,16 @@ CITIES = {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 4.31,                          # (2.30+0.5)/6.5*10
-            "employment_growth": 3.90,                           # (2.50-0.9)/4.1*10
-            "price_appreciation_5y": 2.43,                       # (32.5-14)/76*10
+            "net_migration_rate": 60.84,                          # V2 z-score engine score (raw: 60.84%)
+            "employment_growth": 44.68,                           # V2 z-score engine score (raw: 44.68%)
+            "price_appreciation_5y": 28.39,                       # V2 z-score engine score (raw: 28.39%)
             "liquidity_indicator": 6.10,                          # (38+4.2)/69.2*10
-            "tourism_strength": 4.35,                             # 11.00/25.3*10
-            "rental_demand_index": 2.58,                          # (65.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 7.0,                      # direct
-            "supply_pipeline": 6.67,                              # inverted 7.00%: raw=3.33→10-3.33
-            "quality_of_life_index": 4.89,                        # (138.00-93.93)/90.17*10
+            "tourism_strength": 53.33,                             # V2 z-score engine score (raw: 53.33%)
+            "rental_demand_index": 29.18,                          # V2 z-score engine score (raw index: 29.18)
+            "infrastructure_pipeline": 40.11,                      # V2 z-score engine score (raw: 40.11)
+            "supply_pipeline": 50.71,                              # V2 z-score engine score (raw: 50.71%) — inverse var
+            "vacancy_rate": 63.67,               # V2 z-score engine score (raw: 16.50%) — inverse var
+            "quality_of_life_index": 48.31,                        # V2 z-score engine score (raw index: 138.00)
         },
         "raw_values": {
             "population_growth_rate": 0.023,
@@ -515,16 +511,16 @@ CITIES = {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 10.0,                           # (6.00+0.5)/6.5*10 = 10.0 (max)
-            "employment_growth": 10.0,                            # (5.00-0.9)/4.1*10 = 10.0 (max)
-            "price_appreciation_5y": 10.0,                        # (90-14)/76*10 = 10.0 (max)
+            "net_migration_rate": 100.00,                           # V2 z-score engine score (raw: 100.00%)
+            "employment_growth": 100.00,                            # V2 z-score engine score (raw: 100.00%)
+            "price_appreciation_5y": 91.79,                        # V2 z-score engine score (raw: 91.79%)
             "liquidity_indicator": 10.0,                           # (65+4.2)/69.2*10 = 10.0 (max)
-            "tourism_strength": 2.77,                              # 7.00/25.3*10
-            "rental_demand_index": 3.88,                           # (70.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 9.0,                       # direct
-            "supply_pipeline": 0.30,                               # inverted 17.50%: raw=9.70→10-9.70
-            "quality_of_life_index": 7.80,                         # regional avg 164.23 (N/A in dataset)
+            "tourism_strength": 36.36,                              # V2 z-score engine score (raw: 36.36%)
+            "rental_demand_index": 42.76,                           # V2 z-score engine score (raw index: 42.76)
+            "infrastructure_pipeline": 65.14,                       # V2 z-score engine score (raw: 65.14)
+            "supply_pipeline": 0.00,                               # V2 z-score engine score (raw: 0.00%) — inverse var (winsorized)
+            "vacancy_rate": 75.65,               # V2 z-score engine score (raw: 11.00%) — inverse var
+            "quality_of_life_index": 71.93,                         # V2 z-score engine score (raw index: 164.23) (proxy)
         },
         "raw_values": {
             "population_growth_rate": 0.060,
@@ -543,16 +539,16 @@ CITIES = {
         "country": "UAE",
         "coastal": True,
         "scores": {
-            "net_migration_rate": 6.15,                            # (3.50+0.5)/6.5*10
-            "employment_growth": 3.90,                             # (2.50-0.9)/4.1*10
-            "price_appreciation_5y": 1.78,                         # (27.5-14)/76*10
+            "net_migration_rate": 79.72,                            # V2 z-score engine score (raw: 79.72%)
+            "employment_growth": 44.68,                             # V2 z-score engine score (raw: 44.68%)
+            "price_appreciation_5y": 22.87,                         # V2 z-score engine score (raw: 22.87%)
             "liquidity_indicator": 4.65,                            # (28+4.2)/69.2*10
-            "tourism_strength": 0.0,                                # no official data → 0
-            "rental_demand_index": 0.0,                             # (55.00-55)/38.7*10
-            "rental_yield": 0,
-            "infrastructure_pipeline": 5.0,                        # direct
-            "supply_pipeline": 7.27,                                # inverted 6.00%: raw=2.73→10-2.73
-            "quality_of_life_index": 7.80,                          # regional avg 164.23 (N/A in dataset)
+            "tourism_strength": 6.68,                                # V2 z-score engine score (raw: 6.68%) (no data → 0)
+            "rental_demand_index": 2.03,                             # V2 z-score engine score (raw index: 2.03)
+            "infrastructure_pipeline": 15.11,                        # V2 z-score engine score (raw: 15.11)
+            "supply_pipeline": 55.77,                                # V2 z-score engine score (raw: 55.77%) — inverse var
+            "vacancy_rate": 56.05,               # V2 z-score engine score (raw: 20.00%) — inverse var
+            "quality_of_life_index": 71.93,                          # V2 z-score engine score (raw index: 164.23) (proxy)
         },
         "raw_values": {
             "population_growth_rate": 0.035,
@@ -570,18 +566,11 @@ CITIES = {
 }
 
 
-def score_city(city_name, normalized_weights, candidate_cities):
-    """Score a city with z-score normalization and inverse supply handling."""
-    data = CITIES[city_name]
-    peer_scores = [CITIES[c]["scores"] for c in candidate_cities]
-    standardized = standardize_determinants(
-        data["scores"],
-        peer_scores,
-        normalized_weights.keys(),
-        inverse_vars=CITY_INVERSE_VARS,
-    )
-    score, breakdown = weighted_score(standardized, normalized_weights)
-    return score, breakdown, standardized
+def score_city(city_name, normalized_weights):
+    """Score a city using its pre-calibrated V2 scores directly."""
+    scores = CITIES[city_name]["scores"]
+    score, breakdown = weighted_score(scores, normalized_weights)
+    return score, breakdown, scores
 
 
 def rank_cities(surviving_countries, answers):
@@ -598,9 +587,7 @@ def rank_cities(surviving_countries, answers):
 
     ranked = []
     for city in candidate_cities:
-        score, breakdown, standardized = score_city(
-            city, normalized_weights, candidate_cities
-        )
+        score, breakdown, standardized = score_city(city, normalized_weights)
         ranked.append({
             "city": city,
             "country": CITIES[city]["country"],

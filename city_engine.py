@@ -10,7 +10,7 @@ CITIES = {
             "net_migration_rate": 23.10,        # V2 z-score engine score (raw: 23.10%)
             "employment_growth": 52.10,          # V2 z-score engine score (raw: 52.10%)
             "price_appreciation_5y": 59.82,      # V2 z-score engine score (raw: 59.82%)
-            "liquidity_indicator": 1.76,         # (8+4.2)/69.2*10
+            "liquidity_indicator": 45.13,         # (8+4.2)/69.2*10
             "tourism_strength": 77.94,            # V2 z-score engine score (raw: 77.94%)
             "rental_demand_index": 100.00,         # V2 z-score engine score (raw index: 100.00)
             "infrastructure_pipeline": 72.64,    # V2 z-score engine score (raw: 72.64)
@@ -38,7 +38,7 @@ CITIES = {
             "net_migration_rate": 16.80,           # V2 z-score engine score (raw: 16.80%)
             "employment_growth": 39.73,           # V2 z-score engine score (raw: 39.73%)
             "price_appreciation_5y": 49.90,        # V2 z-score engine score (raw: 49.90%)
-            "liquidity_indicator": 1.33,          # (5+4.2)/69.2*10
+            "liquidity_indicator": 40.9,          # (5+4.2)/69.2*10
             "tourism_strength": 100.00,             # V2 z-score engine score (raw: 100.00%)
             "rental_demand_index": 88.09,          # V2 z-score engine score (raw index: 88.09)
             "infrastructure_pipeline": 27.61,      # V2 z-score engine score (raw: 27.61)
@@ -66,7 +66,7 @@ CITIES = {
             "net_migration_rate": 29.40,           # V2 z-score engine score (raw: 29.40%)
             "employment_growth": 39.73,            # V2 z-score engine score (raw: 39.73%)
             "price_appreciation_5y": 48.78,        # V2 z-score engine score (raw: 48.78%)
-            "liquidity_indicator": 1.47,           # (6+4.2)/69.2*10
+            "liquidity_indicator": 42.31,           # (6+4.2)/69.2*10
             "tourism_strength": 30.43,              # V2 z-score engine score (raw: 30.43%)
             "rental_demand_index": 73.43,           # V2 z-score engine score (raw index: 73.43)
             "infrastructure_pipeline": 77.64,      # V2 z-score engine score (raw: 77.64)
@@ -94,7 +94,7 @@ CITIES = {
             "net_migration_rate": 48.28,            # V2 z-score engine score (raw: 48.28%)
             "employment_growth": 81.80,             # V2 z-score engine score (raw: 81.80%)
             "price_appreciation_5y": 69.73,         # V2 z-score engine score (raw: 69.73%)
-            "liquidity_indicator": 1.76,            # (8+4.2)/69.2*10
+            "liquidity_indicator": 45.13,            # (8+4.2)/69.2*10
             "tourism_strength": 79.62,               # V2 z-score engine score (raw: 79.62%)
             "rental_demand_index": 52.79,            # V2 z-score engine score (raw index: 52.79)
             "infrastructure_pipeline": 35.11,       # V2 z-score engine score (raw: 35.11)
@@ -122,7 +122,7 @@ CITIES = {
             "net_migration_rate": 30.98,             # V2 z-score engine score (raw: 30.98%)
             "employment_growth": 32.31,              # V2 z-score engine score (raw: 32.31%)
             "price_appreciation_5y": 87.39,          # V2 z-score engine score (raw: 87.39%)
-            "liquidity_indicator": 2.05,             # (10+4.2)/69.2*10
+            "liquidity_indicator": 47.94,             # (10+4.2)/69.2*10
             "tourism_strength": 44.00,                # V2 z-score engine score (raw: 44.00%)
             "rental_demand_index": 83.47,             # V2 z-score engine score (raw index: 83.47)
             "infrastructure_pipeline": 77.64,        # V2 z-score engine score (raw: 77.64)
@@ -150,7 +150,7 @@ CITIES = {
             "net_migration_rate": 32.08,              # V2 z-score engine score (raw: 32.08%)
             "employment_growth": 44.68,               # V2 z-score engine score (raw: 44.68%)
             "price_appreciation_5y": 64.23,           # V2 z-score engine score (raw: 64.23%)
-            "liquidity_indicator": 0.46,              # (-1.00+4.2)/69.2*10
+            "liquidity_indicator": 32.43,              # (-1.00+4.2)/69.2*10
             "tourism_strength": 31.71,                 # V2 z-score engine score (raw: 31.71%)
             "rental_demand_index": 83.47,              # V2 z-score engine score (raw index: 83.47)
             "infrastructure_pipeline": 77.64,         # V2 z-score engine score (raw: 77.64)
@@ -178,7 +178,7 @@ CITIES = {
             "net_migration_rate": 41.98,               # V2 z-score engine score (raw: 41.98%)
             "employment_growth": 39.73,                # V2 z-score engine score (raw: 39.73%)
             "price_appreciation_5y": 53.20,            # V2 z-score engine score (raw: 53.20%)
-            "liquidity_indicator": 0.39,               # (-1.50+4.2)/69.2*10
+            "liquidity_indicator": 31.73,               # (-1.50+4.2)/69.2*10
             "tourism_strength": 32.13,                  # V2 z-score engine score (raw: 32.13%)
             "rental_demand_index": 56.32,               # V2 z-score engine score (raw index: 56.32)
             "infrastructure_pipeline": 2.61,           # V2 z-score engine score (raw: 2.61)
@@ -206,7 +206,7 @@ CITIES = {
             "net_migration_rate": 45.13,                # V2 z-score engine score (raw: 45.13%)
             "employment_growth": 52.10,                 # V2 z-score engine score (raw: 52.10%)
             "price_appreciation_5y": 69.73,             # V2 z-score engine score (raw: 69.73%)
-            "liquidity_indicator": 0.68,                # (0.50+4.2)/69.2*10
+            "liquidity_indicator": 34.56,                # (0.50+4.2)/69.2*10
             "tourism_strength": 9.23,                   # V2 z-score engine score (raw: 9.23%)
             "rental_demand_index": 37.32,                # V2 z-score engine score (raw index: 37.32)
             "infrastructure_pipeline": 40.11,            # V2 z-score engine score (raw: 40.11)
@@ -234,7 +234,7 @@ CITIES = {
             "net_migration_rate": 50.16,                 # V2 z-score engine score (raw: 50.16%)
             "employment_growth": 44.68,                  # V2 z-score engine score (raw: 44.68%)
             "price_appreciation_5y": 60.92,              # V2 z-score engine score (raw: 60.92%)
-            "liquidity_indicator": 0.97,                 # (2.50+4.2)/69.2*10
+            "liquidity_indicator": 37.38,                 # (2.50+4.2)/69.2*10
             "tourism_strength": 41.88,                    # V2 z-score engine score (raw: 41.88%)
             "rental_demand_index": 42.76,                 # V2 z-score engine score (raw index: 42.76)
             "infrastructure_pipeline": 27.61,             # V2 z-score engine score (raw: 27.61)
@@ -262,7 +262,7 @@ CITIES = {
             "net_migration_rate": 30.66,                  # V2 z-score engine score (raw: 30.66%)
             "employment_growth": 37.26,                   # V2 z-score engine score (raw: 37.26%)
             "price_appreciation_5y": 60.92,               # V2 z-score engine score (raw: 60.92%)
-            "liquidity_indicator": 0.82,                  # (1.50+4.2)/69.2*10
+            "liquidity_indicator": 35.97,                  # (1.50+4.2)/69.2*10
             "tourism_strength": 41.88,                     # V2 z-score engine score (raw: 41.88%)
             "rental_demand_index": 64.47,                  # V2 z-score engine score (raw index: 64.47)
             "infrastructure_pipeline": 77.64,             # V2 z-score engine score (raw: 77.64)
@@ -290,7 +290,7 @@ CITIES = {
             "net_migration_rate": 45.44,                   # V2 z-score engine score (raw: 45.44%)
             "employment_growth": 52.10,                    # V2 z-score engine score (raw: 52.10%)
             "price_appreciation_5y": 38.86,                # V2 z-score engine score (raw: 38.86%)
-            "liquidity_indicator": 1.11,                   # (3.50+4.2)/69.2*10
+            "liquidity_indicator": 38.78,                   # (3.50+4.2)/69.2*10
             "tourism_strength": 84.71,                      # V2 z-score engine score (raw: 84.71%)
             "rental_demand_index": 75.33,                   # V2 z-score engine score (raw index: 75.33)
             "infrastructure_pipeline": 67.64,              # V2 z-score engine score (raw: 67.64)
@@ -430,7 +430,7 @@ CITIES = {
             "net_migration_rate": 93.88,                        # V2 z-score engine score (raw: 93.88%)
             "employment_growth": 81.80,                         # V2 z-score engine score (raw: 81.80%)
             "price_appreciation_5y": 80.76,                     # V2 z-score engine score (raw: 80.76%)
-            "liquidity_indicator": 4.36,                        # (26+4.2)/69.2*10
+            "liquidity_indicator": 70.49,                        # (26+4.2)/69.2*10
             "tourism_strength": 53.33,                           # V2 z-score engine score (raw: 53.33%)
             "rental_demand_index": 64.47,                        # V2 z-score engine score (raw index: 64.47)
             "infrastructure_pipeline": 77.64,                   # V2 z-score engine score (raw: 77.64)
@@ -458,7 +458,7 @@ CITIES = {
             "net_migration_rate": 82.88,                         # V2 z-score engine score (raw: 82.88%)
             "employment_growth": 94.17,                          # V2 z-score engine score (raw: 94.17%)
             "price_appreciation_5y": 62.02,                      # V2 z-score engine score (raw: 62.02%)
-            "liquidity_indicator": 6.10,                         # (38+4.2)/69.2*10
+            "liquidity_indicator": 87.39,                         # (38+4.2)/69.2*10
             "tourism_strength": 61.81,                            # V2 z-score engine score (raw: 61.81%)
             "rental_demand_index": 48.18,                         # V2 z-score engine score (raw index: 48.18)
             "infrastructure_pipeline": 65.14,                     # V2 z-score engine score (raw: 65.14)
@@ -486,7 +486,7 @@ CITIES = {
             "net_migration_rate": 60.84,                          # V2 z-score engine score (raw: 60.84%)
             "employment_growth": 44.68,                           # V2 z-score engine score (raw: 44.68%)
             "price_appreciation_5y": 28.39,                       # V2 z-score engine score (raw: 28.39%)
-            "liquidity_indicator": 6.10,                          # (38+4.2)/69.2*10
+            "liquidity_indicator": 87.39,                          # (38+4.2)/69.2*10
             "tourism_strength": 53.33,                             # V2 z-score engine score (raw: 53.33%)
             "rental_demand_index": 29.18,                          # V2 z-score engine score (raw index: 29.18)
             "infrastructure_pipeline": 40.11,                      # V2 z-score engine score (raw: 40.11)
@@ -514,7 +514,7 @@ CITIES = {
             "net_migration_rate": 100.00,                           # V2 z-score engine score (raw: 100.00%)
             "employment_growth": 100.00,                            # V2 z-score engine score (raw: 100.00%)
             "price_appreciation_5y": 91.79,                        # V2 z-score engine score (raw: 91.79%)
-            "liquidity_indicator": 10.0,                           # (65+4.2)/69.2*10 = 10.0 (max)
+            "liquidity_indicator": 100.0,                           # (65+4.2)/69.2*10 = 10.0 (max)
             "tourism_strength": 36.36,                              # V2 z-score engine score (raw: 36.36%)
             "rental_demand_index": 42.76,                           # V2 z-score engine score (raw index: 42.76)
             "infrastructure_pipeline": 65.14,                       # V2 z-score engine score (raw: 65.14)
@@ -542,7 +542,7 @@ CITIES = {
             "net_migration_rate": 79.72,                            # V2 z-score engine score (raw: 79.72%)
             "employment_growth": 44.68,                             # V2 z-score engine score (raw: 44.68%)
             "price_appreciation_5y": 22.87,                         # V2 z-score engine score (raw: 22.87%)
-            "liquidity_indicator": 4.65,                            # (28+4.2)/69.2*10
+            "liquidity_indicator": 73.31,                            # (28+4.2)/69.2*10
             "tourism_strength": 6.68,                                # V2 z-score engine score (raw: 6.68%) (no data → 0)
             "rental_demand_index": 2.03,                             # V2 z-score engine score (raw index: 2.03)
             "infrastructure_pipeline": 15.11,                        # V2 z-score engine score (raw: 15.11)

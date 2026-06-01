@@ -16,12 +16,12 @@ COUNTRIES = {
         "foreign_freehold_allowed": True,
         "min_program_investment_usd": 250000,
         "scores": {
-            "political_stability_index": 5.20,   # trend=0.10-0.11=-0.01 → adj=0.099 → (0.099+2.5)/5*10
-            "corruption_perception_index": 5.0,   # 50/10
-            "currency_volatility": 5.55,          # (15-6.67)/15*10
-            "interest_rate_direction": 3.13,       # (2.00-1.25)/(3.65-1.25)*10
-            "foreign_buyer_market_share": 2.30,   # 17.0/74*10
-            "property_taxation_for_foreigners": 4.0,
+            "political_stability_index":        0.10,   # raw WGI 2023
+            "corruption_perception_index":      50,     # raw CPI score
+            "currency_volatility":              6.67,   # raw % — inverse var
+            "interest_rate_direction":          2.15,    # raw continuous rate
+            "foreign_buyer_market_share":       17.0,   # raw %
+            "property_taxation_for_foreigners": 5.35,    # manual score — no raw equivalent
         },
         "raw_values": {
             "political_stability_index_raw": 0.10,
@@ -29,7 +29,7 @@ COUNTRIES = {
             "political_stability_2021": 0.11,
             "corruption_perception_index_raw": 50,
             "currency_volatility_pct": 6.67,
-            "interest_rate_direction_pp": 0.00,
+            "interest_rate_direction_pp": 2.15,
             "interest_rate_direction_continuous": 2.0,
             "foreign_buyer_market_share_pct": 17.0,
             "tax_summary": "Annual Holding Tax ~0.1–1.2% ENFIA, Rental Income Tax 15–45%, Transaction Tax ~3%, Exit Tax 15%",
@@ -43,12 +43,12 @@ COUNTRIES = {
         "foreign_freehold_allowed": True,
         "min_program_investment_usd": 250000,
         "scores": {
-            "political_stability_index": 5.94,   # trend=0.50-0.80=-0.30 → adj=0.47 → (0.47+2.5)/5*10
-            "corruption_perception_index": 5.6,   # 56/10
-            "currency_volatility": 5.55,          # (15-6.67)/15*10
-            "interest_rate_direction": 3.13,       # (2.00-1.25)/(3.65-1.25)*10
-            "foreign_buyer_market_share": 3.73,   # 27.6/74*10
-            "property_taxation_for_foreigners": 5.0,
+            "political_stability_index":        0.50,
+            "corruption_perception_index":      56,
+            "currency_volatility":              6.67,
+            "interest_rate_direction":          2.15,
+            "foreign_buyer_market_share":       27.6,
+            "property_taxation_for_foreigners": 6.04,
         },
         "raw_values": {
             "political_stability_index_raw": 0.50,
@@ -56,7 +56,7 @@ COUNTRIES = {
             "political_stability_2021": 0.80,
             "corruption_perception_index_raw": 56,
             "currency_volatility_pct": 6.67,
-            "interest_rate_direction_pp": 0.00,
+            "interest_rate_direction_pp": 2.15,
             "interest_rate_direction_continuous": 2.0,
             "foreign_buyer_market_share_pct": 27.6,
             "tax_summary": "Annual Holding Tax ~0.3–0.8%, Rental Income Tax 28%, Transaction Tax ~6–7.5%, Exit Tax 28%",
@@ -70,12 +70,12 @@ COUNTRIES = {
         "foreign_freehold_allowed": False,
         "min_program_investment_usd": 100000,
         "scores": {
-            "political_stability_index": 3.54,   # trend=-0.70-(-0.39)=-0.31 → adj=-0.731 → (-0.731+2.5)/5*10
-            "corruption_perception_index": 3.3,   # 33/10
-            "currency_volatility": 4.60,          # (15-8.10)/15*10
-            "interest_rate_direction": 0.0,       # (1.25-1.25)/(3.65-1.25)*10
-            "foreign_buyer_market_share": 1.28,   # 9.5/74*10
-            "property_taxation_for_foreigners": 6.0,
+            "political_stability_index":        -0.70,
+            "corruption_perception_index":      33,
+            "currency_volatility":              8.10,
+            "interest_rate_direction":          1.00,
+            "foreign_buyer_market_share":       9.5,
+            "property_taxation_for_foreigners": 5.85,
         },
         "raw_values": {
             "political_stability_index_raw": -0.70,
@@ -83,7 +83,7 @@ COUNTRIES = {
             "political_stability_2021": -0.39,
             "corruption_perception_index_raw": 33,
             "currency_volatility_pct": 8.10,
-            "interest_rate_direction_pp": -0.75,
+            "interest_rate_direction_pp": 1.00,
             "interest_rate_direction_continuous": 1.25,
             "foreign_buyer_market_share_pct": 9.5,
             "tax_summary": "Annual Holding Tax ~0.02–0.3%, Rental Income Tax up to 35%, Transaction Tax ~2–6%, Exit Tax depends on structure",
@@ -97,12 +97,12 @@ COUNTRIES = {
         "foreign_freehold_allowed": True,
         "min_program_investment_usd": 545000,
         "scores": {
-            "political_stability_index": 6.61,   # trend=0.80-0.74=+0.06 → adj=0.806 → (0.806+2.5)/5*10
-            "corruption_perception_index": 6.9,   # 69/10
-            "currency_volatility": 10.0,          # (15-0.00)/15*10
-            "interest_rate_direction": 10.0,      # (3.65-1.25)/(3.65-1.25)*10
-            "foreign_buyer_market_share": 10.0,   # 74.0/74*10
-            "property_taxation_for_foreigners": 10.0,
+            "political_stability_index":        0.80,
+            "corruption_perception_index":      69,
+            "currency_volatility":              0.00,
+            "interest_rate_direction":          3.65,
+            "foreign_buyer_market_share":       74.0,
+            "property_taxation_for_foreigners": 0.00,
         },
         "raw_values": {
             "political_stability_index_raw": 0.80,
@@ -110,7 +110,7 @@ COUNTRIES = {
             "political_stability_2021": 0.74,
             "corruption_perception_index_raw": 69,
             "currency_volatility_pct": 0.00,
-            "interest_rate_direction_pp": -0.75,
+            "interest_rate_direction_pp": 3.65,
             "interest_rate_direction_continuous": 3.65,
             "foreign_buyer_market_share_pct": 74.0,
             "tax_summary": "Annual Holding Tax 0%, Rental Income Tax 0%, Transaction Tax ~4% transfer fee, Exit Tax 0%",

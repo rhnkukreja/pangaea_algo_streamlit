@@ -9,7 +9,6 @@ COUNTRY_INVERSE_VARS = {
     "currency_volatility",
     "property_taxation_for_foreigners",
     "interest_rate_direction",
-    "corruption_perception_index",
 }
 
 CITY_INVERSE_VARS = {

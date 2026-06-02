@@ -19,28 +19,36 @@ KEY ARCHITECTURE DECISION:
 """
 
 
-def standardize_determinants(scores, peer_scores, determinants, inverse_vars):
+def standardize_determinants(scores, peer_scores, determinants, inverse_vars, passthrough_vars=None):
     """
     Track B: Z-score standardization with winsorization and engine score mapping.
 
     Args:
-        scores       : dict {determinant: value} for the entity being scored.
-        peer_scores  : list of dicts — ALL peers in the surviving group,
-                       INCLUDING the entity being scored itself.
-                       ⚠️  Omitting self from peer_scores shifts μ and breaks z-scores.
-        determinants : list/iterable of determinant keys to process.
-        inverse_vars : set of determinant keys where high raw value = bad outcome.
-                       These get Engine_Score = 50 - (z × 25) instead of 50 + (z × 25).
-                       Pass set() if all variables are already correctly oriented.
+        scores           : dict {determinant: value} for the entity being scored.
+        peer_scores      : list of dicts — ALL peers in the surviving group,
+                           INCLUDING the entity being scored itself.
+                           ⚠️  Omitting self from peer_scores shifts μ and breaks z-scores.
+        determinants     : list/iterable of determinant keys to process.
+        inverse_vars     : set of determinant keys where high raw value = bad outcome.
+                           These get Engine_Score = 50 - (z × 25) instead of 50 + (z × 25).
+                           Pass set() if all variables are already correctly oriented.
+        passthrough_vars : set of determinant keys whose scores dict value is used
+                           directly as the engine score, skipping z-score normalization.
 
     Returns:
         dict {determinant: engine_score}
         Each engine_score is a float in [0, 100].
         Returns 50.0 (neutral) for any determinant with insufficient peer data.
     """
+    if passthrough_vars is None:
+        passthrough_vars = set()
+
     result = {}
 
     for det in determinants:
+        if det in passthrough_vars:
+            result[det] = max(0.0, min(100.0, scores.get(det, 50.0)))
+            continue
         # ── Collect peer values (self must be included in peer_scores) ──────
         all_vals = [p[det] for p in peer_scores if det in p and p[det] is not None]
 

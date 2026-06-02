@@ -20,7 +20,7 @@ COUNTRIES = {
             "corruption_perception_index":      50,     # raw CPI score
             "currency_volatility":              6.67,   # raw % — inverse var
             "interest_rate_direction":          2.15,    # raw continuous rate
-            "foreign_buyer_market_share":       17.0,   # raw %
+            "foreign_buyer_market_share":       35.0,   # raw %
             "property_taxation_for_foreigners": 5.35,    # manual score — no raw equivalent
         },
         "raw_values": {
@@ -47,7 +47,7 @@ COUNTRIES = {
             "corruption_perception_index":      56,
             "currency_volatility":              6.67,
             "interest_rate_direction":          2.15,
-            "foreign_buyer_market_share":       27.6,
+            "foreign_buyer_market_share":       45.75,
             "property_taxation_for_foreigners": 6.04,
         },
         "raw_values": {
@@ -74,7 +74,7 @@ COUNTRIES = {
             "corruption_perception_index":      33,
             "currency_volatility":              8.10,
             "interest_rate_direction":          1.00,
-            "foreign_buyer_market_share":       9.5,
+            "foreign_buyer_market_share":       27.5,
             "property_taxation_for_foreigners": 5.85,
         },
         "raw_values": {
@@ -101,9 +101,9 @@ COUNTRIES = {
             "corruption_perception_index":      69,
             "currency_volatility":              0.00,
             "interest_rate_direction":          3.65,
-            "foreign_buyer_market_share":       74.0,
+            "foreign_buyer_market_share":       8.25    ,
             "property_taxation_for_foreigners": 0.00,
-        },
+        },  
         "raw_values": {
             "political_stability_index_raw": 0.80,
             "political_stability_2022": 0.68,
@@ -138,6 +138,7 @@ def score_country(country_name, normalized_weights, all_countries_data):
         peer_scores,
         normalized_weights.keys(),
         inverse_vars=COUNTRY_INVERSE_VARS,
+        passthrough_vars={"foreign_buyer_market_share"},
     )
     score, breakdown = weighted_score(standardized, normalized_weights)
     return score, breakdown, standardized

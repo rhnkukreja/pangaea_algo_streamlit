@@ -232,14 +232,52 @@ def compute_country_weights(answers):
 
 
 def compute_city_weights(answers):
-    """Compute cascading city weights from objective and risk archetypes."""
-    objective = canonical_objective(answers.get("primary_objective"))
-    risk = answers.get("risk_appetite", "moderate")
-    return apply_shifts(
-        CITY_BASELINE_WEIGHTS,
-        CITY_TIER1_SHIFTS.get(objective, {}),
-        CITY_TIER2_SHIFTS.get(risk, {}),
-    )
+    """Simple additive city weights: baseline + T1 + T2 → clamp(5,35) → renormalize."""
+    objective = answers.get("primary_objective", "")
+    risk = answers.get("risk_appetite", "neutral")
+
+    t1_shifts = CITY_TIER1_SHIFTS.get(objective, {})
+    t2_shifts = CITY_TIER2_SHIFTS.get(risk, {})
+
+    weights = {k: float(v) for k, v in CITY_BASELINE_WEIGHTS.items()}
+    for key, shift in t1_shifts.items():
+        weights[key] = weights[key] + float(shift)
+    for key, shift in t2_shifts.items():
+        weights[key] = weights[key] + float(shift)
+
+    for key in weights:
+        weights[key] = max(5.0, min(35.0, weights[key]))
+
+    total = sum(weights.values())
+    normalized = {k: round(weights[k] / total * 100, 2) for k in weights}
+    residual = round(100.0 - sum(normalized.values()), 2)
+    if residual:
+        best = max(normalized, key=lambda k: normalized[k])
+        normalized[best] = round(normalized[best] + residual, 2)
+
+    # Build log for UI display (raw == adjusted — no diminishing returns)
+    log = []
+    for det in set(t1_shifts) | set(t2_shifts):
+        base = float(CITY_BASELINE_WEIGHTS.get(det, 0))
+        t1 = float(t1_shifts.get(det, 0))
+        t2 = float(t2_shifts.get(det, 0))
+        total_raw = t1 + t2
+        sources = []
+        if t1:
+            sources.append(f"Tier 1:{objective}")
+        if t2:
+            sources.append(f"Tier 2:{risk}")
+        log.append({
+            "determinant":    det,
+            "sources":        sources,
+            "total_raw_shift": total_raw,
+            "adjusted_shift":  total_raw,
+            "baseline":        base,
+            "post_shift":      max(5.0, min(35.0, base + total_raw)),
+            "final_weight":    normalized.get(det, base),
+        })
+
+    return weights, normalized, log
 
 
 def resolve_speculation_tag(usage: str, risk: str) -> str:

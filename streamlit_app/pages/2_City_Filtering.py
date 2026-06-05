@@ -9,15 +9,15 @@ from streamlit_ui_helpers import group_weight_log, weight_log_fields
 
 # ── Display name mapping: engine key → Excel / client-facing label ────────────
 CITY_DISPLAY_NAMES = {
-    "net_migration_rate":      "Population Growth Rate",
-    "liquidity_indicator":     "Transaction Volume Growth",
-    "supply_pipeline":         "Supply Pipeline (5Y)",
-    "employment_growth":       "Employment Growth Rate",
-    "price_appreciation_5y":   "Price Appreciation (5Y)",
-    "tourism_strength":        "Tourism Strength",
-    "rental_demand_index":     "Rental Demand Index",
-    "infrastructure_pipeline": "Macro Infrastructure Pipeline",
-    "quality_of_life_index":   "Quality of Life Index",
+    "population_growth":          "Population Growth Rate",
+    "transaction_volume_growth":  "Transaction Volume Growth",
+    "supply_pipeline":            "Supply Pipeline (5Y)",
+    "employment_growth":          "Employment Growth Rate",
+    "price_appreciation_5y":      "Price Appreciation (5Y)",
+    "tourism_strength":           "Tourism Strength",
+    "rental_demand_index":        "Rental Demand Index",
+    "macro_infra_pipeline":       "Macro Infrastructure Pipeline",
+    "quality_of_life_index":      "Quality of Life Index",
 }
 
 def display_name(key: str) -> str:
@@ -45,23 +45,23 @@ with col_form:
         "Q1 — Primary Investment Objective",
         options=[
             "capital_appreciation",
-            "yield_cash_flow",
+            "yield_cashflow",
             "capital_preservation",
-            "lifestyle_end_use",
-            "residency_citizenship",
+            "lifestyle",
+            "residency",
         ],
         format_func=lambda x: {
             "capital_appreciation": "Capital Appreciation",
-            "yield_cash_flow": "Yield / Cash Flow",
+            "yield_cashflow":       "Yield / Cash Flow",
             "capital_preservation": "Capital Preservation",
-            "lifestyle_end_use": "Lifestyle / End-Use",
-            "residency_citizenship": "Residency / Citizenship",
+            "lifestyle":            "Lifestyle / End-Use",
+            "residency":            "Residency / Citizenship",
         }[x],
         key="city_primary_objective",
     )
     risk_appetite = st.radio(
         "Q2 — Risk Appetite",
-        options=["conservative", "moderate", "opportunistic"],
+        options=["conservative", "neutral", "opportunistic"],
         format_func=lambda x: x.title(),
         key="city_risk_appetite",
     )
@@ -102,8 +102,6 @@ with col_weights:
     st.dataframe(df, hide_index=True, use_container_width=True)
 
     with st.expander("📋 Why these weights changed"):
-        objective_label = primary_objective.replace("_", " ").title()
-        risk_label = risk_appetite.title()
         if not weight_log:
             st.caption("No shifts applied — using baseline weights.")
         else:
@@ -113,14 +111,12 @@ with col_weights:
                     f = weight_log_fields(entry)
                     det = display_name(f["determinant"])
                     raw = f["raw"]
-                    adj = f["adjusted"]
                     sign = "+" if raw > 0 else ""
                     color = "🟢" if raw > 0 else "🔴"
                     st.caption(
                         f"  {color} {det}: "
                         f"raw {sign}{raw} → "
-                        f"adjusted {sign}{round(adj, 2)} → "
-                        f"{round(f['before'], 1)}% → {round(f['after'], 1)}% post-shift → "
+                        f"{round(f['before'], 1)}% baseline → "
                         f"**{round(f['final'], 1)}% final**"
                     )
                 st.markdown("---")

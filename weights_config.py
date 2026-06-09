@@ -239,11 +239,21 @@ def compute_city_weights(answers):
     t1_shifts = CITY_TIER1_SHIFTS.get(objective, {})
     t2_shifts = CITY_TIER2_SHIFTS.get(risk, {})
 
-    weights = {k: float(v) for k, v in CITY_BASELINE_WEIGHTS.items()}
+    baseline = {k: float(v) for k, v in CITY_BASELINE_WEIGHTS.items()}
+    
+    # Aggregate all shifts per determinant
+    aggregated = {}
     for key, shift in t1_shifts.items():
-        weights[key] = weights[key] + float(shift)
+        aggregated[key] = aggregated.get(key, 0) + float(shift)
     for key, shift in t2_shifts.items():
-        weights[key] = weights[key] + float(shift)
+        aggregated[key] = aggregated.get(key, 0) + float(shift)
+    
+    # Apply diminishing returns formula
+    weights = dict(baseline)
+    for det, total_raw in aggregated.items():
+        base = baseline.get(det, 0)
+        adjusted = total_raw * (1.0 - base / 100.0)  # ✅ DIMINISHING RETURNS
+        weights[det] = base + adjusted
 
     for key in weights:
         weights[key] = max(5.0, min(35.0, weights[key]))

@@ -27,8 +27,8 @@ COUNTRY_BASELINE_WEIGHTS = {
 
 COUNTRY_TIER1_SHIFTS = {
     "capital_appreciation": {
-        "foreign_buyer_market_share": 17,
-        "interest_rate_direction": 8,
+        "property_taxation_for_foreigners": 17,
+        "currency_volatility": 8,
         "political_stability_index": -17,
         "corruption_perception_index": -8,
     },
@@ -40,16 +40,15 @@ COUNTRY_TIER1_SHIFTS = {
     },
     "capital_preservation": {
         "political_stability_index": 13,
-        "currency_volatility": 12,
-        "foreign_buyer_market_share": -17,
+        "foreign_buyer_market_share": 12,
+        "property_taxation_for_foreigners": -17,
         "interest_rate_direction": -8,
     },
     "investment_diversification": {
-        "political_stability_index": 9,
-        "currency_volatility": 8,
-        "foreign_buyer_market_share": 8,
-        "interest_rate_direction": -17,
-        "corruption_perception_index": -8,
+        "political_stability_index": 13,
+        "foreign_buyer_market_share": 12,
+        "property_taxation_for_foreigners": -17,
+        "interest_rate_direction": -8,
     },
     "residency_citizenship": {
         "political_stability_index": 17,
@@ -61,17 +60,17 @@ COUNTRY_TIER1_SHIFTS = {
 
 COUNTRY_TIER2_SHIFTS = {
     "conservative": {
-        "political_stability_index": 11,
-        "currency_volatility": 4,
-        "foreign_buyer_market_share": -11,
-        "interest_rate_direction": -4,
+        "foreign_buyer_market_share": 8,
+        "political_stability_index": 7,
+        "property_taxation_for_foreigners": -10,
+        "interest_rate_direction": -5,
     },
     "moderate": {},
     "opportunistic": {
-        "foreign_buyer_market_share": 11,
-        "interest_rate_direction": 4,
-        "political_stability_index": -11,
-        "currency_volatility": -4,
+        "property_taxation_for_foreigners": 10,
+        "currency_volatility": 5,
+        "foreign_buyer_market_share": -10,
+        "interest_rate_direction": -5,
     },
 }
 

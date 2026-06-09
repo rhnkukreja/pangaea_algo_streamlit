@@ -18,6 +18,7 @@ CITY_DISPLAY_NAMES = {
     "rental_demand_index":        "Rental Demand Index",
     "macro_infra_pipeline":       "Macro Infrastructure Pipeline",
     "quality_of_life_index":      "Quality of Life Index",
+    "vacancy_rate":               "Vacancy Rate",
 }
 
 def display_name(key: str) -> str:
@@ -111,12 +112,14 @@ with col_weights:
                     f = weight_log_fields(entry)
                     det = display_name(f["determinant"])
                     raw = f["raw"]
+                    adj = f["adjusted"]
                     sign = "+" if raw > 0 else ""
                     color = "🟢" if raw > 0 else "🔴"
                     st.caption(
                         f"  {color} {det}: "
                         f"raw {sign}{raw} → "
-                        f"{round(f['before'], 1)}% baseline → "
+                        f"adjusted {sign}{round(adj, 2)} → "
+                        f"{round(f['before'], 1)}% → {round(f['after'], 1)}% post-shift → "
                         f"**{round(f['final'], 1)}% final**"
                     )
                 st.markdown("---")

@@ -15,7 +15,7 @@ CITIES = {
             "rental_demand_index": 100.00,         # V2 z-score engine score (raw index: 100.00)
             "macro_infra_pipeline": 72.64,    # V2 z-score engine score (raw: 72.64)
             "supply_pipeline": 69.35,             # V2 z-score engine score (raw: 69.35%) — inverse var
-            "vacancy_rate": 36.44,               # V2 z-score engine score (raw: 29.00%) — inverse var
+            "vacancy_rate": 40.71,               # V2 z-score engine score (raw: 29.00%) — inverse var
             "quality_of_life_index": 40.39,       # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
@@ -43,7 +43,7 @@ CITIES = {
             "rental_demand_index": 88.09,          # V2 z-score engine score (raw index: 88.09)
             "macro_infra_pipeline": 27.61,      # V2 z-score engine score (raw: 27.61)
             "supply_pipeline": 54.20,              # V2 z-score engine score (raw: 54.20%) — inverse var
-            "vacancy_rate": 12.47,               # V2 z-score engine score (raw: 40.00%) — inverse var
+            "vacancy_rate": 17.89,               # V2 z-score engine score (raw: 40.00%) — inverse var
             "quality_of_life_index": 40.39,        # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
@@ -71,7 +71,7 @@ CITIES = {
             "rental_demand_index": 73.43,           # V2 z-score engine score (raw index: 73.43)
             "macro_infra_pipeline": 77.64,      # V2 z-score engine score (raw: 77.64)
             "supply_pipeline": 74.72,               # V2 z-score engine score (raw: 74.72%) — inverse var
-            "vacancy_rate": 58.22,               # V2 z-score engine score (raw: 19.00%) — inverse var
+            "vacancy_rate": 61.47,               # V2 z-score engine score (raw: 19.00%) — inverse var
             "quality_of_life_index": 40.39,         # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
@@ -99,7 +99,7 @@ CITIES = {
             "rental_demand_index": 52.79,            # V2 z-score engine score (raw index: 52.79)
             "macro_infra_pipeline": 35.11,       # V2 z-score engine score (raw: 35.11)
             "supply_pipeline": 58.71,                # V2 z-score engine score (raw: 58.71%) — inverse var
-            "vacancy_rate": 77.83,               # V2 z-score engine score (raw: 10.00%) — inverse var
+            "vacancy_rate": 7.51,               # V2 z-score engine score (raw: 10.00%) — inverse var
             "quality_of_life_index": 40.39,          # V2 z-score engine score (raw index: 129.20)
         },
         "raw_values": {
@@ -127,7 +127,7 @@ CITIES = {
             "rental_demand_index": 83.47,             # V2 z-score engine score (raw index: 83.47)
             "macro_infra_pipeline": 77.64,        # V2 z-score engine score (raw: 77.64)
             "supply_pipeline": 66.01,                 # V2 z-score engine score (raw: 66.01%) — inverse var
-            "vacancy_rate": 8.11,                # V2 z-score engine score (raw: 42.00%) — inverse var
+            "vacancy_rate": 13.74,                # V2 z-score engine score (raw: 42.00%) — inverse var
             "quality_of_life_index": 43.45,           # V2 z-score engine score (raw index: 132.60)
         },
         "raw_values": {
@@ -155,7 +155,7 @@ CITIES = {
             "rental_demand_index": 83.47,              # V2 z-score engine score (raw index: 83.47)
             "macro_infra_pipeline": 77.64,         # V2 z-score engine score (raw: 77.64)
             "supply_pipeline": 76.04,                  # V2 z-score engine score (raw: 76.04%) — inverse var
-            "vacancy_rate": 51.69,               # V2 z-score engine score (raw: 22.00%) — inverse var
+            "vacancy_rate": 55.24,               # V2 z-score engine score (raw: 22.00%) — inverse var
             "quality_of_life_index": 65.41,            # V2 z-score engine score (raw index: 157.00)
         },
         "raw_values": {
@@ -183,7 +183,7 @@ CITIES = {
             "rental_demand_index": 56.32,               # V2 z-score engine score (raw index: 56.32)
             "macro_infra_pipeline": 2.61,           # V2 z-score engine score (raw: 2.61)
             "supply_pipeline": 78.57,                   # V2 z-score engine score (raw: 78.57%) — inverse var
-            "vacancy_rate": 19.01,               # V2 z-score engine score (raw: 37.00%) — inverse var
+            "vacancy_rate": 24.11,               # V2 z-score engine score (raw: 37.00%) — inverse var
             "quality_of_life_index": 70.82,             # V2 z-score engine score (raw index: 163.00)
         },
         "raw_values": {
@@ -211,7 +211,7 @@ CITIES = {
             "rental_demand_index": 37.32,                # V2 z-score engine score (raw index: 37.32)
             "macro_infra_pipeline": 40.11,            # V2 z-score engine score (raw: 40.11)
             "supply_pipeline": 70.97,                    # V2 z-score engine score (raw: 70.97%) — inverse var
-            "vacancy_rate": 0.00,                # V2 z-score engine score (raw: 48.00%) — inverse var
+            "vacancy_rate": 1.29,                # V2 z-score engine score (raw: 48.00%) — inverse var
             "quality_of_life_index": 74.41,              # V2 z-score engine score (raw index: 167.00)
         },
         "raw_values": {
@@ -239,7 +239,7 @@ CITIES = {
             "rental_demand_index": 42.76,                 # V2 z-score engine score (raw index: 42.76)
             "macro_infra_pipeline": 27.61,             # V2 z-score engine score (raw: 27.61)
             "supply_pipeline": 53.24,                     # V2 z-score engine score (raw: 53.24%) — inverse var
-            "vacancy_rate": 60.40,               # V2 z-score engine score (raw: 18.00%) — inverse var
+            "vacancy_rate": 63.54,               # V2 z-score engine score (raw: 18.00%) — inverse var
             "quality_of_life_index": 89.70,               # V2 z-score engine score (raw index: 184.00)
         },
         "raw_values": {
@@ -267,7 +267,7 @@ CITIES = {
             "rental_demand_index": 64.47,                  # V2 z-score engine score (raw index: 64.47)
             "macro_infra_pipeline": 77.64,             # V2 z-score engine score (raw: 77.64)
             "supply_pipeline": 73.51,                      # V2 z-score engine score (raw: 73.51%) — inverse var
-            "vacancy_rate": 56.05,               # V2 z-score engine score (raw: 20.00%) — inverse var
+            "vacancy_rate": 59.39,               # V2 z-score engine score (raw: 20.00%) — inverse var
             "quality_of_life_index": 83.40,                # V2 z-score engine score (raw index: 177.00)
         },
         "raw_values": {
@@ -295,7 +295,7 @@ CITIES = {
             "rental_demand_index": 75.33,                   # V2 z-score engine score (raw index: 75.33)
             "macro_infra_pipeline": 67.64,              # V2 z-score engine score (raw: 67.64)
             "supply_pipeline": 45.64,                       # V2 z-score engine score (raw: 45.64%) — inverse var
-            "vacancy_rate": 51.69,               # V2 z-score engine score (raw: 22.00%) — inverse var
+            "vacancy_rate": 55.24,               # V2 z-score engine score (raw: 22.00%) — inverse var
             "quality_of_life_index": 20.62,                 # V2 z-score engine score (raw index: 107.23) (proxy)
         },
         "raw_values": {
@@ -323,7 +323,7 @@ CITIES = {
             "rental_demand_index": 53.61,                    # V2 z-score engine score (raw index: 53.61)
             "macro_infra_pipeline": 77.64,               # V2 z-score engine score (raw: 77.64)
             "supply_pipeline": 0.00,                         # V2 z-score engine score (raw: 0.00%) — inverse var (winsorized)
-            "vacancy_rate": 73.48,               # V2 z-score engine score (raw: 12.00%) — inverse var
+            "vacancy_rate": 75.99,               # V2 z-score engine score (raw: 12.00%) — inverse var
             "quality_of_life_index": 8.64,                   # V2 z-score engine score (raw index: 93.93)
         },
         "raw_values": {
@@ -351,7 +351,7 @@ CITIES = {
             "rental_demand_index": 45.47,                     # V2 z-score engine score (raw index: 45.47)
             "macro_infra_pipeline": 32.61,                # V2 z-score engine score (raw: 32.61)
             "supply_pipeline": 10.17,                         # V2 z-score engine score (raw: 10.17%) — inverse var
-            "vacancy_rate": 38.62,               # V2 z-score engine score (raw: 28.00%) — inverse var
+            "vacancy_rate": 42.79,               # V2 z-score engine score (raw: 28.00%) — inverse var
             "quality_of_life_index": 11.87,                   # V2 z-score engine score (raw index: 97.50)
         },
         "raw_values": {
@@ -379,7 +379,7 @@ CITIES = {
             "rental_demand_index": 37.32,                      # V2 z-score engine score (raw index: 37.32)
             "macro_infra_pipeline": 42.61,                 # V2 z-score engine score (raw: 42.61)
             "supply_pipeline": 50.71,                          # V2 z-score engine score (raw: 50.71%) — inverse var
-            "vacancy_rate": 66.94,               # V2 z-score engine score (raw: 15.00%) — inverse var
+            "vacancy_rate": 69.77,               # V2 z-score engine score (raw: 15.00%) — inverse var
             "quality_of_life_index": 36.61,                    # V2 z-score engine score (raw index: 125.00)
         },
         "raw_values": {
@@ -407,7 +407,7 @@ CITIES = {
             "rental_demand_index": 23.76,                       # V2 z-score engine score (raw index: 23.76)
             "macro_infra_pipeline": 12.61,                  # V2 z-score engine score (raw: 12.61)
             "supply_pipeline": 60.84,                           # V2 z-score engine score (raw: 60.84%) — inverse var
-            "vacancy_rate": 34.26,               # V2 z-score engine score (raw: 30.00%) — inverse var
+            "vacancy_rate": 38.64,               # V2 z-score engine score (raw: 30.00%) — inverse var
             "quality_of_life_index": 25.36,                     # V2 z-score engine score (raw index: 112.50)
         },
         "raw_values": {
@@ -435,7 +435,7 @@ CITIES = {
             "rental_demand_index": 64.47,                        # V2 z-score engine score (raw index: 64.47)
             "macro_infra_pipeline": 77.64,                   # V2 z-score engine score (raw: 77.64)
             "supply_pipeline": 17.77,                            # V2 z-score engine score (raw: 17.77%) — inverse var
-            "vacancy_rate": 80.01,               # V2 z-score engine score (raw: 9.00%) — inverse var
+            "vacancy_rate": 82.22,               # V2 z-score engine score (raw: 9.00%) — inverse var
             "quality_of_life_index": 89.79,                      # V2 z-score engine score (raw index: 184.10)
         },
         "raw_values": {
@@ -463,7 +463,7 @@ CITIES = {
             "rental_demand_index": 48.18,                         # V2 z-score engine score (raw index: 48.18)
             "macro_infra_pipeline": 65.14,                     # V2 z-score engine score (raw: 65.14)
             "supply_pipeline": 40.57,                             # V2 z-score engine score (raw: 40.57%) — inverse var
-            "vacancy_rate": 84.37,               # V2 z-score engine score (raw: 7.00%) — inverse var
+            "vacancy_rate": 86.37,               # V2 z-score engine score (raw: 7.00%) — inverse var
             "quality_of_life_index": 77.66,                       # V2 z-score engine score (raw index: 170.60)
         },
         "raw_values": {
@@ -491,7 +491,7 @@ CITIES = {
             "rental_demand_index": 29.18,                          # V2 z-score engine score (raw index: 29.18)
             "macro_infra_pipeline": 40.11,                      # V2 z-score engine score (raw: 40.11)
             "supply_pipeline": 50.71,                              # V2 z-score engine score (raw: 50.71%) — inverse var
-            "vacancy_rate": 63.67,               # V2 z-score engine score (raw: 16.50%) — inverse var
+            "vacancy_rate": 66.65,               # V2 z-score engine score (raw: 16.50%) — inverse var
             "quality_of_life_index": 48.31,                        # V2 z-score engine score (raw index: 138.00)
         },
         "raw_values": {
@@ -519,7 +519,7 @@ CITIES = {
             "rental_demand_index": 42.76,                           # V2 z-score engine score (raw index: 42.76)
             "macro_infra_pipeline": 65.14,                       # V2 z-score engine score (raw: 65.14)
             "supply_pipeline": 0.00,                               # V2 z-score engine score (raw: 0.00%) — inverse var (winsorized)
-            "vacancy_rate": 75.65,               # V2 z-score engine score (raw: 11.00%) — inverse var
+            "vacancy_rate": 78.07,               # V2 z-score engine score (raw: 11.00%) — inverse var
             "quality_of_life_index": 71.93,                         # V2 z-score engine score (raw index: 164.23) (proxy)
         },
         "raw_values": {
@@ -547,7 +547,7 @@ CITIES = {
             "rental_demand_index": 2.03,                             # V2 z-score engine score (raw index: 2.03)
             "macro_infra_pipeline": 15.11,                        # V2 z-score engine score (raw: 15.11)
             "supply_pipeline": 55.77,                                # V2 z-score engine score (raw: 55.77%) — inverse var
-            "vacancy_rate": 56.05,               # V2 z-score engine score (raw: 20.00%) — inverse var
+            "vacancy_rate": 59.39,               # V2 z-score engine score (raw: 20.00%) — inverse var
             "quality_of_life_index": 71.93,                          # V2 z-score engine score (raw index: 164.23) (proxy)
         },
         "raw_values": {
